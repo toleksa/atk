@@ -1,0 +1,4 @@
+Django
+Pillow
+python-dateutil
+python-dotenv
