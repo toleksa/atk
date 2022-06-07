@@ -1,4 +1,4 @@
 #!/bin/bash
 
-docker exec -it atk bash
+docker exec -it atk sh
 

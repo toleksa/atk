@@ -3,5 +3,5 @@
 docker stop atk
 docker rm atk
 
-docker run -it -p 8000:8000 --name atk --mount type=bind,source=/home/art/atk/atkdjango,target=/app/atkdjango atk:latest bash
+docker run -it -p 8000:8000 --name atk --mount type=bind,source=/home/art/atk/atkdjango,target=/app/atkdjango atk:latest sh
 
