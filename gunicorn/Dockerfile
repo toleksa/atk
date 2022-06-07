@@ -3,7 +3,7 @@
 #FROM python:3.7-buster
 #FROM python:3.8-alpine
 FROM alpine
-RUN apk add --no-cache py3-django py3-pillow py3-dateutil py3-gunicorn
+RUN apk add --no-cache py3-django py3-pillow py3-dateutil py3-dotenv py3-gunicorn
 
 # alpine compile python modules
 #RUN apk add --no-cache --virtual build-deps build-base python3-dev py3-pip 
