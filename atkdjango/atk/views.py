@@ -32,7 +32,7 @@ def stats(request):
     for babe in halloffame:
         response += str(babe['ncount']) + " <a href='/atk/model/" + str(babe['name']) + "'>" + str(babe['name']) + "</a><br>"
 
-    response += "<br><br>Polish:<br><br>"
+    response += "<br><br><a href='/atk/search/pob/poland/'>Polish</a>:<br><br>"
     polish = AllBabe.objects.values('name').annotate(ncount=Count('name')).filter(pob__icontains='poland').order_by('-ncount')
     for babe in polish:
         response += str(babe['ncount']) + " <a href='/atk/model/" + str(babe['name']) + "'>" + str(babe['name']) + "</a><br>"
@@ -45,7 +45,7 @@ def stats(request):
     #return HttpResponse(ages)
     response += "<br>Ages:<br>"
     for age in ages:
-        response += str(age['age']) + " " + str(age['ncount']) + "<br>"
+        response += "<a href='/atk/search/age/" + str(age['age']) + "'>" + str(age['age']) + "</a>" + " " + str(age['ncount']) + "<br>"
     response += "<br>Votemonth<br>"
     votemonths = Vote.objects.values('votemonth').annotate(ncount=Count('votemonth')).order_by('-votemonth')
     for votemonth in votemonths:
@@ -273,34 +273,35 @@ def sitenum(request,num,site = 'allsites'):
     response = sitedisplay(request,babes,site,1,'atk/sitenum.html',related,1)
     return HttpResponse(response)
 
-def search(request,site,search='',page=1,per_page=20):
-    if site not in ['allsites','exotics','hairy','galleria','blog','search','tag','hidden','banned','novote','alles','lastvote']:
+def search(request,site,search='',category='',page=1,per_page=20):
+    if site not in ['allsites','exotics','hairy','galleria','blog','search','hidden','banned','novote','alles','lastvote']:
         err='site not found|syvffserck|' + site
         return error(request,err,site)
     if search=='':
         if request.GET.get('name'):
             #message = 'You submitted: %r' % request.GET['name']
-            url = '/atk/search/' + request.GET['name']
+            url = '/atk/search/name/' + request.GET['name']
             return redirect(url)
         else:
             if site not in ['allsites','exotics','hairy','galleria','blog','hidden','banned','novote','alles','lastvote']:
                 err='empty search string'
                 return error(request,err)
     else:
-        if len(search) < 3:
+        if category not in ['name','id','tags','pob','age']:
+            err='unrecognized search category: ' + category
+            return error(request,err,site)
+        if len(search) < 3 and category!='age':
             err="search string must have at least 3 characters"
             return error(request,err)
     offset = (page - 1) * per_page
     modeldetail={}
     try:
         if site=='search':
-            babes = AllBabe.objects.filter(name__icontains=search,likes__gte=-1).order_by('-date','site','-id')[offset:offset+per_page]
-            numResults = AllBabe.objects.filter(name__icontains=search,likes__gte=-1).count()
+            query_filter = str(category + '__icontains')
+            babes = AllBabe.objects.filter(**{ query_filter: search },likes__gte=-1).order_by('-date','site','-id')[offset:offset+per_page]
+            numResults = AllBabe.objects.filter(**{ query_filter: search },likes__gte=-1).count()
             if not babes:
                 modeldetail=get_modeldetails(search,babes.count())
-        elif site=='tag':
-            babes = AllBabe.objects.filter(tags__icontains=search,likes__gte=-1).order_by('-date','site','-id')[offset:offset+per_page]
-            numResults = AllBabe.objects.filter(tags__icontains=search,likes__gte=-1).count()
         elif site in ['exotics','hairy','galleria','blog']:
             babes = AllBabe.objects.filter(site=site,likes__gte=0).order_by('-date','site','-id')[offset:offset+per_page]
             numResults = AllBabe.objects.filter(site=site,likes__gte=0).count()
@@ -334,6 +335,7 @@ def search(request,site,search='',page=1,per_page=20):
     context = {
         'babes': babes,
         'site': site,
+        'category': category,
         'page' : page,
         'pages': numResults // per_page + 1,
         'search' : search,
@@ -467,7 +469,7 @@ def generate_tags2(babe):
         for tag in tags:
             temp=tag.split("/blog/")
             tagname=temp[1]
-            URL="/atk/tag/" + tagname + ""
+            URL="/atk/search/tags/" + tagname + ""
             final_tag=[URL, tagname]
             taglist.append(final_tag)
         babe[0].tags=taglist
