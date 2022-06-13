@@ -322,7 +322,7 @@ def search(request,site,search='',category='',page=1,per_page=20):
             babes = AllBabe.objects.filter(id__in=novotes).order_by('-date','site','-id')[offset:offset+per_page]
             numResults = Novote.objects.count()
         elif site=='lastvote':
-            lastVote = Vote.objects.filter(votemonth__gt=0).order_by('-id').first()
+            lastVote = Vote.objects.filter(vote__gt=0,second__gt=0).order_by('-id').first()
             babes = list(AllBabe.objects.filter(id=lastVote.vote))
             babes += list(AllBabe.objects.filter(id=lastVote.second))
             numResults = len(babes)
