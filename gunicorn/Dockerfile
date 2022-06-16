@@ -18,5 +18,6 @@ EXPOSE 8000
 STOPSIGNAL SIGTERM
 
 WORKDIR /app/atkdjango
+COPY atkdjango .
 CMD /usr/bin/gunicorn --bind 0.0.0.0:8000 atkdjango.wsgi
 
