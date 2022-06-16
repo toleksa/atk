@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
-if [ $# -eq 0 ]
-  then
-    TAG='latest'
-  else
-    TAG=$1
-fi
+#
+# ./build.sh [tag] [name]
+#
 
-PWD=$(pwd)
-PROJECT=$(dirname "$(readlink -f "$0")" | gawk -F"/" '{ print $NF }')
+#PWD=$(pwd)
+#PROJECT=$(dirname "$(readlink -f "$0")" | gawk -F"/" '{ print $NF }')
+PROJECT="atk-gunicorn"
 
-docker build -t $PROJECT:$TAG .
+CMD="docker build -t ${2:-$PROJECT}:${1:-latest} -f Dockerfile ../"
+echo $CMD
+eval $CMD
 
