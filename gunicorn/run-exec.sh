@@ -1,4 +1,4 @@
 #!/bin/bash
 
-docker exec -it gunicorn sh
+docker exec -it atk-gunicorn sh
 
