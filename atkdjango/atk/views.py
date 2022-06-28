@@ -146,7 +146,7 @@ def duel(request,site):
             if monthvotes >= 500:
                 err = 'There are ' + str(monthvotes) + ' votes for that month, voting is closed'
                 return error(request,err)
-            if monthvotes >= 250:
+            if monthvotes >= 200:
                 treshold=2
             if monthvotes >= 400:
                 treshold=10
