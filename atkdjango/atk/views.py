@@ -193,7 +193,7 @@ def top(request,site,page=1):
     detail=0
     liked=''
     babes=''
-    per_page=0
+    per_page=''
     #TODO: check this
     template='atk/' + site + '.html'
     
@@ -216,7 +216,6 @@ def top(request,site,page=1):
                     babes.append(babe)
             template='atk/template_base.html'
         if site=='monthlist':
-            site='month'
             babes = list(AllBabe.objects.filter(date__istartswith=get_votemonth(),likes__gte=0).order_by('-date'))
             template='atk/template_base.html'
         if site=='likes':
