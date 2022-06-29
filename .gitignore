@@ -2,4 +2,9 @@ __pycache__
 .env
 *.log
 *.sqlite*
-*.html
+babe.html
+babe1.html
+index.html
+pic.html
+pic1.html
+old/
