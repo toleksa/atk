@@ -235,6 +235,17 @@ def likedmodels(request):
     response = sitedisplay(request,babes,'allsites',1,'atk/liked.html','',0,liked)
     return HttpResponse(response)
 
+def dueltopmodel(request):
+    liked = AllBabe.objects.values('name').annotate(vote=Sum('duellikes')).order_by('-vote')[0:100]
+    babes = []
+    for like in liked:
+        #TODO: this is ugly as fuck
+        babee = list(AllBabe.objects.filter(name=like['name']).order_by('-duellikes')[0:1])
+        for babe in babee:
+            babes.append(babe)
+    response = sitedisplay(request,babes,'allsites',1,'atk/liked.html','',0,liked)
+    return HttpResponse(response)
+
 def monthtop(request):
     liked = AllBabe.objects.values('name').annotate(vote=Sum('monthlikes')).order_by('-vote')[0:100]
     babes = []
