@@ -153,6 +153,7 @@ def duel(request,site):
             maxnum = AllBabe.objects.filter(date__istartswith=votemonth,likes__gte=0,monthlikes__gte=treshold).count()
         elif site=='duel' or site=='duelduel':
             maxnum = AllBabe.objects.filter(likes__gte=0).count()
+            monthvotes = Vote.objects.values('vote').filter(votemonth__isnull=True,vote__gt=0,second__gt=0).count()
         elif site == 'novotes':
             novotes = list(Novote.objects.all())
             maxnum = len(novotes)
