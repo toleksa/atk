@@ -1,0 +1,15 @@
+{% extends 'atk/template_base.html' %}
+{% load static %}
+
+{% block likesvote %}
+    <a href='#' id='suss' rel='{{ site }}/{{ babe.id }}/0'>SÜSS</a> <->
+    <a href='#' id='pfuj' rel='{{ site }}/0/{{ babe.id }}'>PFUJ TEUFEL</a><br>
+
+    <script type='text/javascript'>
+        var link=document.getElementById('suss');
+        link.setAttribute("href","/atk/vote/" + link.getAttribute("rel") + "/");
+        var link=document.getElementById('pfuj');
+        link.setAttribute("href","/atk/vote/" + link.getAttribute("rel") + "/");
+    </script>
+{% endblock %}
+

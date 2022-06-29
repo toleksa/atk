@@ -1,0 +1,46 @@
+{% extends 'atk/random.html' %}
+{% load static %}
+
+{% block header %}
+<center>
+<a href='/atk/randomrandom/'><img src="/storage/reload.png" width=80 alt="reload"></a>
+</center>
+<br>
+<br>
+{% endblock %}
+
+{% block model %}
+Model:  {% if babe.site == "blog" %}
+            <a href='{{ babe.gallery }}' target='_blank'>{{ babe.name }}</a><br>
+        {% else %}
+            <a href='http://www.atkmodels.com/{{ babe.site }}/index.php?day={{ babe.date }}' target='_blank'>{{ babe.name }}</a><br>
+        {% endif %}
+Gallery: {{ babe.site }}/20{{ babe.date }}<br>
+{% endblock %}
+
+{% block piclink %}
+        {% if babe.site == "blog" %}
+            <a href='{{ babe.gallery }}' target='_blank'>
+        {% else %}
+            <a href='http://www.atkmodels.com/{{ babe.site }}/index.php?day={{ babe.date }}' target='_blank'>
+        {% endif %}
+{% endblock %}
+
+{% block likesblock %}
+    Likes: {{ babe.likes }}<br>
+{% endblock %}
+
+{% block footer %}
+    {% if babes|length <= 2 %}
+        <center><h1>
+        <a href='/atk/{{ site }}/'>SKIP</a>
+        </h1></center>
+    {% else %}
+        <br>
+    {% endif %}
+{% endblock %}
+
+
+{% block related %}
+{% endblock %}
+

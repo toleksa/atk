@@ -1,0 +1,63 @@
+{% extends 'atk/template_base.html' %}
+{% load static %}
+
+{% block navnumbers %}
+  {% if site == "month" %}
+    Monthvotes: {{ monthvotes }}
+  {% endif %}
+  {% if site == "duel" %}
+    Duelvotes: {{ monthvotes }}
+  {% endif %}
+{% endblock %}
+
+{% block pic %}
+    {% if related %}
+        {% for rel in related %}
+            {% if rel.id != babe.id %}
+                {% block votelink %}
+                    <a href='#' rel='{{ site }}/{{ babe.id }}/{{ rel.id }}' id="a{{ babe.id }}">
+                {% endblock %}
+            {% endif %}
+        {% endfor %}
+    {% else %}
+    {% block duellink %}
+        <a href='/atk/num/{{ babe.id }}/'>
+    {% endblock %}
+    {% endif %}
+
+    {% comment %}
+    {% if babe.site == "blog" %}
+        <img src='/storage/pics/{{ babe.site }}/{{ babe.tn }}'></a><br>
+    {% else %}
+        <img src='/storage/pics/{{ babe.site }}/{{ babe.date }}_7.jpg'></a><br>
+    {% endif %}
+    {% endcomment %}
+    {% if babe.site == "blog" %}
+        {% load plus_to_slash %}
+        <img src='http://www.atkmodels.com/blog/galleries/{{ babe.tn.name|plus_to_slash }}'></a><br>
+    {% else %}
+        <img width='385' src='http://www.atkmodels.com/{{ babe.site }}/img/content/{{ babe.date }}_7.jpg'></a><br>
+    {% endif %}
+
+    <script type='text/javascript'>
+        var link=document.getElementById('a{{ babe.id }}');
+        link.setAttribute("href","/atk/vote/" + link.getAttribute("rel") + "/");
+    </script>
+{% endblock %}
+
+{% block footer %}
+    {% if babes|length <= 2 %}
+        <center><h1>
+        <br>
+        <a href='/atk/{{ site }}/'>SKIP</a>
+        </h1></center>
+    {% else %}
+        <br>
+    {% endif %}
+    <br><br>
+{% endblock %}
+
+
+{% block related %}
+{% endblock %}
+

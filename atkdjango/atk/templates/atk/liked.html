@@ -1,0 +1,18 @@
+{% extends 'atk/template_base.html' %}
+{% load static %}
+
+{% block likesblock %}
+{% endblock %}
+
+{% block topvotes %}
+    {% if topvotes %}
+        {% for vote in topvotes %}
+            {% if vote.name == babe.name %}
+                Total likes: {{ vote.vote }} #TODO
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+
+{% block related %}
+{% endblock %}

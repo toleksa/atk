@@ -1,0 +1,30 @@
+{% extends 'atk/duel.html' %}
+{% load static %}
+
+{% block header %}
+<center><h1>
+<a href='/atk/duelduel/'>VOTE</a> <-> <a href='/atk/duelduel/top/'>SCORES</a>
+</h1></center>
+{% endblock %}
+
+{% block model %}
+Model:  {% if babe.site == "blog" %}
+            <a href='{{ babe.gallery }}' target='_blank'>{{ babe.name }}</a><br>
+        {% else %}
+            <a href='http://www.atkmodels.com/{{ babe.site }}/index.php?day={{ babe.date }}' target='_blank'>{{ babe.name }}</a><br>
+        {% endif %}
+Gallery: {{ babe.site }}/20{{ babe.date }}<br>
+{% endblock %}
+
+{% block likesblock %}
+    Duel Votes: {{ babe.duellikes }}<br>
+{% endblock %}
+
+{% block duellink %}
+    {% if babe.site == "blog" %}
+        <a href='{{ babe.gallery }}' target='_blank'>
+    {% else %}
+        <a href='http://www.atkmodels.com/{{ babe.site }}/index.php?day={{ babe.date }}' target='_blank'>
+    {% endif %}
+{% endblock %}
+
