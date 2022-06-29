@@ -188,11 +188,12 @@ def duel(request,site):
     else:
         return error(request,'site not found')
 
-def top(request,site):
+def top(request,site,page=1):
     related=''
     detail=0
     liked=''
     babes=''
+    per_page=0
     #TODO: check this
     template='atk/' + site + '.html'
     
@@ -201,11 +202,12 @@ def top(request,site):
             babes = AllBabe.objects.order_by('-duellikes','-likes','-monthlikes')[0:100]
         if site=='month':
             #TODO: this sorting is dynamic, think about something more static
-            babes = AllBabe.objects.filter(date__startswith=get_votemonth()).order_by('-monthlikes','-duellikes','-likes')[0:32]
+            per_page=32
+            babes = AllBabe.objects.filter(date__startswith=get_votemonth()).order_by('-monthlikes','-duellikes','-likes')[(page-1)*per_page:page*per_page]
             template='atk/template_base.html'
         if site=='monthrank':
-            site='month'
-            months = list(Vote.objects.values('votemonth').filter(votemonth__isnull=False).order_by('-votemonth').distinct())[0:1000]
+            per_page=48
+            months = list(Vote.objects.values('votemonth').filter(votemonth__isnull=False).order_by('-votemonth').distinct())[int((page-1)*per_page/4):int(page*per_page/4)]
             babes = []
             for month in months:
                 #TODO: this sorting is dynamic, think about something more static
@@ -218,10 +220,12 @@ def top(request,site):
             babes = list(AllBabe.objects.filter(date__istartswith=get_votemonth(),likes__gte=0).order_by('-date'))
             template='atk/template_base.html'
         if site=='likes':
-            babes= AllBabe.objects.order_by('-likes','-duellikes','-monthlikes')[0:100]
+            per_page=100
+            babes= AllBabe.objects.order_by('-likes','-duellikes','-monthlikes')[(page-1)*per_page:page*per_page]
             template='atk/template_base.html'
         if site=='liked':
-            liked = AllBabe.objects.values('name').annotate(vote=Sum('likes')).order_by('-vote')[0:100]
+            per_page=100
+            liked = AllBabe.objects.values('name').annotate(vote=Sum('likes')).order_by('-vote')[(page-1)*per_page:page*per_page]
             babes = []
             for like in liked:
                 #TODO: this is ugly as fuck
@@ -229,7 +233,8 @@ def top(request,site):
                 for babe in babee:
                     babes.append(babe)
         if site=='dueltopmodel':
-            liked = AllBabe.objects.values('name').annotate(vote=Sum('duellikes')).order_by('-vote')[0:100]
+            per_page=100
+            liked = AllBabe.objects.values('name').annotate(vote=Sum('duellikes')).order_by('-vote')[(page-1)*per_page:page*per_page]
             babes = []
             for like in liked:
                 #TODO: this is ugly as fuck
@@ -238,7 +243,8 @@ def top(request,site):
                     babes.append(babe)
             template='atk/liked.html'
         if site=='monthtop':
-            liked = AllBabe.objects.values('name').annotate(vote=Sum('monthlikes')).order_by('-vote')[0:100]
+            per_page=100
+            liked = AllBabe.objects.values('name').annotate(vote=Sum('monthlikes')).order_by('-vote')[(page-1)*per_page:page*per_page]
             babes = []
             for like in liked:
                 #TODO: this is ugly as fuck
@@ -247,7 +253,8 @@ def top(request,site):
                     babes.append(babe)
             template='atk/liked.html'
         if site=='bestscore':
-            liked = BestScore.objects.values('name','vote')[0:100]
+            per_page=100
+            liked = BestScore.objects.values('name','vote')[(page-1)*per_page:page*per_page]
             babes = []
             for like in liked:
                 #TODO: this is ugly as fuck
@@ -258,7 +265,7 @@ def top(request,site):
 
         #if site=='month':
         #    template='atk/template_base.html'
-        response = sitedisplay(request,babes,'allsites',1,template,related,detail,liked)
+        response = sitedisplay(request,babes,site+"/top",page,template,related,detail,liked,'',per_page)
         return HttpResponse(response)
     return error(request,'site not found|8456323434')
 
@@ -346,6 +353,7 @@ def search(request,site,search='',category='',page=1,per_page=20):
         'search' : search,
         'numResults': numResults,
         'modeldetail': modeldetail,
+        'per_page' : per_page,
     }
     response = template.render(context, request)
     return HttpResponse(response)
@@ -430,7 +438,7 @@ def atksite(request,site,page=1,per_page=10):
     response = sitedisplay(request,babes,site,page)
     return HttpResponse(response)
 
-def sitedisplay(request, babes, site='allsites', page = 1, template = 'atk/template_base.html',related = '', detail = 0, topvotes = '', numvotes = ''):
+def sitedisplay(request, babes, site='allsites', page = 1, template = 'atk/template_base.html',related = '', detail = 0, topvotes = '', numvotes = '', per_page = 20):
     template = loader.get_template(template)
     context = {
         'babes': babes,
@@ -440,6 +448,7 @@ def sitedisplay(request, babes, site='allsites', page = 1, template = 'atk/templ
         'detail' : detail,
         'topvotes' : topvotes,
         'numvotes' : numvotes,
+        'per_page' : per_page,
     }
     response = template.render(context, request)
     return HttpResponse(response)

@@ -70,7 +70,7 @@
         {% else %}
             <a href='/atk/{{ site }}/'>home</a>
         {% endif %}
-        {% if babes|length == 20 %}
+        {% if babes|length >= per_page %}
             {% if search %}
                 <a href='/atk/{{ site }}/{{ category }}/{{ search }}/page/{{ page|add:"+1" }}'>next</a>
             {% else %}
@@ -322,7 +322,7 @@
 
     {% if page > 1 %}
         {% if search %}
-            <a href='/atk/{{ site }}/{{ search }}/page/{{ page|add:"-1" }}'>prev</a>
+            <a href='/atk/{{ site }}/{{ category }}/{{ search }}/page/{{ page|add:"-1" }}'>prev</a>
         {% else %}
             <a href='/atk/{{ site }}/page/{{ page|add:"-1" }}'>prev</a>
         {% endif %}
@@ -330,9 +330,9 @@
     <a href='/'>dash</a>
     <a href='/atk/'>allsites</a>
     <a href='/atk/{{ site }}/'>home</a>
-    {% if babes|length == 20 %}
+    {% if babes|length >= per_page %}
         {% if search %}
-            <a href='/atk/{{ site }}/{{ search }}/page/{{ page|add:"+1" }}'>next</a>
+            <a href='/atk/{{ site }}/{{ category }}/{{ search }}/page/{{ page|add:"+1" }}'>next</a>
         {% else %}
             <a href='/atk/{{ site }}/page/{{ page|add:"+1" }}'>next</a>
         {% endif %}
