@@ -189,12 +189,20 @@ def duel(request,site):
         return error(request,'site not found')
 
 def top(request,site):
-    if site=='duel' or site=='duelduel' or site=='month' or site=='monthrank':
+    related=''
+    detail=0
+    liked=''
+    babes=''
+    #TODO: check this
+    template='atk/' + site + '.html'
+    
+    if site=='duel' or site=='duelduel' or site=='month' or site=='monthrank' or site=='monthlist' or site == 'likes' or site == 'liked' or site == 'dueltopmodel' or site=='monthtop' or site=='bestscore':
         if site=='duel' or site=='duelduel':
             babes = AllBabe.objects.order_by('-duellikes','-likes','-monthlikes')[0:100]
         if site=='month':
             #TODO: this sorting is dynamic, think about something more static
             babes = AllBabe.objects.filter(date__startswith=get_votemonth()).order_by('-monthlikes','-duellikes','-likes')[0:32]
+            template='atk/template_base.html'
         if site=='monthrank':
             site='month'
             months = list(Vote.objects.values('votemonth').filter(votemonth__isnull=False).order_by('-votemonth').distinct())[0:1000]
@@ -204,70 +212,55 @@ def top(request,site):
                 monthlist = list(AllBabe.objects.filter(date__startswith=month['votemonth']).order_by('-monthlikes','-duellikes','-likes')[0:4])
                 for babe in monthlist:
                     babes.append(babe)
-
-        #TODO: checke this
-        template='atk/' + site + '.html'
-        #template='atk/template_base.html'
-        if site=='month':
             template='atk/template_base.html'
-        response = sitedisplay(request,babes,'allsites',1,template)
+        if site=='monthlist':
+            site='month'
+            babes = list(AllBabe.objects.filter(date__istartswith=get_votemonth(),likes__gte=0).order_by('-date'))
+            template='atk/template_base.html'
+        if site=='likes':
+            babes= AllBabe.objects.order_by('-likes','-duellikes','-monthlikes')[0:100]
+            template='atk/template_base.html'
+        if site=='liked':
+            liked = AllBabe.objects.values('name').annotate(vote=Sum('likes')).order_by('-vote')[0:100]
+            babes = []
+            for like in liked:
+                #TODO: this is ugly as fuck
+                babee = list(AllBabe.objects.filter(name=like['name']).order_by('-likes')[0:1])
+                for babe in babee:
+                    babes.append(babe)
+        if site=='dueltopmodel':
+            liked = AllBabe.objects.values('name').annotate(vote=Sum('duellikes')).order_by('-vote')[0:100]
+            babes = []
+            for like in liked:
+                #TODO: this is ugly as fuck
+                babee = list(AllBabe.objects.filter(name=like['name']).order_by('-duellikes')[0:1])
+                for babe in babee:
+                    babes.append(babe)
+            template='atk/liked.html'
+        if site=='monthtop':
+            liked = AllBabe.objects.values('name').annotate(vote=Sum('monthlikes')).order_by('-vote')[0:100]
+            babes = []
+            for like in liked:
+                #TODO: this is ugly as fuck
+                babee = list(AllBabe.objects.filter(name=like['name']).order_by('-monthlikes')[0:1])
+                for babe in babee:
+                    babes.append(babe)
+            template='atk/liked.html'
+        if site=='bestscore':
+            liked = BestScore.objects.values('name','vote')[0:100]
+            babes = []
+            for like in liked:
+                #TODO: this is ugly as fuck
+                babee = list(AllBabe.objects.filter(name=like['name']).order_by('-likes')[0:1])
+                for babe in babee:
+                    babes.append(babe)
+            template='atk/liked.html'
+
+        #if site=='month':
+        #    template='atk/template_base.html'
+        response = sitedisplay(request,babes,'allsites',1,template,related,detail,liked)
         return HttpResponse(response)
     return error(request,'site not found|8456323434')
-
-def monthlist(request):
-    babes = list(AllBabe.objects.filter(date__istartswith=get_votemonth(),likes__gte=0).order_by('-date'))
-    response = sitedisplay(request,babes,'allsites',1,'atk/template_base.html','',0)
-    return HttpResponse(response)
-
-def likes(request):
-    babes= AllBabe.objects.order_by('-likes','-duellikes','-monthlikes')[0:100]
-    response = sitedisplay(request,babes,'allsites',1,'atk/template_base.html')
-    return HttpResponse(response)
-
-def likedmodels(request):
-    liked = AllBabe.objects.values('name').annotate(vote=Sum('likes')).order_by('-vote')[0:100]
-    babes = []
-    for like in liked:
-        #TODO: this is ugly as fuck
-        babee = list(AllBabe.objects.filter(name=like['name']).order_by('-likes')[0:1])
-        for babe in babee:
-            babes.append(babe)
-    response = sitedisplay(request,babes,'allsites',1,'atk/liked.html','',0,liked)
-    return HttpResponse(response)
-
-def dueltopmodel(request):
-    liked = AllBabe.objects.values('name').annotate(vote=Sum('duellikes')).order_by('-vote')[0:100]
-    babes = []
-    for like in liked:
-        #TODO: this is ugly as fuck
-        babee = list(AllBabe.objects.filter(name=like['name']).order_by('-duellikes')[0:1])
-        for babe in babee:
-            babes.append(babe)
-    response = sitedisplay(request,babes,'allsites',1,'atk/liked.html','',0,liked)
-    return HttpResponse(response)
-
-def monthtop(request):
-    liked = AllBabe.objects.values('name').annotate(vote=Sum('monthlikes')).order_by('-vote')[0:100]
-    babes = []
-    for like in liked:
-        #TODO: this is ugly as fuck
-        babee = list(AllBabe.objects.filter(name=like['name']).order_by('-monthlikes')[0:1])
-        for babe in babee:
-            babes.append(babe)
-    response = sitedisplay(request,babes,'allsites',1,'atk/liked.html','',0,liked)
-    return HttpResponse(response)
-
-def bestscore(request):
-    #TODO: update best_score view to include duellikes
-    liked = BestScore.objects.values('name','vote')[0:100]
-    babes = []
-    for like in liked:
-        #TODO: this is ugly as fuck
-        babee = list(AllBabe.objects.filter(name=like['name']).order_by('-likes')[0:1])
-        for babe in babee:
-            babes.append(babe)
-    response = sitedisplay(request,babes,'allsites',1,'atk/liked.html','',0,liked)
-    return HttpResponse(response)
 
 def sitenum(request,num,site = 'allsites'):
     if site not in ['allsites','exotics','hairy','galleria','blog']:
