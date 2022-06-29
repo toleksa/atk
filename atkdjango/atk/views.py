@@ -139,21 +139,21 @@ def duel(request,site):
     if site=='duel' or site=='duelduel' or site=='month' or site=='novotes':
         votemonth = get_votemonth()
         maxnum=-1
-        monthvotes=''
+        numvotes=''
         if site=='month':
             treshold=0
-            monthvotes = Vote.objects.values('vote').filter(votemonth=votemonth).count()
-            if monthvotes >= 500:
-                err = 'There are ' + str(monthvotes) + ' votes for that month, voting is closed'
+            numvotes = Vote.objects.values('vote').filter(votemonth=votemonth).count()
+            if numvotes >= 500:
+                err = 'There are ' + str(numvotes) + ' votes for that month, voting is closed'
                 return error(request,err)
-            if monthvotes >= 200:
+            if numvotes >= 200:
                 treshold=2
-            if monthvotes >= 400:
+            if numvotes >= 400:
                 treshold=10
             maxnum = AllBabe.objects.filter(date__istartswith=votemonth,likes__gte=0,monthlikes__gte=treshold).count()
         elif site=='duel' or site=='duelduel':
             maxnum = AllBabe.objects.filter(likes__gte=0).count()
-            monthvotes = Vote.objects.values('vote').filter(votemonth__isnull=True,vote__gt=0,second__gt=0).count()
+            numvotes = Vote.objects.values('vote').filter(votemonth__isnull=True,vote__gt=0,second__gt=0).count()
         elif site == 'novotes':
             novotes = list(Novote.objects.all())
             maxnum = len(novotes)
@@ -183,7 +183,7 @@ def duel(request,site):
         template='atk/' + site + '.html'
         if site=='novotes' or site=='month':
             template='atk/duel.html'
-        response = sitedisplay(request,babes,site,1,template,babes,0,'',monthvotes)
+        response = sitedisplay(request,babes,site,1,template,babes,0,'',numvotes)
         return HttpResponse(response)
     else:
         return error(request,'site not found')
@@ -426,7 +426,7 @@ def atksite(request,site,page=1,per_page=10):
     response = sitedisplay(request,babes,site,page)
     return HttpResponse(response)
 
-def sitedisplay(request, babes, site='allsites', page = 1, template = 'atk/template_base.html',related = '', detail = 0, topvotes = '', monthvotes = ''):
+def sitedisplay(request, babes, site='allsites', page = 1, template = 'atk/template_base.html',related = '', detail = 0, topvotes = '', numvotes = ''):
     template = loader.get_template(template)
     context = {
         'babes': babes,
@@ -435,7 +435,7 @@ def sitedisplay(request, babes, site='allsites', page = 1, template = 'atk/templ
         'related' : related,
         'detail' : detail,
         'topvotes' : topvotes,
-        'monthvotes' : monthvotes,
+        'numvotes' : numvotes,
     }
     response = template.render(context, request)
     return HttpResponse(response)
