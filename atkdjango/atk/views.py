@@ -201,6 +201,8 @@ def top(request,site,page=1):
         if site=='duel' or site=='duelduel':
             per_page=100
             babes = AllBabe.objects.order_by('-duellikes','-likes','-monthlikes')[(page-1)*per_page:page*per_page]
+            if site=='duel':
+                template='atk/template_base.html'
         if site=='month':
             #TODO: this sorting is dynamic, think about something more static
             per_page=32
