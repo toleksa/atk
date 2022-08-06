@@ -10,14 +10,32 @@ import random
 import datetime
 from dateutil.relativedelta import relativedelta
 
+def sitestats(site):
+    count=AllBabe.objects.filter(site=site).count()
+    likes=AllBabe.objects.filter(site=site).aggregate(Sum('likes'))['likes__sum']
+    monthlikes=AllBabe.objects.filter(site=site).aggregate(Sum('monthlikes'))['monthlikes__sum']
+    duellikes=AllBabe.objects.filter(site=site).aggregate(Sum('duellikes'))['duellikes__sum']
+    return {'count': count, 'likes': likes, 'monthlikes': monthlikes, 'duellikes': duellikes}
+
+def printsite(site):
+    stats = sitestats(site)
+    return "<tr><td>" + site + ":</td><td>[count:" + str(stats['count']) + "</td><td>likes:" + str(stats['likes']) + "</td><td>duel:" + str(stats['duellikes']) + "</td><td>monthlikes:" + str(stats['monthlikes']) + "</td><td>all:" + str(stats['likes']+stats['duellikes']+stats['monthlikes']) + "</td><td>]" + "</td></tr>"
+
 def stats(request):
+    response=""
+    response+="<table>"
+    response+=printsite('blog')
+    response+=printsite('exotics')
+    response+=printsite('galleria')
+    response+=printsite('hairy')
+    response+="</table><br>"
     babes = Babe.objects.count()
     sitebabes = SiteBabe.objects.count()
-    exotics = SiteBabe.objects.filter(site='exotics').count()
-    hairy = SiteBabe.objects.filter(site='hairy').count()
-    galleria = SiteBabe.objects.filter(site='galleria').count()
-    response = "babes: " + str(babes) + "<br> sitebabes: " + str(sitebabes) + "<br><br> exotics: " + str(exotics) + "<br> hairy: " + str(hairy) + "<br> galleria: " + str(galleria) + "<br><br> total: " + str(babes+sitebabes) + "<br><br>"
-
+    response+="sitebabes: " + str(sitebabes) + "<br>"
+    response+="total: " + str(babes+sitebabes) + "<br>"
+    uniq=AllBabe.objects.values('name').distinct().count()
+    response+="unique: " + str(uniq) + "<br>"
+    response+="<br>"
     duelvotes = Vote.objects.filter(votemonth__isnull=True,vote__gt=0,second__gt=0).count()
     novotes = Novote.objects.count()
     response += "Duel votes: " + str(duelvotes) + " (novotes: " + str(novotes) + ") <br>"
@@ -26,7 +44,9 @@ def stats(request):
     likevotes = Vote.objects.filter(votemonth__isnull=True,second=0).count()
     response += "Like votes: " + str(likevotes) + "<br>"
     unlikevotes = Vote.objects.filter(votemonth__isnull=True,vote=0).count()
-    response += "Unlike votes: " + str(unlikevotes) + "<br><br><br>"
+    response += "Unlike votes: " + str(unlikevotes) + "<br>"
+    response += "Total votes: " + str(duelvotes + monthvotes + likevotes + unlikevotes) + "<br>"
+    response+="<br><br>"
     response += "Hall of Fame:<br><br>"
     halloffame = AllBabe.objects.values('name').annotate(ncount=Count('name')).order_by('-ncount')[0:10]
     for babe in halloffame:
@@ -140,14 +160,16 @@ def duel(request,site):
         votemonth = get_votemonth()
         maxnum=-1
         numvotes=''
+        treshold=0
         if site=='month':
-            treshold=0
             numvotes = Vote.objects.values('vote').filter(votemonth=votemonth).count()
             if numvotes >= 500:
                 err = 'There are ' + str(numvotes) + ' votes for that month, voting is closed'
                 return error(request,err)
             if numvotes >= 200:
                 treshold=2
+            if numvotes >= 300:
+                treshold=5
             if numvotes >= 400:
                 treshold=10
             maxnum = AllBabe.objects.filter(date__istartswith=votemonth,likes__gte=0,monthlikes__gte=treshold).count()
@@ -183,7 +205,7 @@ def duel(request,site):
         template='atk/' + site + '.html'
         if site=='novotes' or site=='month':
             template='atk/duel.html'
-        response = sitedisplay(request,babes,site,1,template,babes,0,'',numvotes)
+        response = sitedisplay(request,babes,site,1,template,babes,0,'',numvotes,2,treshold)
         return HttpResponse(response)
     else:
         return error(request,'site not found')
@@ -197,7 +219,7 @@ def top(request,site,page=1):
     #TODO: check this
     template='atk/' + site + '.html'
     
-    if site=='duel' or site=='duelduel' or site=='month' or site=='monthrank' or site=='monthlist' or site == 'likes' or site == 'liked' or site == 'dueltopmodel' or site=='monthtop' or site=='bestscore':
+    if site=='duel' or site=='duelduel' or site=='month' or site=='monthrank' or site=='monthlist' or site == 'likes' or site == 'liked' or site == 'dueltopmodel' or site=='monthmodel' or site=='bestscore' or site == 'monthpic' or site == 'allpic' or site == 'allmodel':
         if site=='duel' or site=='duelduel':
             per_page=100
             babes = AllBabe.objects.order_by('-duellikes','-likes','-monthlikes')[(page-1)*per_page:page*per_page]
@@ -225,6 +247,36 @@ def top(request,site,page=1):
             per_page=100
             babes= AllBabe.objects.order_by('-likes','-duellikes','-monthlikes')[(page-1)*per_page:page*per_page]
             template='atk/template_base.html'
+        if site=='allpic':
+            per_page=100
+            babes= AllBabe.objects.all().annotate(alllikes=F('likes') + F('monthlikes') + F('duellikes')).order_by('-alllikes','-likes','-duellikes')[(page-1)*per_page:page*per_page]
+            template='atk/template_base.html'
+
+
+        if site=='allmodel':
+            return error(request,'site under construction|3r2qfwg')
+            per_page=100
+            #Foo.objects.annotate(i_sum=F('i1') + F('i2')+ F('i3')).filter(i_sum=200)
+            models = AllBabe.objects.annotate(alllikes=Sum(F('likes') + F('monthlikes') + F('duellikes'))).order_by('-alllikes','-likes','-duellikes')[(page-1)*per_page:page*per_page]
+#            models = AllBabe.objects.values('name').aggregate(alllikes=Sum(Sum('likes') + Sum('monthlikes') + Sum('duellikes'))).order_by('-alllikes','-likes','-duellikes')[(page-1)*per_page:page*per_page]
+#            models = AllBabe.objects.values('name').aggregate(alllikes=Sum(s=(Sum('likes') + 1000))).order_by('-alllikes','-likes','-duellikes')[(page-1)*per_page:page*per_page]
+            babes = []
+            for model in models:
+                num=model.alllikes
+#                a=b
+                #TODO: this is ugly as fuck
+                babee = list(AllBabe.objects.filter(name=model['name']).order_by('-monthlikes','-duellikes','-likes')[0:1])
+                for babe in babee:
+                    babe.alllikes=model['alllikes']
+                    babes.append(babe)
+            template='atk/template_base.html'
+
+
+
+        if site=='monthpic':
+            per_page=100
+            babes= AllBabe.objects.order_by('-monthlikes','-likes','-duellikes')[(page-1)*per_page:page*per_page]
+            template='atk/template_base.html'
         if site=='liked':
             per_page=100
             liked = AllBabe.objects.values('name').annotate(vote=Sum('likes')).order_by('-vote')[(page-1)*per_page:page*per_page]
@@ -244,7 +296,7 @@ def top(request,site,page=1):
                 for babe in babee:
                     babes.append(babe)
             template='atk/liked.html'
-        if site=='monthtop':
+        if site=='monthmodel':
             per_page=100
             liked = AllBabe.objects.values('name').annotate(vote=Sum('monthlikes')).order_by('-vote')[(page-1)*per_page:page*per_page]
             babes = []
@@ -440,7 +492,7 @@ def atksite(request,site,page=1,per_page=10):
     response = sitedisplay(request,babes,site,page)
     return HttpResponse(response)
 
-def sitedisplay(request, babes, site='allsites', page = 1, template = 'atk/template_base.html',related = '', detail = 0, topvotes = '', numvotes = '', per_page = 20):
+def sitedisplay(request, babes, site='allsites', page = 1, template = 'atk/template_base.html',related = '', detail = 0, topvotes = '', numvotes = '', per_page = 20, treshold = 0):
     template = loader.get_template(template)
     context = {
         'babes': babes,
@@ -451,6 +503,7 @@ def sitedisplay(request, babes, site='allsites', page = 1, template = 'atk/templ
         'topvotes' : topvotes,
         'numvotes' : numvotes,
         'per_page' : per_page,
+        'treshold' : treshold,
     }
     response = template.render(context, request)
     return HttpResponse(response)

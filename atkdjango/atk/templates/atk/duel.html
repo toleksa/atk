@@ -5,6 +5,9 @@
   {% if site == "month" %}
     Monthvotes: {{ numvotes }}
   {% endif %}
+  {% if treshold %}
+    (limit: {{ treshold }})
+  {% endif %}
   {% if site == "duel" %}
     Duelvotes: {{ numvotes }}
   {% endif %}

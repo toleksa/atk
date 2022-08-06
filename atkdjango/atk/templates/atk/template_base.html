@@ -100,10 +100,11 @@
             <a title="Scores for current month" href='/atk/month/top/'>scores</a>
             <a title="All girls of currennt month" href='/atk/monthlist/top/'>list</a>
             <a title="Top girls for last 6 months" href='/atk/monthrank/top/'>month-rank</a>
+            <a title="Monthpic" href='/atk/monthpic/top/'>month-pic</a> 
+            <a title="Monthmodel" href='/atk/monthmodel/top/'>month-model</a> 
     likes:   <a title="Likes (total votes for pic)" href='/atk/likes/top/'>likes-pic</a>
              <a title="Most liked models" href='/atk/liked/top/'>liked-models</a>
              <a title="Best AVG score" href='/atk/bestscore/top/'>bestscore</a>
-             <a title="Monthtop" href='/atk/monthtop/top/'>monthtop</a> 
     <br>
 
     random:
@@ -115,7 +116,9 @@
     restricted: <a href="/atk/alles/">all</a>
                 <a href="/atk/hidden/">hid</a>
                 <a href="/atk/banned/">ban</a>
-                <a href="/atk/novote/">novote</a> <br>
+                <a href="/atk/novote/">novote</a>
+                <a title="Allpic" href='/atk/allpic/top/'>all-pic</a>
+                <a title="Allmodel" href='/atk/allmodel/top/'>all-model</a> <br>
     
     links: <a href="https://www.forumophilia.com/tags.php?tags=atk">forumophilia</a>
             <a href="https://www.forumophilia.com/tags.php?tags=allover30">AllOver30</a>
@@ -228,6 +231,9 @@
                 Likes: {{ babe.likes }}<br>
                 Duellikes: {{ babe.duellikes }}<br>
                 Monthlikes: {{ babe.monthlikes }}<br>
+                {% if babe.alllikes %}
+                All Likes: {{ babe.alllikes }}<br>
+                {% endif %}
             {% endblock %}
             {% block likesvote %}
             {% endblock %}
