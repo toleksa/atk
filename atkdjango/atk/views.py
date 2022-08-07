@@ -340,7 +340,7 @@ def sitenum(request,num,site = 'allsites'):
     return HttpResponse(response)
 
 def search(request,site,search='',category='',page=1,per_page=20):
-    if site not in ['allsites','exotics','hairy','galleria','blog','search','hidden','banned','novote','alles','lastvote']:
+    if site not in ['allsites','exotics','hairy','galleria','blog','search','hidden','banned','novote','alles','lastvote','novote2']:
         err='site not found|syvffserck|' + site
         return error(request,err,site)
     if search=='':
@@ -349,7 +349,7 @@ def search(request,site,search='',category='',page=1,per_page=20):
             url = '/atk/search/name/' + request.GET['name']
             return redirect(url)
         else:
-            if site not in ['allsites','exotics','hairy','galleria','blog','hidden','banned','novote','alles','lastvote']:
+            if site not in ['allsites','exotics','hairy','galleria','blog','hidden','banned','novote','alles','lastvote','novote2']:
                 err='empty search string'
                 return error(request,err)
     else:
@@ -387,6 +387,10 @@ def search(request,site,search='',category='',page=1,per_page=20):
             novotes = Novote.objects.values('id')
             babes = AllBabe.objects.filter(id__in=novotes).order_by('-date','site','-id')[offset:offset+per_page]
             numResults = Novote.objects.count()
+        elif site=='novote2':
+            query = AllBabe.objects.filter(likes=0,duellikes=0,monthlikes=0).order_by('-date','site','-id')
+            babes = query[offset:offset+per_page]
+            numResults = len(query)
         elif site=='lastvote':
             lastVote = Vote.objects.filter(vote__gt=0,second__gt=0).order_by('-id').first()
             babes = list(AllBabe.objects.filter(id=lastVote.vote))
