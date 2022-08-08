@@ -37,7 +37,7 @@ def stats(request):
     response+="unique: " + str(uniq) + "<br>"
     response+="<br>"
     duelvotes = Vote.objects.filter(votemonth__isnull=True,vote__gt=0,second__gt=0).count()
-    novotes = Novote.objects.count()
+    novotes = AllBabe.objects.filter(likes=0,duellikes=0,monthlikes=0).count()
     response += "Duel votes: " + str(duelvotes) + " (novotes: " + str(novotes) + ") <br>"
     monthvotes = Vote.objects.filter(votemonth__isnull=False).count()
     response += "Month votes: " + str(monthvotes) + "<br>"
@@ -178,7 +178,7 @@ def duel(request,site):
             maxnum = AllBabe.objects.filter(likes__gte=0).count()
             numvotes = Vote.objects.values('vote').filter(votemonth__isnull=True,vote__gt=0,second__gt=0).count()
         elif site == 'novotes':
-            novotes = list(Novote.objects.all())
+            novotes = list(AllBabe.objects.filter(likes=0,duellikes=0,monthlikes=0))
             maxnum = len(novotes)
             if maxnum<2:
                 response = sitedisplay(request,'','novote',1,'atk/duel.html')
@@ -341,7 +341,7 @@ def sitenum(request,num,site = 'allsites'):
     return HttpResponse(response)
 
 def search(request,site,search='',category='',page=1,per_page=20):
-    if site not in ['allsites','exotics','hairy','galleria','blog','search','hidden','banned','novote','alles','lastvote','novote2']:
+    if site not in ['allsites','exotics','hairy','galleria','blog','search','hidden','banned','novote','alles','lastvote']:
         err='site not found|syvffserck|' + site
         return error(request,err,site)
     if search=='':
@@ -350,7 +350,7 @@ def search(request,site,search='',category='',page=1,per_page=20):
             url = '/atk/search/name/' + request.GET['name']
             return redirect(url)
         else:
-            if site not in ['allsites','exotics','hairy','galleria','blog','hidden','banned','novote','alles','lastvote','novote2']:
+            if site not in ['allsites','exotics','hairy','galleria','blog','hidden','banned','novote','alles','lastvote']:
                 err='empty search string'
                 return error(request,err)
     else:
@@ -385,10 +385,6 @@ def search(request,site,search='',category='',page=1,per_page=20):
             babes = AllBabe.objects.order_by('-date','site','-id')[offset:offset+per_page]
             numResults = AllBabe.objects.count()
         elif site=='novote':
-            novotes = Novote.objects.values('id')
-            babes = AllBabe.objects.filter(id__in=novotes).order_by('-date','site','-id')[offset:offset+per_page]
-            numResults = Novote.objects.count()
-        elif site=='novote2':
             query = AllBabe.objects.filter(likes=0,duellikes=0,monthlikes=0).order_by('-date','site','-id')
             babes = query[offset:offset+per_page]
             numResults = len(query)
