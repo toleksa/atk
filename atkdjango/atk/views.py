@@ -90,11 +90,12 @@ def siterandom(request,site='allsites'):
     return HttpResponse(response)
 
 def randomnovotes(request):
-    maxnum = AllBabe.objects.filter(likes=0,duellikes=0,monthlikes=0).count()
+    query = AllBabe.objects.filter(likes=0,duellikes=0,monthlikes=0)
+    maxnum = len(query)
     babes=''
     if maxnum > 0:
         randomnum = random.randrange(maxnum)
-        babes = AllBabe.objects.all()[randomnum:randomnum+1]
+        babes = query[randomnum:randomnum+1]
     response = sitedisplay(request,babes,'randomnovotes',0,'atk/random.html')
     return HttpResponse(response)
 
