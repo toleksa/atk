@@ -69,7 +69,7 @@ def stats(request):
     response += "<br>Votemonth<br>"
     votemonths = Vote.objects.values('votemonth').annotate(ncount=Count('votemonth')).order_by('-votemonth')
     for votemonth in votemonths:
-        response += str(votemonth['votemonth']) + " " + str(votemonth['ncount']) + "<br>"
+        response += "<a href=/atk/votemonth-" + str(votemonth['votemonth']) + "/top/>" + str(votemonth['votemonth']) + "</a> " + str(votemonth['ncount']) + "<br>"
     return HttpResponse(response)
 
 def randomrandom(request):
@@ -213,7 +213,7 @@ def duel(request,site):
     else:
         return error(request,'site not found')
 
-def top(request,site,page=1):
+def top(request,site,page=1,votemonth=0):
     related=''
     detail=0
     liked=''
@@ -222,7 +222,7 @@ def top(request,site,page=1):
     #TODO: check this
     template='atk/' + site + '.html'
     
-    if site=='duel' or site=='duelduel' or site=='month' or site=='monthrank' or site=='monthlist' or site == 'likes' or site == 'liked' or site == 'dueltopmodel' or site=='monthmodel' or site=='bestscore' or site == 'monthpic' or site == 'allpic' or site == 'allmodel':
+    if site=='duel' or site=='duelduel' or site=='month' or site=='monthrank' or site=='monthlist' or site == 'likes' or site == 'liked' or site == 'dueltopmodel' or site=='monthmodel' or site=='bestscore' or site == 'monthpic' or site == 'allpic' or site == 'allmodel' or site == 'votemonth':
         if site=='duel' or site=='duelduel':
             per_page=100
             babes = AllBabe.objects.order_by('-duellikes','-likes','-monthlikes')[(page-1)*per_page:page*per_page]
@@ -232,6 +232,15 @@ def top(request,site,page=1):
             #TODO: this sorting is dynamic, think about something more static
             per_page=32
             babes = AllBabe.objects.filter(date__startswith=get_votemonth()).order_by('-monthlikes','-duellikes','-likes')[(page-1)*per_page:page*per_page]
+            template='atk/template_base.html'
+        if site=='votemonth':
+            monthvotes = Vote.objects.values('vote').filter(votemonth=votemonth).count()
+            if monthvotes <= 0:
+                err="votemonth incorrect or has no votes|54745432"
+                return error(request,err)
+            per_page=32
+            babes = AllBabe.objects.filter(date__startswith=votemonth).order_by('-monthlikes','-duellikes','-likes')[(page-1)*per_page:page*per_page]
+            site="votemonth-" + str(votemonth)
             template='atk/template_base.html'
         if site=='monthrank':
             per_page=48

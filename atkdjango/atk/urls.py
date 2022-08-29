@@ -37,6 +37,8 @@ urlpatterns = [
     path('duel/', views.duel, {'site': 'duel'}),
     path('duelduel/', views.duel, {'site': 'duelduel'}),
     path('novotes/', views.duel, {'site': 'novotes'}),
+    path('votemonth-<int:votemonth>/top/page/<int:page>/', views.top, {'site': 'votemonth'}),
+    path('votemonth-<int:votemonth>/top/', views.top, {'site': 'votemonth'}),
     path('<str:site>/top/page/<int:page>/', views.top),
     path('<str:site>/top/', views.top),
     path('vote/num/<int:num>/<int:vote>/<int:second>/', views.vote, {'site': 'num'}),
