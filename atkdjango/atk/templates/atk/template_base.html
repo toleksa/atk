@@ -91,12 +91,12 @@
         text-decoration: none;
       }
 
-      .dropdown {
+      .dropdown-battles {
         float: left;
         overflow: hidden;
       }
 
-      .dropdown .dropbtn {
+      .dropdown-battles .dropbtn-battles {
         font-size: 16px;  
         border: none;
         outline: none;
@@ -107,11 +107,11 @@
         margin: 0;
       }
 
-      .navbar a:hover, .dropdown:hover .dropbtn {
+      .navbar a:hover, .dropdown-battles:hover .dropbtn-battles {
         background-color: red;
       }
 
-      .dropdown-content {
+      .dropdown-battles-content {
         display: none;
         position: absolute;
         background-color: #f9f9f9;
@@ -120,7 +120,7 @@
         z-index: 1;
       }
 
-      .dropdown-content a {
+      .dropdown-battles-content a {
         float: none;
         color: black;
         padding: 12px 16px;
@@ -129,11 +129,57 @@
         text-align: left;
       }
 
-      .dropdown-content a:hover {
+      .dropdown-battles-content a:hover {
         background-color: #ddd;
       }
 
-      .dropdown:hover .dropdown-content {
+      .dropdown-battles:hover .dropdown-battles-content {
+        display: block;
+      }
+
+      .dropdown-month {
+        float: left;
+        overflow: hidden;
+      }
+
+      .dropdown-month .dropbtn-month {
+        font-size: 16px;
+        border: none;
+        outline: none;
+        color: white;
+        padding: 14px 16px;
+        background-color: inherit;
+        font-family: inherit;
+        margin: 0;
+      }
+
+      .navbar a:hover, .dropdown-month:hover .dropbtn-month {
+        background-color: blue;
+      }
+
+      .dropdown-month-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+      }
+
+      .dropdown-month-content a {
+        float: none;
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        text-align: left;
+      }
+
+      .dropdown-month-content a:hover {
+        background-color: #ddd;
+      }
+
+      .dropdown-month:hover .dropdown-month-content {
         display: block;
       }
     </style>
@@ -144,16 +190,29 @@
 <body>
 <div class="navbar">
   <a href="/atk/">Home</a>
-  <div class="dropdown">
-    <button class="dropbtn">Battles
+  <div class="dropdown-battles">
+    <button class="dropbtn-battles">Battles
       <i class="fa fa-caret-down"></i>
     </button>
-    <div class="dropdown-content">
+    <div class="dropdown-battles-content">
       <a title="Vote in DUEL" href='/atk/duel/'>duel</a>
       <a title="Vote in DUEL" href='/atk/duelduel/'>duelduel</a>
       <a title="Top100 in DUEL" href='/atk/duel/top/'>duel-top</a>
       <a title="Top models in DUEL" href='/atk/dueltopmodel/top/'>duel-model</a>
       <a title="Girls without votes" href='/atk/novotes/'>no-votes</a>
+    </div>
+  </div>
+  <div class="dropdown-month">
+    <button class="dropbtn-month">Month
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-month-content">
+      <a title="Vote for girl of the month" href='/atk/month/'>month</a>
+      <a title="Scores for current month" href='/atk/month/top/'>scores</a>
+      <a title="All girls of currennt month" href='/atk/monthlist/top/'>list</a>
+      <a title="Top girls for last 6 months" href='/atk/monthrank/top/'>month-rank</a>
+      <a title="Monthpic" href='/atk/monthpic/top/'>month-pic</a>
+      <a title="Monthmodel" href='/atk/monthmodel/top/'>month-model</a>
     </div>
   </div>
 </div>
