@@ -234,6 +234,7 @@
 {% endblock %}
 
 <body>
+{% block header %}
 <div class="navbar">
   <a href="/atk/">Home</a>
   <div class="dropdown-battles">
@@ -273,7 +274,7 @@
   </div>
 
 </div>
-{% block header %}
+
         <center><table border=0><tr>
            <td width=15%>
             {% block search %}
