@@ -428,16 +428,18 @@
     <div class="dropdown-links-content">
     </div>
   </div>
-</div>
-
-        <center><table border=0><tr>
-           <td width=15%>
             {% block search %}
+            <div>
                 <form action="/atk/search/" method="get">
                     <input id="name" type="text" name="name" value="">
                     <input type="submit" value="Search">
                 </form>
+            </div>
             {% endblock %}
+</div>
+
+        <center><table border=0><tr>
+           <td width=15%>
             </td>
             <td width=60%>
 {% block nav %}
