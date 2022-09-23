@@ -539,10 +539,6 @@
             {% endblock %}
 </div>
 
-        <center><table border=0><tr>
-           <td width=15%>
-            </td>
-            <td width=60%>
 {% block nav %}
     <center>
     {% block navigator %}
@@ -581,6 +577,10 @@
     <br>
     <details>
     <summary>show</summary>
+        <table>
+        <tr>
+        <td>
+        </td><td>
     <p>
     battles: <a title="Vote in DUEL" href='/atk/duel/'>duel</a>
              <a title="Vote in DUEL" href='/atk/duelduel/'>duelduel</a>
@@ -611,6 +611,7 @@
                 <a href="/atk/novote/">novote</a>
                 <a title="Allpic" href='/atk/allpic/top/'>all-pic</a>
                 <a title="Allmodel" href='/atk/allmodel/top/'>all-model</a> <br>
+    <center>
    <details>
     <summary>links</summary>
         <p>
@@ -643,15 +644,8 @@
                 </form>
            </p>
       </details>
-    </br>
     </center>
-    <br>
-    </p>
-    </details>
-{% endblock %}
-
-            </td>
-            <td width=15%>
+      </td><td>
               <table>
                 <tr><td><a href='/atk/allsites/'>allsites</a></td></tr>
                 <tr><td><a href='/atk/blog/'>blog</a></td></tr>
@@ -661,9 +655,13 @@
                 <tr><td><a href='/atk/lastvote/'>lastvote</a></td></tr>
                 <tr><td><a href='/atk/stats'>stats</a></td></tr>
               </table>
-            </td>
+        </td>
         </tr>
-        </table></center>
+        </table>
+    </p>
+    </details>
+    </center>
+{% endblock %}
 {% endblock %}
 
 {% block content %}
