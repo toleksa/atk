@@ -369,6 +369,51 @@
       .dropdown-links:hover .dropdown-links-content {
         display: block;
       }
+      .dropdown-sites {
+        float: left;
+        overflow: hidden;
+      }
+
+      .dropdown-sites .dropbtn-sites {
+        font-size: 16px;
+        border: none;
+        outline: none;
+        color: white;
+        padding: 14px 16px;
+        background-color: inherit;
+        font-family: inherit;
+        margin: 0;
+      }
+
+      .navbar a:hover, .dropdown-sites:hover .dropbtn-sites {
+        background-color: black;
+      }
+
+      .dropdown-sites-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+      }
+
+      .dropdown-sites-content a {
+        float: none;
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        text-align: left;
+      }
+
+      .dropdown-sites-content a:hover {
+        background-color: #ddd;
+      }
+
+      .dropdown-sites:hover .dropdown-sites-content {
+        display: block;
+      }
     </style>
     <title>Atk Django</title>
   </head>
