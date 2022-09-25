@@ -477,14 +477,14 @@
       <a href='/atk/stats'>stats</a>
     </div>
   </div>
-            {% block search %}
-            <div class="searchbar">
-                <form action="/atk/search/" method="get">
-                    <input id="name" type="text" name="name" value="">
-                    <input type="submit" value="Search">
-                </form>
-            </div>
-            {% endblock %}
+{% block search %}
+  <div class="searchbar">
+    <form action="/atk/search/" method="get">
+      <input id="name" type="text" name="name" value="">
+      <input type="submit" value="Search">
+    </form>
+  </div>
+{% endblock %}
 </div>
 
 {% block nav %}
