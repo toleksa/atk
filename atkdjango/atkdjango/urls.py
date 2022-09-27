@@ -18,6 +18,7 @@ from django.urls import path, include
 from django.conf.urls import url
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic.base import RedirectView
 from .views import homepage
 
 
@@ -26,6 +27,7 @@ urlpatterns = [
     #url(r'^$', include('atk.urls')),
     path('atk/', include('atk.urls')),
     path('admin/', admin.site.urls),
+    path('favicon.ico', RedirectView.as_view(url=settings.MEDIA_URL + 'favicon.ico')),
 ]
 
 if settings.DEBUG:
