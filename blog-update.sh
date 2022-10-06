@@ -26,6 +26,11 @@ for PAGE in `seq 1 500` ; do
     MODEL=`grep '<span>Model</span>' babe.html | gawk -F"<span>Model</span>" '{ print $2 }' | gawk -F"\"" '{ print $2 }'`
     #NAME=`grep '<span>Model</span>' babe.html | gawk -F"a href=" '{ print $2 }' | gawk -F">" '{ print $2 }' | gawk -F"<" '{ print $1 }' | sed -e "s#'#\"#g" | sed 's/ [0-9]//g'`
     NAME=`grep '<span>Model</span>' babe.html | gawk -F"<span>Model</span>" '{ print $2 }' | gawk -F"[><]" '{ print $3 }' | sed -e "s/'/\"/g"`
+    if echo $NAME | grep -e " [0-9]$" > /dev/null; then
+      echo "$NAME -> remove digit from name"
+      NAME=${NAME::-2}
+      echo "new name: $NAME"
+    fi
     #LINK=`grep '<span>Model</span>' babe.html | sed -e 's#<span>Model</span> : ##' | sed -e 's/<br>//g' | sed -e 's/ rel="tag"//g' | sed -e "s#'#\"#g"`
     LINK=`grep '<span>Model</span>' babe.html | gawk -F"<span>Model</span>" '{ print $2 }' | sed -e 's# : ##' | sed -e 's/<br>//g' | sed -e 's/ rel="tag"//g' | sed -e "s#'#\"#g" | gawk -F"<span>" '{ print $1 }'`
     #DATE=`grep 'postinfo' babe.html | gawk -F">" '{ print $2 }' | gawk -F"," '{ print $1 }'`
