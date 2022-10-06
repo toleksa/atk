@@ -35,6 +35,9 @@ for DAYS in `seq 0 3650`; do
                 echo "external-sites.sh"
                 ./external-sites.sh "$NAME" sql
             fi
+            QUERY="update atk_sitebabe set name = '$NAME' where date='$DATE' and site='$SITE';"
+            echo $QUERY
+            sqlite3 atk.sqlite "$QUERY" 2>&1
         else
             echo no-name
         fi
