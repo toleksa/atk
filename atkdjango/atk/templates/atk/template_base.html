@@ -371,7 +371,11 @@
         display: block;
       }
     </style>
-    <title>Atk Django</title>
+    {% if page_title %}
+      <title>{{ page_title }} - Atk Django</title>
+    {% else %}
+      <title>Atk Django</title>
+    {% endif %}
   </head>
 {% endblock %}
 

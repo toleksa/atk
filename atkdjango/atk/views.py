@@ -443,6 +443,7 @@ def model(request,model,page=1,per_page=10):
         'site': site,
         'page' : page,
         'modeldetail': modeldetail,
+        'page_title': model,
     }
     response = template.render(context, request)
     #response = sitedisplay(request,babes,site,page,'atk/likes.html')
