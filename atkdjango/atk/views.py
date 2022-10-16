@@ -373,6 +373,7 @@ def search(request,site,search='',category='',page=1,per_page=20):
             return error(request,err)
     offset = (page - 1) * per_page
     modeldetail={}
+    page_title=''
     try:
         if site=='search':
             query_filter = str(category + '__icontains')
@@ -380,6 +381,7 @@ def search(request,site,search='',category='',page=1,per_page=20):
             numResults = AllBabe.objects.filter(**{ query_filter: search },likes__gte=-1).count()
             if not babes:
                 modeldetail=get_modeldetails(search,babes.count())
+            page_title = category + ":" + search
         elif site in ['exotics','hairy','galleria','blog']:
             babes = AllBabe.objects.filter(site=site,likes__gte=0).order_by('-date','site','-id')[offset:offset+per_page]
             numResults = AllBabe.objects.filter(site=site,likes__gte=0).count()
@@ -420,7 +422,7 @@ def search(request,site,search='',category='',page=1,per_page=20):
         'numResults': numResults,
         'modeldetail': modeldetail,
         'per_page' : per_page,
-        'page_title': category + ":" + search,
+        'page_title': page_title,
     }
     response = template.render(context, request)
     return HttpResponse(response)
