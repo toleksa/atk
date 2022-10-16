@@ -420,6 +420,7 @@ def search(request,site,search='',category='',page=1,per_page=20):
         'numResults': numResults,
         'modeldetail': modeldetail,
         'per_page' : per_page,
+        'page_title': category + ":" + search,
     }
     response = template.render(context, request)
     return HttpResponse(response)
