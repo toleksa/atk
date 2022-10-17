@@ -344,12 +344,24 @@ def sitenum(request,num,site = 'allsites'):
     except ObjectDoesNotExist:
         err='babe not found'
         return error(request,err,site)
+    #TODO: use generate_tags2?
     babes=generate_tags(babes,site)
     babe_name=babes[0].name
     related = AllBabe.objects.filter(name=babe_name).exclude(id=num).order_by('-date')
     site='num/' + str(num)
-    response = sitedisplay(request,babes,site,1,'atk/sitenum.html',related,1)
+    #response = sitedisplay(request,babes,site,1,'atk/sitenum.html',related,1)
+    #return HttpResponse(response)
+    page_title = babe_name + " - Atk Django"
+    template = loader.get_template('atk/sitenum.html')
+    context = {
+        'babes': babes,
+        'site': site,
+        'related' : related,
+        'page_title': page_title,
+    }
+    response = template.render(context, request)
     return HttpResponse(response)
+
 
 def search(request,site,search='',category='',page=1,per_page=20):
     if site not in ['allsites','exotics','hairy','galleria','blog','search','hidden','banned','novote','alles','lastvote']:
