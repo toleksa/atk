@@ -351,7 +351,7 @@ def sitenum(request,num,site = 'allsites'):
     site='num/' + str(num)
     #response = sitedisplay(request,babes,site,1,'atk/sitenum.html',related,1)
     #return HttpResponse(response)
-    page_title = babe_name + " - Atk Django"
+    page_title = babe_name
     template = loader.get_template('atk/sitenum.html')
     context = {
         'babes': babes,
