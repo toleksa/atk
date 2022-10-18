@@ -397,27 +397,33 @@ def search(request,site,search='',category='',page=1,per_page=20):
         elif site in ['exotics','hairy','galleria','blog']:
             babes = AllBabe.objects.filter(site=site,likes__gte=0).order_by('-date','site','-id')[offset:offset+per_page]
             numResults = AllBabe.objects.filter(site=site,likes__gte=0).count()
+            page_title = site.capitalize()
         elif site=='allsites':
             babes = AllBabe.objects.filter(likes__gte=0).order_by('-date','site','-id')[offset:offset+per_page]
             numResults = AllBabe.objects.filter(likes__gte=0).count()
         elif site=='hidden':
             babes = AllBabe.objects.filter(likes=-1).order_by('-date','site','-id')[offset:offset+per_page]
             numResults = AllBabe.objects.filter(likes=-1).count()
+            page_title = site.capitalize()
         elif site=='banned':
             babes = AllBabe.objects.filter(likes__lt=-1).order_by('-date','site','-id')[offset:offset+per_page]
             numResults = AllBabe.objects.filter(likes__lt=-1).count()
+            page_title = site.capitalize()
         elif site=='alles':
             babes = AllBabe.objects.order_by('-date','site','-id')[offset:offset+per_page]
             numResults = AllBabe.objects.count()
+            page_title = site.capitalize()
         elif site=='novote':
             query = AllBabe.objects.filter(likes=0,duellikes=0,monthlikes=0).order_by('-date','site','-id')
             babes = query[offset:offset+per_page]
             numResults = len(query)
+            page_title = site.capitalize()
         elif site=='lastvote':
             lastVote = Vote.objects.filter(vote__gt=0,second__gt=0).order_by('-id').first()
             babes = list(AllBabe.objects.filter(id=lastVote.vote))
             babes += list(AllBabe.objects.filter(id=lastVote.second))
             numResults = len(babes)
+            page_title = site.capitalize()
         else:
             return error(request,'wrong site|se5hsfwdwz')
     except ObjectDoesNotExist:
