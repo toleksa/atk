@@ -86,7 +86,7 @@ def siterandom(request,site='allsites'):
     babes = AllBabe.objects.filter(likes__gte=0).order_by('id')[randomnum:randomnum+1]
     site='random'
     template='atk/random.html'
-    response = sitedisplay(request,babes,site,1,template)
+    response = sitedisplay(request,babes,site,1,template, page_title='Random')
     return HttpResponse(response)
 
 def randomnovotes(request):
@@ -526,7 +526,7 @@ def atksite(request,site,page=1,per_page=10):
     response = sitedisplay(request,babes,site,page)
     return HttpResponse(response)
 
-def sitedisplay(request, babes, site='allsites', page = 1, template = 'atk/template_base.html',related = '', detail = 0, topvotes = '', numvotes = '', per_page = 20, treshold = 0):
+def sitedisplay(request, babes, site='allsites', page = 1, template = 'atk/template_base.html',related = '', detail = 0, topvotes = '', numvotes = '', per_page = 20, treshold = 0, page_title=''):
     template = loader.get_template(template)
     context = {
         'babes': babes,
@@ -538,6 +538,7 @@ def sitedisplay(request, babes, site='allsites', page = 1, template = 'atk/templ
         'numvotes' : numvotes,
         'per_page' : per_page,
         'treshold' : treshold,
+        'page_title' : page_title,
     }
     response = template.render(context, request)
     return HttpResponse(response)
