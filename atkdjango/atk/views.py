@@ -96,7 +96,7 @@ def randomnovotes(request):
     if maxnum > 0:
         randomnum = random.randrange(maxnum)
         babes = query[randomnum:randomnum+1]
-    response = sitedisplay(request,babes,'randomnovotes',0,'atk/random.html')
+    response = sitedisplay(request,babes,'randomnovotes',0,'atk/random.html', page_title='Random NoVotes')
     return HttpResponse(response)
 
 def vote(request,site,vote='',second='',num=''):
@@ -161,6 +161,7 @@ def duel(request,site):
         votemonth = get_votemonth()
         maxnum=-1
         numvotes=''
+        page_title=''
         treshold=0
         if site=='month':
             numvotes = Vote.objects.values('vote').filter(votemonth=votemonth).count()
@@ -196,19 +197,22 @@ def duel(request,site):
         if site=='month':
             babes  = list(AllBabe.objects.filter(date__istartswith=votemonth,likes__gte=0,monthlikes__gte=treshold).order_by('id')[randomnum1:randomnum1+1])
             babes += list(AllBabe.objects.filter(date__istartswith=votemonth,likes__gte=0,monthlikes__gte=treshold).order_by('id')[randomnum2:randomnum2+1])
+            page_title='Duel Month'
         elif site=='duel' or site=='duelduel':
             babes  = list(AllBabe.objects.filter(likes__gte=0).order_by('id')[randomnum1:randomnum1+1])
             babes += list(AllBabe.objects.filter(likes__gte=0).order_by('id')[randomnum2:randomnum2+1])
+            page_title='Duel'
         elif site == 'novotes':
             babes =  list(AllBabe.objects.filter(id=novotes[randomnum1].id))
             babes += list(AllBabe.objects.filter(id=novotes[randomnum2].id))
+            page_title='Duel NoVotes'
         else:
             return error(request,'wrong site|f4wgewa4w')
         #a = 3 + b
         template='atk/' + site + '.html'
         if site=='novotes' or site=='month':
             template='atk/duel.html'
-        response = sitedisplay(request,babes,site,1,template,babes,0,'',numvotes,2,treshold)
+        response = sitedisplay(request,babes,site,1,template,babes,0,'',numvotes,2,treshold,page_title=page_title)
         return HttpResponse(response)
     else:
         return error(request,'site not found')
