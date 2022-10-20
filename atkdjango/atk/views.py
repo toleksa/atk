@@ -335,7 +335,7 @@ def top(request,site,page=1,votemonth=0):
 
         #if site=='month':
         #    template='atk/template_base.html'
-        response = sitedisplay(request,babes,site+"/top",page,template,related,detail,liked,'',per_page)
+        response = sitedisplay(request,babes,site+"/top",page,template,related,detail,liked,'',per_page,page_title="Top " + site)
         return HttpResponse(response)
     return error(request,'site not found|8456323434')
 
