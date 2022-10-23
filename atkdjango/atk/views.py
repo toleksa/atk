@@ -335,7 +335,7 @@ def top(request,site,page=1,votemonth=0):
 
         #if site=='month':
         #    template='atk/template_base.html'
-        response = sitedisplay(request,babes,site+"/top",page,template,related,detail,liked,'',per_page,page_title="Top " + site)
+        response = sitedisplay(request,babes,site+"/top",page,template,related,detail,liked,'',per_page,page_title="Top " + site.capitalize())
         return HttpResponse(response)
     return error(request,'site not found|8456323434')
 
@@ -367,10 +367,14 @@ def sitenum(request,num,site = 'allsites'):
     return HttpResponse(response)
 
 
-def search(request,site,search='',category='',page=1,per_page=20):
+def search(request,site,search='',category='',page=1,per_page=20,order=''):
     if site not in ['allsites','exotics','hairy','galleria','blog','search','hidden','banned','novote','alles','lastvote']:
         err='site not found|syvffserck|' + site
         return error(request,err,site)
+    if order!='':
+        if order not in ['-date','date','-id','id','-site','site','-age','age','-likes','likes','-monthlikes','monthlikes','-duellikes','duellikes']:
+            err='order keyword not recognized|43f3gf3wwg5'
+            return error(request,err,site)
     if search=='':
         if request.GET.get('name'):
             #message = 'You submitted: %r' % request.GET['name']
@@ -393,7 +397,10 @@ def search(request,site,search='',category='',page=1,per_page=20):
     try:
         if site=='search':
             query_filter = str(category + '__icontains')
-            babes = AllBabe.objects.filter(**{ query_filter: search },likes__gte=-1).order_by('-date','site','-id')[offset:offset+per_page]
+            order_by=('-date','site','-id')
+            if order!='':
+                order_by=(order,*order_by)
+            babes = AllBabe.objects.filter(**{ query_filter: search },likes__gte=-1).order_by(*order_by)[offset:offset+per_page]
             numResults = AllBabe.objects.filter(**{ query_filter: search },likes__gte=-1).count()
             if not babes:
                 modeldetail=get_modeldetails(search,babes.count())
@@ -445,6 +452,7 @@ def search(request,site,search='',category='',page=1,per_page=20):
         'modeldetail': modeldetail,
         'per_page' : per_page,
         'page_title': page_title,
+        'order': order,
     }
     response = template.render(context, request)
     return HttpResponse(response)
