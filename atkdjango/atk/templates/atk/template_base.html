@@ -370,6 +370,53 @@
       .dropdown-links:hover .dropdown-links-content {
         display: block;
       }
+
+      .dropdown-sort {
+        float: right;
+        overflow: hidden;
+      }
+
+      .dropdown-sort .dropbtn-sort {
+        font-size: 16px;
+        border: none;
+        outline: none;
+        color: white;
+        padding: 14px 16px;
+        background-color: inherit;
+        font-family: inherit;
+        margin: 0;
+      }
+
+      .dropdown-sort:hover .dropbtn-sort {
+        background-color: #5b5b5b;
+      }
+
+      .dropdown-sort-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+      }
+
+      .dropdown-sort-content a {
+        float: none;
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        text-align: left;
+      }
+
+      .dropdown-sort-content a:hover {
+        background-color: #ddd;
+      }
+
+      .dropdown-sort:hover .dropdown-sort-content {
+        display: block;
+      }
+
     </style>
     {% if page_title %}
       <title>{{ page_title }} - Atk Django</title>
@@ -487,6 +534,25 @@
       <input id="name" type="text" name="name" value="">
       <input type="submit" value="Search">
     </form>
+  </div>
+  {% if search %}
+  <div class="dropdown-sort">
+    <button class="dropbtn-sort">Sort
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-sort-content">
+      <a href='/atk/{{ site }}/{{ category }}/{{ search }}/-date/page/{{ page }}'>-Date</a>
+      <a href='/atk/{{ site }}/{{ category }}/{{ search }}/date/page/{{ page }}'>Date</a>
+      <a href='/atk/{{ site }}/{{ category }}/{{ search }}/-likes/page/{{ page }}'>-Likes</a>
+      <a href='/atk/{{ site }}/{{ category }}/{{ search }}/likes/page/{{ page }}'>Likes</a>
+      <a href='/atk/{{ site }}/{{ category }}/{{ search }}/-duellikes/page/{{ page }}'>-Duellikes</a>
+      <a href='/atk/{{ site }}/{{ category }}/{{ search }}/duellikes/page/{{ page }}'>Duellikes</a>
+      <a href='/atk/{{ site }}/{{ category }}/{{ search }}/-monthlikes/page/{{ page }}'>-Monthlikes</a>
+      <a href='/atk/{{ site }}/{{ category }}/{{ search }}/monthlikes/page/{{ page }}'>Monthlikes</a>
+      <a href='/atk/{{ site }}/{{ category }}/{{ search }}/-age/page/{{ page }}'>-Age</a>
+      <a href='/atk/{{ site }}/{{ category }}/{{ search }}/age/page/{{ page }}'>Age</a>
+    </div>
+    {% endif %}
   </div>
 {% endblock %}
 </div>
