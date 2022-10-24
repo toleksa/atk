@@ -51,4 +51,6 @@ urlpatterns = [
     path('lastvote/', views.search, {'site': 'lastvote'}),
     path('<str:site>/page/<int:page>', views.search),
     path('<str:site>/', views.search),
+    path('<str:site>/<str:order>/', views.search),
+    path('<str:site>/<str:order>/page/<int:page>/', views.search),
 ]

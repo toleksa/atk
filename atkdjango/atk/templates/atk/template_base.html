@@ -535,9 +535,9 @@
       <input type="submit" value="Search">
     </form>
   </div>
-  {% if search %}
+  {% if show_search_sort %}
   <div class="dropdown-sort">
-    <button class="dropbtn-sort">Sort
+    <button class="dropbtn-sort">Sort1
       <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdown-sort-content">
@@ -552,7 +552,26 @@
       <a href='/atk/{{ site }}/{{ category }}/{{ search }}/-age/page/{{ page }}'>-Age</a>
       <a href='/atk/{{ site }}/{{ category }}/{{ search }}/age/page/{{ page }}'>Age</a>
     </div>
-    {% endif %}
+  {% endif %}
+  {% if show_sort %}
+  <div class="dropdown-sort">
+    <button class="dropbtn-sort">Sort2
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-sort-content">
+      <a href='/atk/{{ site }}/-date/page/{{ page }}'>-Date</a>
+      <a href='/atk/{{ site }}/date/page/{{ page }}'>Date</a>
+      <a href='/atk/{{ site }}/-likes/page/{{ page }}'>-Likes</a>
+      <a href='/atk/{{ site }}/likes/page/{{ page }}'>Likes</a>
+      <a href='/atk/{{ site }}/-duellikes/page/{{ page }}'>-Duellikes</a>
+      <a href='/atk/{{ site }}/duellikes/page/{{ page }}'>Duellikes</a>
+      <a href='/atk/{{ site }}/-monthlikes/page/{{ page }}'>-Monthlikes</a>
+      <a href='/atk/{{ site }}/monthlikes/page/{{ page }}'>Monthlikes</a>
+      <a href='/atk/{{ site }}/-age/page/{{ page }}'>-Age</a>
+      <a href='/atk/{{ site }}/age/page/{{ page }}'>Age</a>
+    </div>
+  {% endif %}
+
   </div>
 {% endblock %}
 </div>
