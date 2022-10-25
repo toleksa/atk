@@ -226,7 +226,7 @@ def top(request,site,page=1,votemonth=0):
     #TODO: check this
     template='atk/' + site + '.html'
     
-    if site=='duel' or site=='duelduel' or site=='month' or site=='monthrank' or site=='monthlist' or site == 'likes' or site == 'liked' or site == 'dueltopmodel' or site=='monthmodel' or site=='bestscore' or site == 'monthpic' or site == 'allpic' or site == 'allmodel' or site == 'votemonth':
+    if site=='duel' or site=='duelduel' or site=='month' or site=='monthrank' or site=='monthlist' or site == 'likes' or site == 'liked' or site == 'dueltopmodel' or site=='monthmodel' or site=='bestscore' or site == 'monthpic' or site == 'allpic' or site == 'allmodel' or site == 'votemonth' or site == 'age':
         if site=='duel' or site=='duelduel':
             per_page=100
             babes = AllBabe.objects.order_by('-duellikes','-likes','-monthlikes')[(page-1)*per_page:page*per_page]
@@ -331,6 +331,10 @@ def top(request,site,page=1,votemonth=0):
                 babee = list(AllBabe.objects.filter(name=like['name']).order_by('-likes')[0:1])
                 for babe in babee:
                     babes.append(babe)
+            template='atk/liked.html'
+        if site=='age':
+            per_page=100
+            babes = AllBabe.objects.filter(likes__gte=-1,age__regex=r'^[0-9]*$').order_by('-age','-date','-id')[(page-1)*per_page:page*per_page]
             template='atk/liked.html'
 
         #if site=='month':

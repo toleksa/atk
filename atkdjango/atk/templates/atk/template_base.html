@@ -771,6 +771,9 @@
                      {% endif %}
             Date: 20{{ babe.date }} <br>
             {% endblock %}
+            {% if site == "age/top" %}
+                Age: {{ babe.age }}<br>
+            {% endif %}
             {% block likesblock %}
                 Likes: {{ babe.likes }}<br>
                 Duellikes: {{ babe.duellikes }}<br>
