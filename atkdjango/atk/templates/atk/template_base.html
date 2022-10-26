@@ -717,15 +717,9 @@
             <table><tr><td>
             <a href='/atk/num/{{ modeldetail.topphoto.id }}'><img width=190 src=
                 {% if modeldetail.topphoto.site == "blog" %}
-                    {% comment %}
-                    '/storage/pics/blog/{{ modeldetail.topphoto.tn }}'></a>
-                    {% endcomment %}
                     {% load plus_to_slash %}
                     'http://www.atkmodels.com/blog/galleries/{{ modeldetail.topphoto.tn.name|plus_to_slash }}'></a>
                 {% else %}
-                    {% comment %}
-                    '/storage/pics/{{ modeldetail.topphoto.site }}/{{ modeldetail.topphoto.date }}_7.jpg'></a>
-                    {% endcomment %}
                     'http://www.atkmodels.com/{{ modeldetail.topphoto.site }}/img/content/{{ modeldetail.topphoto.date }}_7.jpg'></a>
                 {% endif %}
             </td><td width=400>
@@ -810,21 +804,9 @@
                         {% endif %}
                     {% endblock %}
                     {% if babe.site == "blog" %}
-                        {% comment %}
-                        #TODO: switch local fotos to external urls, use below one of those two versions:
-                        <img src='/storage/pics/{{ babe.site }}/{{ babe.tn }}'></a><br>
-                        or
-                        <img src='http://www.atkmodels.com/blog/galleries/{{ babe.tn }}'></a><br>
-                        {% endcomment %}
                         {% load plus_to_slash %}
                         <img src='http://www.atkmodels.com/blog/galleries/{{ babe.tn.name|plus_to_slash }}'></a><br>
                     {% else %}
-                        {% comment %}
-                        # some pincures have wrong numbers 1->7 and 7->1 and therefore wrong sizes: check Raven Rockette
-                        <img src='http://www.atkmodels.com/{{ babe.site }}/img/content/{{ babe.date }}_7.jpg'></a><br>
-                        or
-                        <img src='/storage/pics/{{ babe.site }}/{{ babe.date }}_7.jpg'></a><br>
-                        {% endcomment %}
                         <img width='385' src='http://www.atkmodels.com/{{ babe.site }}/img/content/{{ babe.date }}_7.jpg'></a><br>
                     {% endif %}
             {% endblock %}
@@ -833,15 +815,9 @@
                     </td></tr><tr><td><table width=100%><tr>
                     {% for babe in related %}
                         {% if babe.site == "blog" %}
-                            {% comment %}
-                            <td align=center><a href='/atk/num/{{ babe.id }}'><img width=120 src='/storage/pics/{{ babe.site }}/{{ babe.tn }}'></a></td>
-                            {% endcomment %}
                             {% load plus_to_slash %}
                             <td align=center><a href='/atk/num/{{ babe.id }}'><img width=120 src='http://www.atkmodels.com/blog/galleries/{{ babe.tn.name|plus_to_slash }}'></a></td>
                         {% else %}
-                            {% comment %}
-                            <td align=center><a href='/atk/num/{{ babe.id }}'><img width=120 src='/storage/pics/{{ babe.site }}/{{ babe.date }}_7.jpg'></a></td>
-                            {% endcomment %}
                             <td align=center><a href='/atk/num/{{ babe.id }}'><img width=120 src='http://www.atkmodels.com/{{ babe.site }}/img/content/{{ babe.date }}_7.jpg'></a></td>
                         {% endif %}
                         {% if forloop.counter|divisibleby:3 %}
