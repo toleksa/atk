@@ -223,7 +223,6 @@ def top(request,site,page=1,votemonth=0):
     liked=''
     babes=''
     per_page=''
-    #TODO: check this
     template='atk/template_base.html'
     
     if site=='duel' or site=='duelduel' or site=='month' or site=='monthrank' or site=='monthlist' or site == 'likes' or site == 'liked' or site == 'dueltopmodel' or site=='monthmodel' or site=='bestscore' or site == 'monthpic' or site == 'allpic' or site == 'allmodel' or site == 'votemonth' or site == 'age':
