@@ -770,11 +770,19 @@
                 Age: {{ babe.age }}<br>
             {% endif %}
             {% block likesblock %}
-                Likes: {{ babe.likes }}<br>
-                Duellikes: {{ babe.duellikes }}<br>
-                Monthlikes: {{ babe.monthlikes }}<br>
-                {% if babe.alllikes %}
-                All Likes: {{ babe.alllikes }}<br>
+                {% if topvotes %}
+                  {% for vote in topvotes %}
+                    {% if vote.name == babe.name %}
+                      Total likes: {{ vote.vote }}
+                    {% endif %}
+                  {% endfor %}
+                {% else %}
+                  Likes: {{ babe.likes }}<br>
+                  Duellikes: {{ babe.duellikes }}<br>
+                  Monthlikes: {{ babe.monthlikes }}<br>
+                  {% if babe.alllikes %}
+                  All Likes: {{ babe.alllikes }}<br>
+                  {% endif %}
                 {% endif %}
             {% endblock %}
             {% block likesvote %}
@@ -790,8 +798,6 @@
                 <br><br>
             {% endif %}
             {% block pic %}
-                    {% block topvotes %}
-                    {% endblock %}
                     {% block piclink %}
                         {% if detail == 1 %}
                             {% if babe.site == "blog" %}

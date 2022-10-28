@@ -261,7 +261,8 @@ def top(request,site,page=1,votemonth=0):
         if site=='allpic':
             per_page=100
             babes= AllBabe.objects.all().annotate(alllikes=F('likes') + F('monthlikes') + F('duellikes')).order_by('-alllikes','-likes','-duellikes')[(page-1)*per_page:page*per_page]
-
+        
+        #TODO: under construction
         if site=='allmodel':
             return error(request,'site under construction|3r2qfwg')
             per_page=100
@@ -291,7 +292,6 @@ def top(request,site,page=1,votemonth=0):
                 babee = list(AllBabe.objects.filter(name=like['name']).order_by('-likes')[0:1])
                 for babe in babee:
                     babes.append(babe)
-            template='atk/liked.html'
         if site=='dueltopmodel':
             per_page=100
             liked = AllBabe.objects.values('name').annotate(vote=Sum('duellikes')).order_by('-vote')[(page-1)*per_page:page*per_page]
@@ -301,7 +301,6 @@ def top(request,site,page=1,votemonth=0):
                 babee = list(AllBabe.objects.filter(name=like['name']).order_by('-duellikes')[0:1])
                 for babe in babee:
                     babes.append(babe)
-            template='atk/liked.html'
         if site=='monthmodel':
             per_page=100
             liked = AllBabe.objects.values('name').annotate(vote=Sum('monthlikes')).order_by('-vote')[(page-1)*per_page:page*per_page]
@@ -311,7 +310,6 @@ def top(request,site,page=1,votemonth=0):
                 babee = list(AllBabe.objects.filter(name=like['name']).order_by('-monthlikes')[0:1])
                 for babe in babee:
                     babes.append(babe)
-            template='atk/liked.html'
         if site=='bestscore':
             per_page=100
             liked = BestScore.objects.values('name','vote')[(page-1)*per_page:page*per_page]
@@ -321,11 +319,9 @@ def top(request,site,page=1,votemonth=0):
                 babee = list(AllBabe.objects.filter(name=like['name']).order_by('-likes')[0:1])
                 for babe in babee:
                     babes.append(babe)
-            template='atk/liked.html'
         if site=='age':
             per_page=100
             babes = AllBabe.objects.filter(likes__gte=-1,age__regex=r'^[0-9]*$').order_by('-age','-date','-id')[(page-1)*per_page:page*per_page]
-            template='atk/liked.html'
 
         response = sitedisplay(request,babes,site+"/top",page,template,related,detail,liked,'',per_page,page_title="Top " + site.capitalize())
         return HttpResponse(response)
