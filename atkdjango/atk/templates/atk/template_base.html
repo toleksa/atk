@@ -773,7 +773,11 @@
                 {% if topvotes %}
                   {% for vote in topvotes %}
                     {% if vote.name == babe.name %}
-                      Total likes: {{ vote.vote }}
+                      {% if site == 'bestscore/top' %}
+                        Score: {{ vote.vote }}
+                      {% else %}
+                        Total likes: {{ vote.vote }}
+                      {% endif %}
                     {% endif %}
                   {% endfor %}
                 {% else %}
