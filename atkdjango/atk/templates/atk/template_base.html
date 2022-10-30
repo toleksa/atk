@@ -724,10 +724,9 @@
                 {% endif %}
             </td><td width=400>
             Model: {{ modeldetail.blogdetails.name }}<br>
-            Total Likes: {{ modeldetail.likes__sum }}<br>
-            Avg Likes: {{ modeldetail.avg_likes}} <br>
-            Duel Likes: {{ modeldetail.duel__sum }}<br>
-            Month Likes: {{ modeldetail.month_likes }}<br>
+            Total Likes: {{ modeldetail.likes__sum }} ({{ modeldetail.avg_likes}}) <br>
+            Duel Likes: {{ modeldetail.duellikes__sum }} ({{ modeldetail.avg_duellikes}}) <br>
+            Month Likes: {{ modeldetail.monthlikes__sum }} ({{ modeldetail.avg_monthlikes}}) <br>
             Galleries: {{ babes|length }}<br>
             <br>
             <br>
