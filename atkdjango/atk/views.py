@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpRequest
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Count, F, Sum, Lookup, Field
 from django.db.models.query import QuerySet
-from .models import Babe, SiteBabe, AllBabe, Vote, Novote, BestScore, ExternalSite
+from .models import Babe, SiteBabe, AllBabe, AllBabe2, Vote, Novote, BestScore, ExternalSite
 import os
 import random
 import datetime
@@ -263,21 +263,14 @@ def top(request,site,page=1,votemonth=0):
         
         #TODO: under construction
         if site=='allmodel':
-            return error(request,'site under construction|3r2qfwg')
-            per_page=100
-            #Foo.objects.annotate(i_sum=F('i1') + F('i2')+ F('i3')).filter(i_sum=200)
-            models = AllBabe.objects.annotate(alllikes=Sum(F('likes') + F('monthlikes') + F('duellikes'))).order_by('-alllikes','-likes','-duellikes')[(page-1)*per_page:page*per_page]
-#            models = AllBabe.objects.values('name').aggregate(alllikes=Sum(Sum('likes') + Sum('monthlikes') + Sum('duellikes'))).order_by('-alllikes','-likes','-duellikes')[(page-1)*per_page:page*per_page]
-#            models = AllBabe.objects.values('name').aggregate(alllikes=Sum(s=(Sum('likes') + 1000))).order_by('-alllikes','-likes','-duellikes')[(page-1)*per_page:page*per_page]
-            babes = []
-            for model in models:
-                num=model.alllikes
-#                a=b
-                #TODO: this is ugly as fuck
-                babee = list(AllBabe.objects.filter(name=model['name']).order_by('-monthlikes','-duellikes','-likes')[0:1])
-                for babe in babee:
-                    babe.alllikes=model['alllikes']
-                    babes.append(babe)
+            per_page=100                                                                                                                                                                   
+            liked = AllBabe2.objects.values('name').annotate(vote=Sum('totallikes')).order_by('-vote')[(page-1)*per_page:page*per_page]
+            babes = []                                                                                                                                                                     
+            for like in liked:                                                                                                                                                             
+                #TODO: this is ugly as fuck                                                                                                                                                
+                babee = list(AllBabe2.objects.filter(name=like['name']).order_by('-totallikes')[0:1])
+                for babe in babee:                                                                                                                                                         
+                    babes.append(babe) 
 
         if site=='monthpic':
             per_page=100
