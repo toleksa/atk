@@ -261,7 +261,6 @@ def top(request,site,page=1,votemonth=0):
             per_page=100
             babes= AllBabe.objects.all().annotate(alllikes=F('likes') + F('monthlikes') + F('duellikes')).order_by('-alllikes','-likes','-duellikes')[(page-1)*per_page:page*per_page]
         
-        #TODO: under construction
         if site=='allmodel':
             per_page=100                                                                                                                                                                   
             liked = AllBabe2.objects.values('name').annotate(vote=Sum('totallikes')).order_by('-vote')[(page-1)*per_page:page*per_page]
@@ -328,13 +327,9 @@ def sitenum(request,num,site = 'allsites'):
     except ObjectDoesNotExist:
         err='babe not found'
         return error(request,err,site)
-    #TODO: use generate_tags2?
-    babes=generate_tags(babes,site)
     babe_name=babes[0].name
     related = AllBabe.objects.filter(name=babe_name).exclude(id=num).order_by('-date')
     site='num/' + str(num)
-    #response = sitedisplay(request,babes,site,1,'atk/sitenum.html',related,1)
-    #return HttpResponse(response)
     page_title = babe_name
     template = loader.get_template('atk/sitenum.html')
     context = {
@@ -459,7 +454,6 @@ def model(request,model,page=1,per_page=10):
     if not babes:
         err='babe not found|2f43fwdewr4'
         return error(request,err,site)
-    #babes=generate_tags(babes,site)
     modeldetail=get_modeldetails(model,babes.count())
     template = loader.get_template('atk/template_base.html')
     context = {
@@ -558,20 +552,6 @@ def error(request, message, site='allsites'):
     }
     response = template.render(context, request)
     return HttpResponse(response)
-
-def generate_tags(babes,site='allsites'):
-    for babe in babes:
-        if babe.tags != "" and babe.tags is not None:
-            tags=babe.tags.split("|")
-            taglist=[]
-            for tag in tags:
-                temp=tag.split("/blog/")
-                tagname=temp[1]
-                URL="/atk/tag/" + tagname + ""
-                final_tag=[URL, tagname]
-                taglist.append(final_tag)
-            babe.tags=taglist
-    return babes
 
 def generate_tags2(babe):
     if babe[0].tags != "" and babe[0].tags is not None:
