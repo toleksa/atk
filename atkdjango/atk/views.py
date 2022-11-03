@@ -472,7 +472,8 @@ def get_modeldetails(model,babes_count=1):
     modeldetail = AllBabe.objects.filter(name=model).aggregate(Sum('likes'))
     modeldetail['monthlikes__sum']=AllBabe.objects.filter(name=model).aggregate(Sum('monthlikes'))['monthlikes__sum']
     modeldetail['duellikes__sum']=AllBabe.objects.filter(name=model).aggregate(Sum('duellikes'))['duellikes__sum']
-    modeldetail['totallikes__sum']=modeldetail['likes__sum']+modeldetail['monthlikes__sum']+modeldetail['duellikes__sum']
+    if modeldetail['monthlikes__sum'] is not None and modeldetail['duellikes__sum'] is not None:
+        modeldetail['totallikes__sum']=modeldetail['likes__sum']+modeldetail['monthlikes__sum']+modeldetail['duellikes__sum']
     try:
         modeldetail['blogdetails'] = list(AllBabe.objects.filter(name=model,site='blog').order_by('-date')[0:1])[0]
         modeldetail['blogdetails']=generate_tags2([modeldetail['blogdetails']])
