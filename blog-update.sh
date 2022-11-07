@@ -2,9 +2,6 @@
 
 echo "=========`date`========"
 
-QUIET="--quiet"
-#QUIET=""
-
 #sqlite3 /var/www/html/atk/atk.sqlite "CREATE TABLE babes ( id int unique, gallery varchar(100), name varchar(50), model varchar(100), link varchar(200), date varchar(8), age int, pob varchar(50), occ varchar(50), file varchar(50), tn varchar(50), tags varchar(1000) );"
 #sqlite3 /var/www/html/atk/atk.sqlite "delete from babes;"
 
@@ -19,9 +16,13 @@ convert_date () {
 
 #PAGE=1
 for PAGE in `seq 1 500` ; do
-  wget -O index.html $QUIET "http://www.atkmodels.com/blog/page/${PAGE}/"
+  URL="https://www.atkmodels.com/blog/page/${PAGE}/"
+  if [ "$PAGE" -eq 1 ]; then
+    URL="https://www.atkmodels.com/blog/"
+  fi
+  curl -s "$URL" > index.html
   for GALLERY in `grep posttitle index.html | gawk -F"a href=" '{ print $2 }' | gawk -F"\"" '{ print $2 }'`; do
-    wget -O babe.html $QUIET "$GALLERY"
+    curl -s "$GALLERY" > babe.html
     #MODEL=`grep '<span>Model</span>' babe.html | gawk -F"a href=" '{ print $2 }' | gawk -F"\"" '{ print $2 }'`
     MODEL=`grep '<span>Model</span>' babe.html | gawk -F"<span>Model</span>" '{ print $2 }' | gawk -F"\"" '{ print $2 }'`
     #NAME=`grep '<span>Model</span>' babe.html | gawk -F"a href=" '{ print $2 }' | gawk -F">" '{ print $2 }' | gawk -F"<" '{ print $1 }' | sed -e "s#'#\"#g" | sed 's/ [0-9]//g'`
@@ -48,7 +49,7 @@ for PAGE in `seq 1 500` ; do
     PIC_URL=`grep "http.://www.atkmodels.com/blog/galleries/" babe.html | grep '\-1.html' | gawk -F"href=" '{ print $2 }' | gawk -F"['\"]" '{ print $2 }'`
     ID=`grep "http.://www.atkmodels.com/blog/galleries/" babe.html | grep '\-1.html' | gawk -F"href=" '{ print $2 }' | gawk -F"['\"]" '{ print $2 }' | gawk -F"_" '{ print $NF }' | gawk -F"-" '{ print $1 }'`
     ID=$((ID+10000000))
-    wget -O pic.html $QUIET "$PIC_URL"
+    curl -s "$PIC_URL" > pic.html
     PIC=`grep -i '_big.jpg' pic.html | gawk -F"src='" '{ print $2 }' | gawk -F"'" '{ print $1 }'`
     FILE=`grep -i '_big.jpg' pic.html | gawk -F"src='" '{ print $2 }' | gawk -F"'" '{ print $1 }' | gawk -F"galleries/" '{ print $2 }' | sed -e 's#/#+#g'`
     TN_URL=`grep "http.://www.atkmodels.com/blog/galleries/" babe.html | grep '\-1.html' | gawk -F"src=" '{ print $2 }' | gawk -F"['\"]" '{ print $2 }'`
