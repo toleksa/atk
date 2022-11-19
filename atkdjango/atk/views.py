@@ -352,8 +352,11 @@ def search(request,site,search='',category='',page=1,per_page=20,order=''):
             return error(request,err,site)
     if search=='':
         if request.GET.get('name'):
+            category='name'
+            if request.GET.get('category'):
+                category=request.GET.get('category')
             #message = 'You submitted: %r' % request.GET['name']
-            url = '/atk/search/name/' + request.GET['name']
+            url = '/atk/search/' + category + '/' + request.GET['name']
             return redirect(url)
         else:
             if site not in ['allsites','exotics','hairy','galleria','blog','hidden','banned','novote','alles','lastvote']:

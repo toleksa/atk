@@ -532,6 +532,12 @@
 {% block search %}
   <div class="searchbar">
     <form action="/atk/search/" method="get">
+      <select id="category" name="category">
+        <option value="name">Name</option>
+        <option value="tags">Tag</option>
+        <option value="age">Age</option>
+        <option value="pob">Pob</option>
+      </select>
       <input id="name" type="text" name="name" value="" placeholder="Search..">
       <input type="submit" value="Search">
     </form>
