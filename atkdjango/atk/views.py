@@ -377,6 +377,8 @@ def search(request,site,search='',category='',page=1,per_page=20,order=''):
     try:
         order_by=('-date','site','-id')
         if order!='':
+            #TODO: .asc() should help with #24 - copied from def stats()
+            #order_by=(str(F('age').asc(nulls_last=True)),*order_by)
             order_by=(order,*order_by)
         if site=='search':
             query_filter = str(category + '__icontains')
