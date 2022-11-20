@@ -398,7 +398,7 @@ def search(request,site,search='',category='',page=1,per_page=20,order=''):
             babes = AllBabe.objects.filter(likes__gte=0).order_by(*order_by)[offset:offset+per_page]
             numResults = AllBabe.objects.filter(likes__gte=0).count()
             #TODO: show_sort disabled
-            #show_sort='true'
+            show_sort='true'
         elif site=='hidden':
             babes = AllBabe.objects.filter(likes=-1).order_by(*order_by)[offset:offset+per_page]
             numResults = AllBabe.objects.filter(likes=-1).count()

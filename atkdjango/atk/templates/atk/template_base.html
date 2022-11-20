@@ -594,7 +594,11 @@
                     <a href='/atk/{{ site }}/{{ category }}/{{ search }}/page/{{ page|add:"-1" }}'>prev</a>
                 {% endif %}
             {% else %}
-                <a href='/atk/{{ site }}/page/{{ page|add:"-1" }}'>prev</a>
+                {% if order %}
+                  <a href='/atk/{{ site }}/{{ order }}/page/{{ page|add:"-1" }}'>prev</a>
+                {% else %}
+                  <a href='/atk/{{ site }}/page/{{ page|add:"-1" }}'>prev</a>
+                {% endif %}
             {% endif %}
         {% endif %}
         <a href='/'>dash</a>
@@ -611,7 +615,11 @@
                     <a href='/atk/{{ site }}/{{ category }}/{{ search }}/page/{{ page|add:"+1" }}'>next</a>
                 {% endif %}
             {% else %}
-                <a href='/atk/{{ site }}/page/{{ page|add:"+1" }}'>next</a>
+                {% if order %}
+                  <a href='/atk/{{ site }}/{{ order }}/page/{{ page|add:"+1" }}'>next</a>
+                {% else %}
+                  <a href='/atk/{{ site }}/page/{{ page|add:"+1" }}'>next</a>
+                {% endif %}
             {% endif %}
         {% endif %}
     {% endblock %}
