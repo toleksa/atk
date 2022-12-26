@@ -850,29 +850,29 @@
       <td></td>
     {% endif %}
     </tr></table></center>
-            {% block related %}                                                                                                                                                            
-                {% if related %}                                                                                                                                                           
-                    <table style="width: 100%"><tr>
-                    {% if related|length < 6 %}
-                      <td></td>
-                    {% endif %}                                                                                                                                                          
-                    {% for babe in related %}                                                                                                                                              
-                        {% if babe.site == "blog" %}                                                                                                                                       
-                            {% load plus_to_slash %}                                                                                                                                       
-                            <td span="1" style="width: 12%;"><a href='/atk/num/{{ babe.id }}'><img width="100%" src='http://www.atkmodels.com/blog/galleries/{{ babe.tn.name|plus_to_slash }}'></a></td>   
-                        {% else %}                                                                                                                                                         
-                            <td span="1" style="width: 12%;"><a href='/atk/num/{{ babe.id }}'><img width="100%" src='http://www.atkmodels.com/{{ babe.site }}/img/content/{{ babe.date }}_7.jpg'></a></td> 
-                        {% endif %}                                                                                                                                                        
-                        {% if forloop.counter|divisibleby:6 %}                                                                                                                             
-                            </tr><tr>                                                                                                                                                      
-                        {% endif %}                                                                                                                                                        
-                    {% endfor %} 
-                    {% if related|length < 6%}
-                      <td></td>
-                    {% endif %}                                                                                                                                                          
-                    </tr></table>                                                                                                                                                          
-                {% endif %}                                                                                                                                                                
-            {% endblock %}                
+    {% block related %}
+      {% if related %}
+        <table style="width: 100%"><tr>
+        {% if related|length < 6 %}
+          <td></td>
+        {% endif %}
+        {% for babe in related %}
+          {% if babe.site == "blog" %}
+            {% load plus_to_slash %}
+            <td span="1" style="width: 12%;"><a href='/atk/num/{{ babe.id }}'><img width="100%" src='http://www.atkmodels.com/blog/galleries/{{ babe.tn.name|plus_to_slash }}'></a></td>
+          {% else %}
+            <td span="1" style="width: 12%;"><a href='/atk/num/{{ babe.id }}'><img width="100%" src='http://www.atkmodels.com/{{ babe.site }}/img/content/{{ babe.date }}_7.jpg'></a></td>
+          {% endif %}
+          {% if forloop.counter|divisibleby:6 %}
+            </tr><tr>
+          {% endif %}
+        {% endfor %}
+        {% if related|length < 6 %}
+          <td></td>
+        {% endif %}
+        </tr></table>
+      {% endif %}
+    {% endblock %}
 {% else %}
     <center>
     </br></br></br>
