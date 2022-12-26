@@ -5,7 +5,6 @@
   <head>
     <meta charset="utf-8">
     {% block viewblockscale %}
-        <meta name="viewport" content="width=800">
     {% endblock %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
@@ -728,15 +727,15 @@
 {% if babes %}
     {% block modeldetail %}
         {% if modeldetail %}
-            <table><tr><td>
-            <a href='/atk/num/{{ modeldetail.topphoto.id }}'><img width=190 src=
+            <table><tr><td width="10%">
+            <a href='/atk/num/{{ modeldetail.topphoto.id }}'><img style="width:100%"  src=
                 {% if modeldetail.topphoto.site == "blog" %}
                     {% load plus_to_slash %}
                     'http://www.atkmodels.com/blog/galleries/{{ modeldetail.topphoto.tn.name|plus_to_slash }}'></a>
                 {% else %}
                     'http://www.atkmodels.com/{{ modeldetail.topphoto.site }}/img/content/{{ modeldetail.topphoto.date }}_7.jpg'></a>
                 {% endif %}
-            </td><td width=400>
+            </td><td width="20%">
             Model: {{ modeldetail.blogdetails.name }}<br>
             Total Likes: {{ modeldetail.likes__sum }} ({{ modeldetail.avg_likes}}) <br>
             Duel Likes: {{ modeldetail.duellikes__sum }} ({{ modeldetail.avg_duellikes}}) <br>
@@ -748,12 +747,14 @@
             Age: <a href='/atk/search/age/{{ modeldetail.blogdetails.age }}/'>{{ modeldetail.blogdetails.age }}</a> <br>
             Place of birth: <a href='/atk/search/pob/{{ modeldetail.blogdetails.pob }}/'>{{ modeldetail.blogdetails.pob }}</a> <br>
             Occupation: {{ modeldetail.blogdetails.occ }} <br>
-            Tags:
+            <details>
+            <summary>Tags:</summary>
             {% for tag in modeldetail.blogdetails.tags %}
                 <a href='{{ tag.0 }}/'>{{ tag.1 }}</a>
             {% endfor %}
+            </details>
             </td>
-            <td>
+            <td width="50%">
                 {% include "atk/search-bar.html" %}
                 <br>
                 {% if modeldetail.external_sites %}
@@ -768,9 +769,12 @@
         {% endif %}
     {% endblock %}
     <center>
-    <table style="margin: 0px auto; margin-left: 0px; margin-right: 0px; table-layout:fixed;"><tr>
+    <table style="margin: 0px auto; margin-left: 0px; margin-right: 0px; table-layout:fixed; width:100%"><tr>
+    {% if babes|length < 4 %}
+      <td></td>
+    {% endif %}
     {% for babe in babes %}
-        <td style="word-wrap:break-word; width:400px; vertical-align:top">
+        <td style="word-wrap:break-word; width:22%; vertical-align:top">
             {% block model %}
             Model: <a href="/atk/model/{{ babe.name }}/" >{{ babe.name }}</a><br>
             Gallery: {% if babe.site == "blog" %}
@@ -805,6 +809,9 @@
             {% endblock %}
             {% block likesvote %}
             {% endblock %}
+            {% comment %}
+            TODO: this doesn't seem to be working anymore
+            {% endcomment %}
             {% if detail == 1 and babe.site == 'blog' %}
                 Age: {{ babe.age }} <br>
                 Place of birth: {{ babe.pob }} <br>
@@ -829,27 +836,26 @@
                     {% endblock %}
                     {% if babe.site == "blog" %}
                         {% load plus_to_slash %}
-                        <img src='http://www.atkmodels.com/blog/galleries/{{ babe.tn.name|plus_to_slash }}'></a><br>
+                        <img width='100%' src='http://www.atkmodels.com/blog/galleries/{{ babe.tn.name|plus_to_slash }}'></a><br>
                     {% else %}
-                        <img width='385' src='http://www.atkmodels.com/{{ babe.site }}/img/content/{{ babe.date }}_7.jpg'></a><br>
+                        <img width='100%' src='http://www.atkmodels.com/{{ babe.site }}/img/content/{{ babe.date }}_7.jpg'></a><br>
                     {% endif %}
             {% endblock %}
             {% block related %}
                 {% if related %}
-                    </td></tr><tr><td><table width=100%><tr>
+                    <table width=100%><tr>
                     {% for babe in related %}
                         {% if babe.site == "blog" %}
                             {% load plus_to_slash %}
-                            <td align=center><a href='/atk/num/{{ babe.id }}'><img width=120 src='http://www.atkmodels.com/blog/galleries/{{ babe.tn.name|plus_to_slash }}'></a></td>
+                            <td align=center><a href='/atk/num/{{ babe.id }}'><img width="100%" src='http://www.atkmodels.com/blog/galleries/{{ babe.tn.name|plus_to_slash }}'></a></td>
                         {% else %}
-                            <td align=center><a href='/atk/num/{{ babe.id }}'><img width=120 src='http://www.atkmodels.com/{{ babe.site }}/img/content/{{ babe.date }}_7.jpg'></a></td>
+                            <td align=center><a href='/atk/num/{{ babe.id }}'><img width="100%" src='http://www.atkmodels.com/{{ babe.site }}/img/content/{{ babe.date }}_7.jpg'></a></td>
                         {% endif %}
                         {% if forloop.counter|divisibleby:3 %}
                             </tr><tr>
                         {% endif %}
                     {% endfor %}
                     </tr></table>
-                    </table>
                 {% endif %}
             {% endblock %}
         </td>
@@ -857,6 +863,9 @@
             </tr><tr>
         {% endif %}
     {% endfor %}
+    {% if babes|length < 4 %}
+      <td></td>
+    {% endif %}
     </tr></table></center>
 {% else %}
     <center>
