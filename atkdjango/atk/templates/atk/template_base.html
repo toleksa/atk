@@ -692,13 +692,13 @@
     {% for babe in babes %}
         <td style="word-wrap:break-word; vertical-align:top;" align="center">
             {% block model %}
-            Model: <a href="/atk/model/{{ babe.name }}/" >{{ babe.name }}</a><br>
-            Gallery: {% if babe.site == "blog" %}
-                        <a href='{{ babe.gallery }}' target='_blank'>{{ babe.site }}</a><br>
-                     {% else %}
-                        <a href='http://www.atkmodels.com/{{ babe.site }}/index.php?day={{ babe.date }}' target='_blank'>{{ babe.site }}</a><br>
-                     {% endif %}
-            Date: 20{{ babe.date }} <br>
+            20{{ babe.date }} <a href="/atk/model/{{ babe.name }}/" >{{ babe.name }}</a> 
+            {% if babe.site == "blog" %}
+              (<a href='{{ babe.gallery }}' target='_blank'>{{ babe.site }}</a>)
+            {% else %}
+              (<a href='http://www.atkmodels.com/{{ babe.site }}/index.php?day={{ babe.date }}' target='_blank'>{{ babe.site }}</a>)
+            {% endif %}
+            <br>
             {% endblock %}
             {% if site == "age/top" %}
                 Age: {{ babe.age }}<br>
@@ -715,9 +715,7 @@
                     {% endif %}
                   {% endfor %}
                 {% else %}
-                  Likes: {{ babe.likes }}<br>
-                  Duellikes: {{ babe.duellikes }}<br>
-                  Monthlikes: {{ babe.monthlikes }}<br>
+                  Likes: {{ babe.likes }} Duel: {{ babe.duellikes }} Month: {{ babe.monthlikes }}<br>
                   {% if babe.alllikes %}
                   All Likes: {{ babe.alllikes }}<br>
                   {% endif %}
