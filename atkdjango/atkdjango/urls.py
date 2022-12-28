@@ -24,7 +24,6 @@ from .views import homepage
 
 urlpatterns = [
     url(r'^$', homepage),
-    #url(r'^$', include('atk.urls')),
     path('atk/', include('atk.urls')),
     path('admin/', admin.site.urls),
     path('favicon.ico', RedirectView.as_view(url=settings.MEDIA_URL + 'favicon.ico')),
@@ -32,3 +31,4 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
