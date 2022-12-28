@@ -634,91 +634,7 @@
         {% endif %}
     {% endblock %}
     <br>
-    <details>
-    <summary>show</summary>
-        <table>
-        <tr>
-        <td>
-        </td><td>
-    <p>
-    battles: <a title="Vote in DUEL" href='/atk/duel/'>duel</a>
-             <a title="Vote in DUEL" href='/atk/duelduel/'>duelduel</a>
-             <a title="Top100 in DUEL" href='/atk/duel/top/'>duel-top</a>
-             <a title="Top models in DUEL" href='/atk/dueltopmodel/top/'>duel-model</a>
-             <a title="Girls without votes" href='/atk/novotes/'>no-votes</a>
-
-    month:   <a title="Vote for girl of the month" href='/atk/month/'>month</a>
-             <a title="Scores for current month" href='/atk/month/top/'>scores</a>
-             <a title="All girls of currennt month" href='/atk/monthlist/top/'>list</a>
-             <a title="Top girls for last 6 months" href='/atk/monthrank/top/'>month-rank</a>
-             <a title="Monthpic" href='/atk/monthpic/top/'>month-pic</a> 
-             <a title="Monthmodel" href='/atk/monthmodel/top/'>month-model</a> 
     <br>
-    likes:   <a title="Likes (total votes for pic)" href='/atk/likes/top/'>likes-pic</a>
-             <a title="Most liked models" href='/atk/liked/top/'>liked-models</a>
-             <a title="Best AVG score" href='/atk/bestscore/top/'>bestscore</a>
-
-    random:
-             <a href='/atk/random/'>( allsites )</a>
-             <a href='/atk/randomrandom/'>(randomrandom)</a>
-             <a href='/atk/randomnovotes/'>(no-votes)</a>
-
-
-    restricted: <a href="/atk/alles/">all</a>
-                <a href="/atk/hidden/">hid</a>
-                <a href="/atk/banned/">ban</a>
-                <a href="/atk/novote/">novote</a>
-                <a title="Allpic" href='/atk/allpic/top/'>all-pic</a>
-                <a title="Allmodel" href='/atk/allmodel/top/'>all-model</a> <br>
-    <center>
-   <details>
-    <summary>links</summary>
-        <p>
-            <a href="https://www.forumophilia.com/tags.php?tags=atk" target='_blank'>forumophilia</a>
-            <a href="https://www.forumophilia.com/tags.php?tags=allover30" target='_blank'>AllOver30</a>
-            <a href="/atk/search/tags/toering/">toering</a>
-            
-            <a href="https://vipergirls.to/forumdisplay.php?f=302&prefixid=AMKingdom_com" target='_blank'>AMKingdom</a>
-            <a href="https://vipergirls.to/forumdisplay.php?f=302&prefixid=ATKExotics_com" target='_blank'>ATKExotics</a>
-            <a href="https://vipergirls.to/forumdisplay.php?f=302&prefixid=ATKHairy_com" target='_blank'>ATKHairy</a>
-            <a href="https://vipergirls.to/forumdisplay.php?f=302&prefixid=WeAreHairy_com" target='_blank'>WeAreHairy</a>
-            <a href="https://vipergirls.to/forumdisplay.php?f=302&prefixid=AllOver30_com" target='_blank'>AllOver30</a>
-            <a href="https://vipergirls.to/forumdisplay.php?f=302&prefixid=AbbyWinters_com" target='_blank'>AbbyWinters</a>
-            <a href="https://vipergirls.to/forumdisplay.php?f=307&prefixid=FootFetishDaily_com" target='_blank'>FootFetishDaily</a>
-            <a href="https://vipergirls.to/forumdisplay.php?f=304&prefixid=LoveHerFeet_com" target='_blank'>LoveHerFeet</a>
-            <a href="https://vipergirls.to/forumdisplay.php?f=304&prefixid=SexArt_com" target='_blank'>SexArt</a>
-            <form method="post" action="https://vipergirls.to/search.php?contenttype=1&do=process" class="inline" enctype="text/html" target='_blank'>
-                <input type="hidden" name="securitytoken" value="guest">
-                <input type="hidden" name="do" value="process">
-                <input type="hidden" name="query" value="elegant ladies">
-                <input type="hidden" name="titleonly" value="1">
-                <input type="hidden" name="imgsearch" value="1">
-                <input type="hidden" name="sumbit.x" value="8">
-                <input type="hidden" name="submit.y" value="13">
-                <input type="hidden" name="childforums" value="1">
-                <input type="hidden" name="forumchoice[]" value="235">
-                <button type="submit" class="link-button-post">
-                  Elegant Ladies
-                </button>
-            </form>
-           </p>
-      </details>
-    </center>
-      </td><td>
-        <table>
-          <tr><td><a href='/atk/allsites/'>allsites</a></td></tr>
-          <tr><td><a href='/atk/blog/'>blog</a></td></tr>
-          <tr><td><a href='/atk/exotics/'>exotics</a></td></tr>
-          <tr><td><a href='/atk/hairy/'>hairy</a></td></tr>
-          <tr><td><a href='/atk/galleria/'>galleria</a></td></tr>
-          <tr><td><a href='/atk/lastvote/'>lastvote</a></td></tr>
-          <tr><td><a href='/atk/stats'>stats</a></td></tr>
-        </table>
-        </td>
-        </tr>
-        </table>
-    </p>
-    </details>
     </center>
 {% endblock %}
 {% endblock %}
@@ -769,12 +685,12 @@
         {% endif %}
     {% endblock %}
     <center>
-    <table style="margin: 0px auto; margin-left: 0px; margin-right: 0px; table-layout:fixed;"><tr>
-    {% if babes|length < 4 and site != 'duel' %}
+    <table style="margin: 0px auto; margin-left: 0px; margin-right: 0px; table-layout:fixed; width:100%; table-layout: fixed"><tr>
+    {% if babes|length < 3 and site != 'duel' %}
       <td></td>
     {% endif %}
     {% for babe in babes %}
-        <td style="word-wrap:break-word; vertical-align:top;">
+        <td style="word-wrap:break-word; vertical-align:top;" align="center">
             {% block model %}
             Model: <a href="/atk/model/{{ babe.name }}/" >{{ babe.name }}</a><br>
             Gallery: {% if babe.site == "blog" %}
