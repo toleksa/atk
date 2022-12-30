@@ -706,7 +706,11 @@
     <center>
     <table style="margin: 0px auto; margin-left: 0px; margin-right: 0px; table-layout:fixed; width:100%; table-layout: fixed"><tr>
     {% if babes|length < 3 and site != 'duel' %}
-      <td></td>
+      {% if prev_num %}
+        <td><center><a href="/atk/num/{{ prev_num }}">PREV</a></center></td>
+      {% else %}
+        <td></td>
+      {% endif %}
     {% endif %}
     {% for babe in babes %}
         <td style="word-wrap:break-word; vertical-align:top;" align="center">
@@ -780,7 +784,11 @@
         {% endif %}
     {% endfor %}
     {% if babes|length < 4 and site != 'duel' %}
-      <td></td>
+      {% if next_num %}
+        <td><center><a href="/atk/num/{{ next_num }}">NEXT</a></center></td>
+      {% else %}
+        <td></td>
+      {% endif %}
     {% endif %}
     </tr></table></center>
     {% block related %}

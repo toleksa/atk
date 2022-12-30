@@ -328,7 +328,16 @@ def sitenum(request,num,site = 'allsites'):
         err='babe not found'
         return error(request,err,site)
     babe_name=babes[0].name
-    related = AllBabe.objects.filter(name=babe_name).exclude(id=num).order_by('-date')
+    #related = AllBabe.objects.filter(name=babe_name).exclude(id=num).order_by('-date')
+    related = AllBabe.objects.filter(name=babe_name).order_by('-date')
+    prev_item=AllBabe.objects.filter(name=babe_name,date__gt=babes[0].date).order_by('date')[0:1]
+    prev_num=""
+    if prev_item:
+        prev_num=prev_item[0].id
+    next_item=AllBabe.objects.filter(name=babe_name,date__lt=babes[0].date).order_by('-date')[0:1]
+    next_num=""
+    if next_item:
+        next_num=next_item[0].id
     site='num/' + str(num)
     page_title = babe_name
     template = loader.get_template('atk/sitenum.html')
@@ -337,6 +346,9 @@ def sitenum(request,num,site = 'allsites'):
         'site': site,
         'related' : related,
         'page_title': page_title,
+        'num' : num,
+        'prev_num' : prev_num,
+        'next_num' : next_num,
     }
     response = template.render(context, request)
     return HttpResponse(response)
@@ -385,7 +397,8 @@ def search(request,site,search='',category='',page=1,per_page=20,order=''):
             babes = AllBabe.objects.filter(**{ query_filter: search },likes__gte=-1).order_by(*order_by)[offset:offset+per_page]
             numResults = AllBabe.objects.filter(**{ query_filter: search },likes__gte=-1).count()
             #TODO: put filter into variable and have one query
-            if order=='-age' or order=='age':            
+            if order=='-age' or order=='age':
+                #filter_conditions = { **{ query_filter: search }, "likes__gte": -1, "age__regex": r'^[0-9]*$' }            
                 babes = AllBabe.objects.filter(**{ query_filter: search },likes__gte=-1,age__regex=r'^[0-9]*$').order_by(*order_by)[offset:offset+per_page]
                 numResults = AllBabe.objects.filter(**{ query_filter: search },likes__gte=-1,age__regex=r'^[0-9]*$').count()
             if not babes:
