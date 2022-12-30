@@ -705,7 +705,7 @@
     {% endblock %}
     <center>
     <table style="margin: 0px auto; margin-left: 0px; margin-right: 0px; table-layout:fixed; width:100%; table-layout: fixed"><tr>
-    {% if babes|length < 3 and site != 'duel' %}
+    {% if babes|length < 3 and site != 'duel' and site != 'novotes' %}
       {% if prev_num %}
         <td><center><a href="/atk/num/{{ prev_num }}">PREV</a></center></td>
       {% else %}
@@ -783,7 +783,7 @@
             </tr><tr>
         {% endif %}
     {% endfor %}
-    {% if babes|length < 4 and site != 'duel' %}
+    {% if babes|length < 4 and site != 'duel' and site != 'novotes' %}
       {% if next_num %}
         <td><center><a href="/atk/num/{{ next_num }}">NEXT</a></center></td>
       {% else %}
