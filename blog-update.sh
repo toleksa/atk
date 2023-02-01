@@ -39,7 +39,7 @@ for PAGE in `seq 1 500` ; do
     TAGS=""
     for TAG in `grep 'Tags:' babe.html | gawk -F"Tags:" '{ print $2 }' | sed -e 's/,/\n/g' | gawk -F"\"" '{ print $2 }' ` ; do TAGS="$TAGS|$TAG" ; done
     TAGS=`echo $TAGS | sed 's/^|\(.*\)/\1/'`
-    PIC_URL=`grep "http.://www.atkmodels.com/blog/galleries/" babe.html | grep '\-1.html' | gawk -F"href=" '{ print $2 }' | gawk -F"['\"]" '{ print $2 }'`
+    PIC_URL=`grep "http.://www.atkmodels.com/blog/galleries/" babe.html | grep '\-1.html' | gawk -F"href=" '{ print $2 }' | gawk -F"['\"]" '{ print $2 }' | sed -e 's/ /%20/g'`
     ID=`grep "http.://www.atkmodels.com/blog/galleries/" babe.html | grep '\-1.html' | gawk -F"href=" '{ print $2 }' | gawk -F"['\"]" '{ print $2 }' | gawk -F"_" '{ print $NF }' | gawk -F"-" '{ print $1 }'`
     ID=$((ID+10000000))
     curl -s "$PIC_URL" > pic.html
