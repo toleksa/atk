@@ -671,7 +671,7 @@
                     'http://www.atkmodels.com/{{ modeldetail.topphoto.site }}/img/content/{{ modeldetail.topphoto.date }}_7.jpg'></a>
                 {% endif %}
             </td><td width="20%">
-            Model: {{ modeldetail.blogdetails.name }}<br>
+            Model: <span id="modelName" onClick="copyToClipboard()">{{ modeldetail.blogdetails.name }}</span><br>
             Total Likes: {{ modeldetail.likes__sum }} ({{ modeldetail.avg_likes}}) <br>
             Duel Likes: {{ modeldetail.duellikes__sum }} ({{ modeldetail.avg_duellikes}}) <br>
             Month Likes: {{ modeldetail.monthlikes__sum }} ({{ modeldetail.avg_monthlikes}}) <br>
@@ -854,6 +854,27 @@
     <br>
 {% endblock %}
 
+<script type="text/javascript">
+  function copyToClipboard(){
+    var text = document.getElementById('modelName').innerHTML;
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text)
+    } else {
+      let textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";
+      textArea.style.left = "-999999px";
+      textArea.style.top = "-999999px";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      return new Promise((res, rej) => {
+        document.execCommand('copy') ? res() : rej();
+        textArea.remove();
+      });
+    }
+  }
+</script>
 
 </body>
 </html>
