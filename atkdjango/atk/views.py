@@ -329,15 +329,14 @@ def sitenum(request,num,site = 'allsites'):
         return error(request,err,site)
     babe_name=babes[0].name
     #related = AllBabe.objects.filter(name=babe_name).exclude(id=num).order_by('-date')
-    related = AllBabe.objects.filter(name=babe_name).order_by('-date')
-    prev_item=AllBabe.objects.filter(name=babe_name,date__gt=babes[0].date).order_by('date')[0:1]
-    prev_num=""
-    if prev_item:
-        prev_num=prev_item[0].id
-    next_item=AllBabe.objects.filter(name=babe_name,date__lt=babes[0].date).order_by('-date')[0:1]
-    next_num=""
-    if next_item:
-        next_num=next_item[0].id
+    related = list(AllBabe.objects.filter(name=babe_name).order_by('-date','site'))
+    index = related.index(babes[0])
+    prev_num=''
+    next_num=''
+    if index > 0:
+        prev_num=related[index-1].id
+    if index < len(related)-1:
+        next_num=related[index+1].id
     site='num/' + str(num)
     page_title = babe_name
     template = loader.get_template('atk/sitenum.html')
