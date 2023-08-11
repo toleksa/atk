@@ -54,7 +54,7 @@ class AllBabe(models.Model):
         managed = False
         db_table = "atk_allsites"
 
-class AllBabe2(models.Model):
+class AllBabe_view(models.Model):
     id = models.IntegerField(primary_key=True, unique=True)                                                                                                                                
     date = models.CharField(max_length=8, default=None, blank=True, null=True)                                                                                                             
     name = models.CharField(max_length=50, default=None, blank=True, null=True)                                                                                                            
@@ -73,7 +73,7 @@ class AllBabe2(models.Model):
     totallikes = models.IntegerField(default=0)
     class Meta:                                                                                                                                                                            
         managed = False                                                                                                                                                                    
-        db_table = "atk_allsites2"
+        db_table = "atk_allsites_view"
 
 class Vote(models.Model):
     id = models.IntegerField(primary_key=True, unique=True)

@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpRequest
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Count, F, Sum, Lookup, Field
 from django.db.models.query import QuerySet
-from .models import Babe, SiteBabe, AllBabe, AllBabe2, Vote, Novote, BestScore, ExternalSite
+from .models import Babe, SiteBabe, AllBabe, AllBabe_view, Vote, Novote, BestScore, ExternalSite
 import os
 import random
 import datetime
@@ -263,11 +263,11 @@ def top(request,site,page=1,votemonth=0):
         
         if site=='allmodel':
             per_page=100                                                                                                                                                                   
-            liked = AllBabe2.objects.values('name').annotate(vote=Sum('totallikes')).order_by('-vote')[(page-1)*per_page:page*per_page]
+            liked = AllBabe_view.objects.values('name').annotate(vote=Sum('totallikes')).order_by('-vote')[(page-1)*per_page:page*per_page]
             babes = []                                                                                                                                                                     
             for like in liked:                                                                                                                                                             
                 #TODO: this is ugly as fuck                                                                                                                                                
-                babee = list(AllBabe2.objects.filter(name=like['name']).order_by('-totallikes')[0:1])
+                babee = list(AllBabe_view.objects.filter(name=like['name']).order_by('-totallikes')[0:1])
                 for babe in babee:                                                                                                                                                         
                     babes.append(babe) 
 
