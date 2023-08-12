@@ -16,7 +16,7 @@ BABELETTER=$(echo $URLBABE | cut -c 1-1)
 
 URLS=''
 for SITE in $(cat external-sites.txt); do
-    #echo "http://$SITE/pornstar/$BABELETTER"
+#    echo "http://$SITE/pornstar/$BABELETTER"
     CURL=$(curl --silent "http://$SITE/pornstar/$BABELETTER" | grep "\"/pornstar/$URLBABE\"")
     if [ "$CURL" ]; then
         #echo $CURL
@@ -26,12 +26,13 @@ for SITE in $(cat external-sites.txt); do
     fi
 done
 
+# 20230813 - disabled, site seems to be down
 #for www.hairy.today
-CURL=$(curl --silent "http://www.hairy.today/pornstar/$URLBABE")
-if echo "$CURL" | grep "clips found" &>/dev/null; then
-    NUM=$(echo $CURL | grep "clips found" | gawk -F "clips found" ' { print $2 }' | gawk -F "<" '{ print $1 }' | tr -d " ")
-    URLS="${URLS}${SITE};${NUM}|"
-fi
+#CURL=$(curl --silent "http://www.hairy.today/pornstar/$URLBABE")
+#if echo "$CURL" | grep "clips found" &>/dev/null; then
+#    NUM=$(echo $CURL | grep "clips found" | gawk -F "clips found" ' { print $2 }' | gawk -F "<" '{ print $1 }' | tr -d " ")
+#    URLS="${URLS}${SITE};${NUM}|"
+#fi
 
 URLS=`echo $URLS | sed 's/.$//'`
 
