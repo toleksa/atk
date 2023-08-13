@@ -474,6 +474,7 @@
       <a title="Best AVG score" href='/atk/bestscore/top/'>bestscore</a>
       <a title="Allpic" href='/atk/allpic/top/'>all-pic</a>
       <a title="Allmodel" href='/atk/allmodel/top/'>all-model</a>
+      <a title="Allmodel" href='/atk/allscore/top/'>all-score</a>
     </div>
   </div>
   <div class="dropdown-more">
@@ -730,7 +731,7 @@
                 {% if topvotes %}
                   {% for vote in topvotes %}
                     {% if vote.name == babe.name %}
-                      {% if site == 'bestscore/top' %}
+                      {% if site == 'bestscore/top' or site == 'allscore/top' %}
                         Score: {{ vote.vote }}
                       {% else %}
                         Total likes: {{ vote.vote }}

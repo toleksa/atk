@@ -98,6 +98,15 @@ class BestScore(models.Model):
         managed = False
         db_table = 'best_score'
 
+class AllScore(models.Model):
+    name = models.CharField(max_length=50, default=None, blank=True, null=True)
+    c = models.IntegerField()
+    s = models.IntegerField()
+    vote = models.IntegerField()
+    class Meta:
+        managed = False
+        db_table = 'all_score'
+
 class ExternalSite(models.Model):
     name = models.CharField(max_length=50, primary_key=True, unique=True)
     urls = models.CharField(max_length=1000, default=None, blank=True, null=True)
