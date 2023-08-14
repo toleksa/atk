@@ -231,10 +231,12 @@ def top(request,site,page=1,votemonth=0):
             babes = AllBabe.objects.order_by('-duellikes','-likes','-monthlikes')[(page-1)*per_page:page*per_page]
             if site=='duelduel':
                 template='atk/duelduel.html'
+
         if site=='month':
             #TODO: this sorting is dynamic, think about something more static
             per_page=32
             babes = AllBabe.objects.filter(date__startswith=get_votemonth()).order_by('-monthlikes','-duellikes','-likes')[(page-1)*per_page:page*per_page]
+
         if site=='votemonth':
             monthvotes = Vote.objects.values('vote').filter(votemonth=votemonth).count()
             if monthvotes <= 0:
@@ -243,6 +245,7 @@ def top(request,site,page=1,votemonth=0):
             per_page=32
             babes = AllBabe.objects.filter(date__startswith=votemonth).order_by('-monthlikes','-duellikes','-likes')[(page-1)*per_page:page*per_page]
             site="votemonth-" + str(votemonth)
+
         if site=='monthrank':
             per_page=48
             months = list(Vote.objects.values('votemonth').filter(votemonth__isnull=False).order_by('-votemonth').distinct())[int((page-1)*per_page/4):int(page*per_page/4)]
@@ -252,23 +255,26 @@ def top(request,site,page=1,votemonth=0):
                 monthlist = list(AllBabe.objects.filter(date__startswith=month['votemonth']).order_by('-monthlikes','-duellikes','-likes')[0:4])
                 for babe in monthlist:
                     babes.append(babe)
+
         if site=='monthlist':
             babes = list(AllBabe.objects.filter(date__istartswith=get_votemonth(),likes__gte=0).order_by('-date'))
+
         if site=='likes':
             per_page=100
             babes= AllBabe.objects.order_by('-likes','-duellikes','-monthlikes')[(page-1)*per_page:page*per_page]
+
         if site=='allpic':
             per_page=100
             babes= AllBabe.objects.all().annotate(alllikes=F('likes') + F('monthlikes') + F('duellikes')).order_by('-alllikes','-likes','-duellikes')[(page-1)*per_page:page*per_page]
         
         if site=='allmodel':
-            per_page=100                                                                                                                                                                   
+            per_page=100
             liked = AllBabe_view.objects.values('name').annotate(vote=Sum('totallikes')).order_by('-vote')[(page-1)*per_page:page*per_page]
-            babes = []                                                                                                                                                                     
-            for like in liked:                                                                                                                                                             
-                #TODO: this is ugly as fuck                                                                                                                                                
+            babes = []
+            for like in liked:
+                #TODO: this is ugly as fuck
                 babee = list(AllBabe_view.objects.filter(name=like['name']).order_by('-totallikes')[0:1])
-                for babe in babee:                                                                                                                                                         
+                for babe in babee:
                     babes.append(babe) 
 
         if site=='allscore':
@@ -284,6 +290,7 @@ def top(request,site,page=1,votemonth=0):
         if site=='monthpic':
             per_page=100
             babes= AllBabe.objects.order_by('-monthlikes','-likes','-duellikes')[(page-1)*per_page:page*per_page]
+
         if site=='liked':
             per_page=100
             liked = AllBabe.objects.values('name').annotate(vote=Sum('likes')).order_by('-vote')[(page-1)*per_page:page*per_page]
@@ -293,6 +300,7 @@ def top(request,site,page=1,votemonth=0):
                 babee = list(AllBabe.objects.filter(name=like['name']).order_by('-likes')[0:1])
                 for babe in babee:
                     babes.append(babe)
+
         if site=='dueltopmodel':
             per_page=100
             liked = AllBabe.objects.values('name').annotate(vote=Sum('duellikes')).order_by('-vote')[(page-1)*per_page:page*per_page]
@@ -302,6 +310,7 @@ def top(request,site,page=1,votemonth=0):
                 babee = list(AllBabe.objects.filter(name=like['name']).order_by('-duellikes')[0:1])
                 for babe in babee:
                     babes.append(babe)
+
         if site=='monthmodel':
             per_page=100
             liked = AllBabe.objects.values('name').annotate(vote=Sum('monthlikes')).order_by('-vote')[(page-1)*per_page:page*per_page]
@@ -311,6 +320,7 @@ def top(request,site,page=1,votemonth=0):
                 babee = list(AllBabe.objects.filter(name=like['name']).order_by('-monthlikes')[0:1])
                 for babe in babee:
                     babes.append(babe)
+
         if site=='bestscore':
             per_page=100
             liked = BestScore.objects.values('name','vote')[(page-1)*per_page:page*per_page]
@@ -320,6 +330,7 @@ def top(request,site,page=1,votemonth=0):
                 babee = list(AllBabe.objects.filter(name=like['name']).order_by('-likes')[0:1])
                 for babe in babee:
                     babes.append(babe)
+
         if site=='age':
             per_page=100
             babes = AllBabe.objects.filter(likes__gte=-1,age__regex=r'^[0-9]*$').order_by('-age','-date','-id')[(page-1)*per_page:page*per_page]
