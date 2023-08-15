@@ -375,7 +375,7 @@ def sitenum(request,num,site = 'allsites'):
 
 
 def search(request,site,search='',category='',page=1,per_page=20,order=''):
-    if site not in ['allsites','exotics','hairy','galleria','blog','search','hidden','banned','novote','alles','lastvote']:
+    if site not in ['allsites','exotics','hairy','galleria','blog','search','hidden','banned','novote','nolikes','alles','lastvote']:
         err='site not found|syvffserck|' + site
         return error(request,err,site)
     if order!='':
@@ -391,7 +391,7 @@ def search(request,site,search='',category='',page=1,per_page=20,order=''):
             url = '/atk/search/' + category + '/' + request.GET['name']
             return redirect(url)
         else:
-            if site not in ['allsites','exotics','hairy','galleria','blog','hidden','banned','novote','alles','lastvote']:
+            if site not in ['allsites','exotics','hairy','galleria','blog','hidden','banned','novote','nolikes','alles','lastvote']:
                 err='empty search string'
                 return error(request,err)
     else:
@@ -448,6 +448,11 @@ def search(request,site,search='',category='',page=1,per_page=20,order=''):
             page_title = site.capitalize()
         elif site=='novote':
             query = AllBabe.objects.filter(likes=0,duellikes=0,monthlikes=0).order_by(*order_by)
+            babes = query[offset:offset+per_page]
+            numResults = len(query)
+            page_title = site.capitalize()
+        elif site=='nolikes':
+            query = AllBabe.objects.filter(likes=0).order_by(*order_by)
             babes = query[offset:offset+per_page]
             numResults = len(query)
             page_title = site.capitalize()
