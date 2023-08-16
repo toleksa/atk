@@ -99,6 +99,16 @@ def randomnovotes(request):
     response = sitedisplay(request,babes,'randomnovotes',0,'atk/random.html', page_title='Random NoVotes')
     return HttpResponse(response)
 
+def randomnolikes(request):
+    query = AllBabe.objects.filter(likes=0)
+    maxnum = len(query)
+    babes=''
+    if maxnum > 0:
+        randomnum = random.randrange(maxnum)
+        babes = query[randomnum:randomnum+1]
+    response = sitedisplay(request,babes,'randomnolikes',0,'atk/random.html', page_title='Random NoVotes')
+    return HttpResponse(response)
+
 def vote(request,site,vote='',second='',num=''):
     #return HttpResponse(request.META.get('HTTP_X_FORWARDED_FOR', request.META.get('REMOTE_ADDR', '')).split(',')[0].strip())
     if site=='duel' or site=='duelduel' or site=='month' or site=='novotes' or site=='randomnovotes' or site=='random' or site=='randomrandom' or site=='num':
