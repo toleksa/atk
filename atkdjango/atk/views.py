@@ -82,8 +82,16 @@ def siterandom(request,site='allsites'):
     if site not in ['allsites','exotics','hairy','galleria','blog']:
         err='site not found'
         return error(request,err,site)
-    randomnum = random.randrange(AllBabe.objects.filter(likes__gte=0).count())
-    babes = AllBabe.objects.filter(likes__gte=0).order_by('id')[randomnum:randomnum+1]
+    babes = []
+    if site == 'allsites':
+        randomnum = random.randrange(AllBabe.objects.filter(likes__gte=0).count())
+        babes = AllBabe.objects.filter(likes__gte=0).order_by('id')[randomnum:randomnum+1]
+    else:
+        query = AllBabe.objects.filter(site=site,likes__gte=0)
+        maxnum = len(query)
+        if maxnum > 0:
+            randomnum = random.randrange(maxnum)
+            babes = query[randomnum:randomnum+1]
     site='random'
     template='atk/random.html'
     response = sitedisplay(request,babes,site,1,template, page_title='Random')
