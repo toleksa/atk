@@ -504,11 +504,15 @@ def search(request,site,search='',category='',page=1,per_page=20,order=''):
     response = template.render(context, request)
     return HttpResponse(response)
 
-def model(request,model,page=1,per_page=10):
+def model(request,model,filter='none',page=1,per_page=10):
     site='allsites'
     offset = (page - 1) * per_page
+    babes=[]
     try:
-        babes = AllBabe.objects.filter(name=model).order_by('-date','-id')
+        if filter=='none':
+            babes = AllBabe.objects.filter(name=model).order_by('-date','-id')
+        if filter=='nolikes':
+            babes = AllBabe.objects.filter(name=model,likes=0).order_by('-date','-id')
     except ObjectDoesNotExist:
         err='babe not found|cve65yhfsfw'
         return error(request,err,site)

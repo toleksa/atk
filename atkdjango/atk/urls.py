@@ -21,6 +21,7 @@ urlpatterns = [
 ##    path('site/<str:site>/random/', views.siterandom),
 ##    path('site/<str:site>/search/<str:search>', views.search),
     path('', views.search, {'site': 'allsites'}),
+    path('model/<str:model>/nolikes', views.model, {'filter': 'nolikes'}),
     path('model/<str:model>/', views.model),
 #    path('model/<str:model>/page/<int:page>', views.model),
     path('num/<int:num>/', views.sitenum),

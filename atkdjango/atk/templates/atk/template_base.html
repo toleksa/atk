@@ -482,14 +482,14 @@
       <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdown-more-content">
-      <a href='/atk/random/'>(randomallsites)</a>
-      <a href='/atk/randomrandom/'>(randomrandom)</a>
-      <a href='/atk/randomnovotes/'>(randomnovotes)</a>
-      <a href='/atk/randomnolikes/'>(randomnolikes)</a>
-      <a href='/atk/random/blog/'>(randomblog)</a>
-      <a href='/atk/random/exotics/'>(randomexotics)</a>
-      <a href='/atk/random/hairy/'>(randomhairy)</a>
-      <a href='/atk/random/galleria/'>(randomgalleria)</a>
+      <a href='/atk/random/'>(random-allsites)</a>
+      <a href='/atk/randomrandom/'>(random-random)</a>
+      <a href='/atk/randomnovotes/'>(random-novotes)</a>
+      <a href='/atk/randomnolikes/'>(random-nolikes)</a>
+      <a href='/atk/random/blog/'>(random-blog)</a>
+      <a href='/atk/random/exotics/'>(random-exotics)</a>
+      <a href='/atk/random/hairy/'>(random-hairy)</a>
+      <a href='/atk/random/galleria/'>(random-galleria)</a>
       <a href="/atk/alles/">all</a>
       <a href="/atk/hidden/">hid</a>
       <a href="/atk/banned/">ban</a>
@@ -669,7 +669,7 @@
 {% if babes %}
     {% block modeldetail %}
         {% if modeldetail %}
-            <table><tr><td width="10%">
+            <table><tr><td width="12%">
             <a href='/atk/num/{{ modeldetail.topphoto.id }}'><img style="width:100%"  src=
                 {% if modeldetail.topphoto.site == "blog" %}
                     {% load plus_to_slash %}
@@ -677,14 +677,17 @@
                 {% else %}
                     'http://www.atkmodels.com/{{ modeldetail.topphoto.site }}/img/content/{{ modeldetail.topphoto.date }}_7.jpg'></a>
                 {% endif %}
-            </td><td width="20%">
+            </td><td style="width: 18%; vertical-align:top">
             Model: <span id="modelName" onClick="copyToClipboard()">{{ modeldetail.blogdetails.name }}</span><br>
             Total Likes: {{ modeldetail.likes__sum }} ({{ modeldetail.avg_likes}}) <br>
             Duel Likes: {{ modeldetail.duellikes__sum }} ({{ modeldetail.avg_duellikes}}) <br>
             Month Likes: {{ modeldetail.monthlikes__sum }} ({{ modeldetail.avg_monthlikes}}) <br>
             Total Likes: {{ modeldetail.totallikes__sum }} ({{ modeldetail.avg_totallikes}}) <br>
             Galleries: {{ babes|length }}<br>
-            <br>
+            <details>
+            <summary>Filters</summary>
+              <a href='/atk/model/{{ modeldetail.blogdetails.name }}/nolikes'>nolikes</a>
+            </details>
             <br>
             Age: <a href='/atk/search/age/{{ modeldetail.blogdetails.age }}/'>{{ modeldetail.blogdetails.age }}</a> <br>
             Place of birth: <a href='/atk/search/pob/{{ modeldetail.blogdetails.pob }}/'>{{ modeldetail.blogdetails.pob }}</a> <br>
