@@ -530,7 +530,10 @@ def model(request,model,filter='none',page=1,per_page=10):
     if not babes:
         err='babe not found|2f43fwdewr4'
         return error(request,err,site)
-    modeldetail=get_modeldetails(model,babes.count())
+    photo_num=babes.count()
+    if filter != 'none':
+        photo_num=len(AllBabe.objects.filter(name=model))
+    modeldetail=get_modeldetails(model,photo_num)
     template = loader.get_template('atk/template_base.html')
     context = {
         'babes': babes,
