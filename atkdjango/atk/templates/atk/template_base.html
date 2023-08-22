@@ -683,7 +683,11 @@
             Duel Likes: {{ modeldetail.duellikes__sum }} ({{ modeldetail.avg_duellikes}}) <br>
             Month Likes: {{ modeldetail.monthlikes__sum }} ({{ modeldetail.avg_monthlikes}}) <br>
             Total Likes: {{ modeldetail.totallikes__sum }} ({{ modeldetail.avg_totallikes}}) <br>
-            Galleries: {{ babes|length }}<br>
+            Galleries: {{ babes|length }}
+            {% if photo_num != babes|length %}
+              ({{photo_num}})
+            {% endif %}
+            <br>
             <details>
             <summary>Filters</summary>
               <a href='/atk/model/{{ modeldetail.blogdetails.name }}/nolikes'>nolikes</a>

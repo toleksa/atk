@@ -541,6 +541,7 @@ def model(request,model,filter='none',page=1,per_page=10):
         'page' : page,
         'modeldetail': modeldetail,
         'page_title': model,
+        'photo_num': photo_num,
     }
     response = template.render(context, request)
     #response = sitedisplay(request,babes,site,page,'atk/likes.html')
