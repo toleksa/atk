@@ -678,7 +678,7 @@
                     'http://www.atkmodels.com/{{ modeldetail.topphoto.site }}/img/content/{{ modeldetail.topphoto.date }}_7.jpg'></a>
                 {% endif %}
             </td><td style="width: 18%; vertical-align:top">
-            Model: <span id="modelName" onClick="copyToClipboard()">{{ modeldetail.blogdetails.name }}</span><br>
+            Model: <span id="modelName" onClick="copyToClipboard()">{{ modeldetail.original_name }}</span><br>
             Total Likes: {{ modeldetail.likes__sum }} ({{ modeldetail.avg_likes}}) <br>
             Duel Likes: {{ modeldetail.duellikes__sum }} ({{ modeldetail.avg_duellikes}}) <br>
             Month Likes: {{ modeldetail.monthlikes__sum }} ({{ modeldetail.avg_monthlikes}}) <br>
@@ -690,11 +690,11 @@
             <br>
             <details>
             <summary>Filters</summary>
-              <a href='/atk/model/{{ modeldetail.blogdetails.name }}/nolikes'>nolikes</a>
-              <a href='/atk/model/{{ modeldetail.blogdetails.name }}/blog'>blog</a>
-              <a href='/atk/model/{{ modeldetail.blogdetails.name }}/exotics'>exotics</a>
-              <a href='/atk/model/{{ modeldetail.blogdetails.name }}/galleria'>galleria</a>
-              <a href='/atk/model/{{ modeldetail.blogdetails.name }}/hairy'>hairy</a>
+              <a href='/atk/model/{{ modeldetail.original_name }}/nolikes'>nolikes</a>
+              <a href='/atk/model/{{ modeldetail.original_name }}/blog'>blog</a>
+              <a href='/atk/model/{{ modeldetail.original_name }}/exotics'>exotics</a>
+              <a href='/atk/model/{{ modeldetail.original_name }}/galleria'>galleria</a>
+              <a href='/atk/model/{{ modeldetail.original_name }}/hairy'>hairy</a>
             </details>
             <br>
             Age: <a href='/atk/search/age/{{ modeldetail.blogdetails.age }}/'>{{ modeldetail.blogdetails.age }}</a> <br>
