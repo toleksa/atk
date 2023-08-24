@@ -504,13 +504,20 @@ def search(request,site,search='',category='',page=1,per_page=20,order=''):
     response = template.render(context, request)
     return HttpResponse(response)
 
-def model(request,model,filter='none',page=1,per_page=10):
+def model(request,model,filter='none',sort='none',page=1,per_page=10):
     site='allsites'
+    if sort not in ['none', 'likes','duellikes','monthlikes','totallikes']:
+        err='order sort: ' + sort + ' not recognized|564ye45tge'
+        return error(request,err,site)
     offset = (page - 1) * per_page
     babes=[]
     try:
+        order_by=('-date','site','-id')
+        if sort!='none':
+            order_by=('-'+sort,*order_by)
+
         if filter=='none':
-            babes = AllBabe.objects.filter(name=model).order_by('-date','-id')
+            babes = AllBabe_view.objects.filter(name=model).order_by(*order_by)
         elif filter=='nolikes':
             babes = AllBabe.objects.filter(name=model,likes=0).order_by('-date','-id')
         elif filter=='blog':

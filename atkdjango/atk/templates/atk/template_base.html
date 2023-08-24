@@ -688,6 +688,7 @@
               ({{photo_num}})
             {% endif %}
             <br>
+            <table><tr><td style="vertical-align:top">
             <details>
             <summary>Filters</summary>
               <a href='/atk/model/{{ modeldetail.original_name }}/nolikes'>nolikes</a>
@@ -696,6 +697,15 @@
               <a href='/atk/model/{{ modeldetail.original_name }}/galleria'>galleria</a>
               <a href='/atk/model/{{ modeldetail.original_name }}/hairy'>hairy</a>
             </details>
+            </td><td style="vertical-align:top">
+            <details>
+            <summary>Sort</summary>
+              <a href='/atk/model/{{ modeldetail.original_name }}/sort/likes'>likes</a>
+              <a href='/atk/model/{{ modeldetail.original_name }}/sort/duellikes'>duel</a>
+              <a href='/atk/model/{{ modeldetail.original_name }}/sort/monthlikes'>month</a>
+              <a href='/atk/model/{{ modeldetail.original_name }}/sort/totallikes'>total</a>
+            </details>
+            </td></tr></table>
             <br>
             Age: <a href='/atk/search/age/{{ modeldetail.blogdetails.age }}/'>{{ modeldetail.blogdetails.age }}</a> <br>
             Place of birth: <a href='/atk/search/pob/{{ modeldetail.blogdetails.pob }}/'>{{ modeldetail.blogdetails.pob }}</a> <br>
