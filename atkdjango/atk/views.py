@@ -432,52 +432,52 @@ def search(request,site,search='',category='',page=1,per_page=20,order=''):
             order_by=(order,*order_by)
         if site=='search':
             query_filter = str(category + '__icontains')
-            babes = AllBabe.objects.filter(**{ query_filter: search },likes__gte=-1).order_by(*order_by)[offset:offset+per_page]
-            numResults = AllBabe.objects.filter(**{ query_filter: search },likes__gte=-1).count()
+            babes = AllBabe_view.objects.filter(**{ query_filter: search },likes__gte=-1).order_by(*order_by)[offset:offset+per_page]
+            numResults = AllBabe_view.objects.filter(**{ query_filter: search },likes__gte=-1).count()
             #TODO: put filter into variable and have one query
             if order=='-age' or order=='age':
                 #filter_conditions = { **{ query_filter: search }, "likes__gte": -1, "age__regex": r'^[0-9]*$' }            
-                babes = AllBabe.objects.filter(**{ query_filter: search },likes__gte=-1,age__regex=r'^[0-9]*$').order_by(*order_by)[offset:offset+per_page]
-                numResults = AllBabe.objects.filter(**{ query_filter: search },likes__gte=-1,age__regex=r'^[0-9]*$').count()
+                babes = AllBabe_view.objects.filter(**{ query_filter: search },likes__gte=-1,age__regex=r'^[0-9]*$').order_by(*order_by)[offset:offset+per_page]
+                numResults = AllBabe_view.objects.filter(**{ query_filter: search },likes__gte=-1,age__regex=r'^[0-9]*$').count()
             if not babes:
                 modeldetail=get_modeldetails(search,babes.count())
             page_title = category + ":" + search
             show_search_sort='true'
         elif site in ['exotics','hairy','galleria','blog']:
-            babes = AllBabe.objects.filter(site=site,likes__gte=0).order_by(*order_by)[offset:offset+per_page]
-            numResults = AllBabe.objects.filter(site=site,likes__gte=0).count()
+            babes = AllBabe_view.objects.filter(site=site,likes__gte=0).order_by(*order_by)[offset:offset+per_page]
+            numResults = AllBabe_view.objects.filter(site=site,likes__gte=0).count()
             page_title = site.capitalize()
             show_sort='true'
         elif site=='allsites':
-            babes = AllBabe.objects.filter(likes__gte=0).order_by(*order_by)[offset:offset+per_page]
-            numResults = AllBabe.objects.filter(likes__gte=0).count()
+            babes = AllBabe_view.objects.filter(likes__gte=0).order_by(*order_by)[offset:offset+per_page]
+            numResults = AllBabe_view.objects.filter(likes__gte=0).count()
             show_sort='true'
         elif site=='hidden':
-            babes = AllBabe.objects.filter(likes=-1).order_by(*order_by)[offset:offset+per_page]
-            numResults = AllBabe.objects.filter(likes=-1).count()
+            babes = AllBabe_view.objects.filter(likes=-1).order_by(*order_by)[offset:offset+per_page]
+            numResults = AllBabe_view.objects.filter(likes=-1).count()
             page_title = site.capitalize()
         elif site=='banned':
-            babes = AllBabe.objects.filter(likes__lt=-1).order_by(*order_by)[offset:offset+per_page]
-            numResults = AllBabe.objects.filter(likes__lt=-1).count()
+            babes = AllBabe_view.objects.filter(likes__lt=-1).order_by(*order_by)[offset:offset+per_page]
+            numResults = AllBabe_view.objects.filter(likes__lt=-1).count()
             page_title = site.capitalize()
         elif site=='alles':
-            babes = AllBabe.objects.order_by(*order_by)[offset:offset+per_page]
-            numResults = AllBabe.objects.count()
+            babes = AllBabe_view.objects.order_by(*order_by)[offset:offset+per_page]
+            numResults = AllBabe_view.objects.count()
             page_title = site.capitalize()
         elif site=='novote':
-            query = AllBabe.objects.filter(likes=0,duellikes=0,monthlikes=0).order_by(*order_by)
+            query = AllBabe_view.objects.filter(likes=0,duellikes=0,monthlikes=0).order_by(*order_by)
             babes = query[offset:offset+per_page]
             numResults = len(query)
             page_title = site.capitalize()
         elif site=='nolikes':
-            query = AllBabe.objects.filter(likes=0).order_by(*order_by)
+            query = AllBabe_view.objects.filter(likes=0).order_by(*order_by)
             babes = query[offset:offset+per_page]
             numResults = len(query)
             page_title = site.capitalize()
         elif site=='lastvote':
             lastVote = Vote.objects.filter(vote__gt=0,second__gt=0).order_by('-id').first()
-            babes = list(AllBabe.objects.filter(id=lastVote.vote))
-            babes += list(AllBabe.objects.filter(id=lastVote.second))
+            babes = list(AllBabe_view.objects.filter(id=lastVote.vote))
+            babes += list(AllBabe_view.objects.filter(id=lastVote.second))
             numResults = len(babes)
             page_title = site.capitalize()
         else:

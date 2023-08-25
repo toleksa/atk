@@ -766,7 +766,11 @@
                     {% endif %}
                   {% endfor %}
                 {% else %}
-                  Likes: {{ babe.likes }} Duel: {{ babe.duellikes }} Month: {{ babe.monthlikes }}<br>
+                  Likes: {{ babe.likes }} Duel: {{ babe.duellikes }} Month: {{ babe.monthlikes }}
+                  {% if babe.totallikes %}
+                    ({{ babe.totallikes }})
+                  {% endif %}
+                  <br>
                   {% if babe.alllikes %}
                   All Likes: {{ babe.alllikes }}<br>
                   {% endif %}
