@@ -283,7 +283,7 @@ def top(request,site,page=1,votemonth=0):
 
         if site=='allpic':
             per_page=100
-            babes= AllBabe_view.objects.all().annotate(alllikes=F('likes') + F('monthlikes') + F('duellikes')).order_by('-alllikes','-likes','-duellikes')[(page-1)*per_page:page*per_page]
+            babes= AllBabe_view.objects.all().order_by('-totallikes','-likes','-duellikes','-monthlikes')[(page-1)*per_page:page*per_page]
         
         if site=='allmodel':
             per_page=100
