@@ -456,14 +456,17 @@ def search(request,site,search='',category='',page=1,per_page=20,order=''):
             babes = AllBabe_view.objects.filter(likes=-1).order_by(*order_by)[offset:offset+per_page]
             numResults = AllBabe_view.objects.filter(likes=-1).count()
             page_title = site.capitalize()
+            show_sort='true'
         elif site=='banned':
             babes = AllBabe_view.objects.filter(likes__lt=-1).order_by(*order_by)[offset:offset+per_page]
             numResults = AllBabe_view.objects.filter(likes__lt=-1).count()
             page_title = site.capitalize()
+            show_sort='true'
         elif site=='alles':
             babes = AllBabe_view.objects.order_by(*order_by)[offset:offset+per_page]
             numResults = AllBabe_view.objects.count()
             page_title = site.capitalize()
+            show_sort='true'
         elif site=='novote':
             query = AllBabe_view.objects.filter(likes=0,duellikes=0,monthlikes=0).order_by(*order_by)
             babes = query[offset:offset+per_page]
