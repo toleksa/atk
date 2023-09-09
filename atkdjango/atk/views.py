@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.template import loader
 from django.http import HttpResponse, HttpRequest
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Count, F, Sum, Lookup, Field
+from django.db.models import Count, F, Sum, Lookup, Field, Max, Min
 from django.db.models.query import QuerySet
 from .models import Babe, SiteBabe, AllBabe, AllBabe_view, Vote, Novote, AllScore, BestScore, ExternalSite
 import os
@@ -393,7 +393,7 @@ def sitenum(request,num,site = 'allsites'):
 
 
 def search(request,site,search='',category='',page=1,per_page=20,order=''):
-    if site not in ['allsites','exotics','hairy','galleria','blog','search','hidden','banned','novote','nolikes','alles','lastvote']:
+    if site not in ['allsites','exotics','hairy','galleria','blog','search','hidden','banned','novote','nolikes','alles','lastvote','debiut','models']:
         err='site not found|syvffserck|' + site
         return error(request,err,site)
     if order!='':
@@ -409,7 +409,7 @@ def search(request,site,search='',category='',page=1,per_page=20,order=''):
             url = '/atk/search/' + category + '/' + request.GET['name']
             return redirect(url)
         else:
-            if site not in ['allsites','exotics','hairy','galleria','blog','hidden','banned','novote','nolikes','alles','lastvote']:
+            if site not in ['allsites','exotics','hairy','galleria','blog','hidden','banned','novote','nolikes','alles','lastvote','debiut','models']:
                 err='empty search string'
                 return error(request,err)
     else:
@@ -482,6 +482,14 @@ def search(request,site,search='',category='',page=1,per_page=20,order=''):
             babes = list(AllBabe_view.objects.filter(id=lastVote.vote))
             babes += list(AllBabe_view.objects.filter(id=lastVote.second))
             numResults = len(babes)
+            page_title = site.capitalize()
+        elif site=='models':
+            babes = []
+            query = AllBabe_view.objects.values('name').annotate(votes=Max('totallikes'))
+            result = query[offset:offset+per_page]
+            for babe in result:
+                babes.append(   AllBabe_view.objects.filter(name=babe['name'],totallikes=babe['votes']).first()    )
+            numResults = len(query)
             page_title = site.capitalize()
         else:
             return error(request,'wrong site|se5hsfwdwz')
