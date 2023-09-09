@@ -117,7 +117,7 @@ class Atk_top_total(models.Model):
     maxlikes = models.IntegerField(default=0)
     vote = models.IntegerField(default=0)
     count = models.IntegerField(default=0)
-    score = models.IntegerField(default=0)
+    score = models.FloatField(default=0)
     class Meta:
         managed = False
         db_table = "atk_top_total"
@@ -188,7 +188,7 @@ class Atk_top_likes(models.Model):
     maxlikes = models.IntegerField(default=0)
     vote = models.IntegerField(default=0)
     count = models.IntegerField(default=0)
-    score = models.IntegerField(default=0)
+    score = models.FloatField(default=0)
     class Meta:
         managed = False
         db_table = "atk_top_likes"
