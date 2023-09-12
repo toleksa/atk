@@ -485,11 +485,6 @@ def search(request,site,search='',category='',page=1,per_page=20,order=''):
             numResults = len(babes)
             page_title = site.capitalize()
         elif site=='debiut':
-            #query = AllBabe_view.objects.values('name').annotate(oldest_date=Min('date'))
-            #query = sorted(query, key=operator.attrgetter('oldest_date'))
-            #result = query[offset:offset+per_page]
-            #for babe in result:
-            #    babes.append(   AllBabe_view.objects.filter(name=babe['name'],date=babe['oldest_date']).first()    )
             query = Atk_debiut.objects.order_by('-mindate')
             babes = query[offset:offset+per_page]
             numResults = len(query)
