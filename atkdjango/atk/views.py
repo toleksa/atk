@@ -414,7 +414,7 @@ def search(request,site,search='',category='',page=1,per_page=20,order=''):
                 err='empty search string'
                 return error(request,err)
     else:
-        if category not in ['name','id','tags','pob','age']:
+        if category not in ['name','tags','pob','age']:
             err='unrecognized search category: ' + category
             return error(request,err,site)
         if len(search) < 3 and category!='age':
