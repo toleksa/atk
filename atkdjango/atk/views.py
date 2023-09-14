@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpRequest
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Count, F, Sum, Lookup, Field, Max, Min
 from django.db.models.query import QuerySet
-from .models import Babe, SiteBabe, AllBabe, AllBabe_view, Vote, Novote, AllScore, BestScore, ExternalSite, Atk_debiut
+from .models import Babe, SiteBabe, AllBabe, AllBabe_view, Vote, Novote, AllScore, BestScore, ExternalSite, Atk_debiut, Atk_toppic
 import os
 import random
 import datetime
@@ -433,13 +433,17 @@ def search(request,site,search='',category='',page=1,per_page=20,order=''):
             order_by=(order,*order_by)
         if site=='search':
             query_filter = str(category + '__icontains')
-            babes = AllBabe_view.objects.filter(**{ query_filter: search },likes__gte=-1).order_by(*order_by)[offset:offset+per_page]
-            numResults = AllBabe_view.objects.filter(**{ query_filter: search },likes__gte=-1).count()
+            query = ''
+            if category in ['tags','pob','age']:
+                query = AllBabe_view.objects.filter(**{ query_filter: search },likes__gte=-1).order_by(*order_by)
+            elif category in ['name']:
+                query = Atk_toppic.objects.filter(**{ query_filter: search },likes__gte=-1).order_by(*order_by)
             #TODO: put filter into variable and have one query
             if order=='-age' or order=='age':
                 #filter_conditions = { **{ query_filter: search }, "likes__gte": -1, "age__regex": r'^[0-9]*$' }            
-                babes = AllBabe_view.objects.filter(**{ query_filter: search },likes__gte=-1,age__regex=r'^[0-9]*$').order_by(*order_by)[offset:offset+per_page]
-                numResults = AllBabe_view.objects.filter(**{ query_filter: search },likes__gte=-1,age__regex=r'^[0-9]*$').count()
+                query = AllBabe_view.objects.filter(**{ query_filter: search },likes__gte=-1,age__regex=r'^[0-9]*$').order_by(*order_by)
+            babes = query[offset:offset+per_page]
+            numResults = len(query)
             if not babes:
                 modeldetail=get_modeldetails(search,babes.count())
             page_title = category + ":" + search
