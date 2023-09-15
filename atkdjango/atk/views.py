@@ -414,7 +414,7 @@ def search(request,site,search='',category='',page=1,per_page=20,order=''):
                 err='empty search string'
                 return error(request,err)
     else:
-        if category not in ['name','tags','pob','age']:
+        if category not in ['uname','name','tags','pob','age']:
             err='unrecognized search category: ' + category
             return error(request,err,site)
         if len(search) < 3 and category!='age':
@@ -433,11 +433,13 @@ def search(request,site,search='',category='',page=1,per_page=20,order=''):
             order_by=(order,*order_by)
         if site=='search':
             query_filter = str(category + '__icontains')
+            if category in ['uname']:
+                query_filter = str('name' + '__icontains')
             query = ''
-            if category in ['tags','pob','age']:
-                query = AllBabe_view.objects.filter(**{ query_filter: search },likes__gte=-1).order_by(*order_by)
-            elif category in ['name']:
+            if category in ['uname']:
                 query = Atk_toppic.objects.filter(**{ query_filter: search },likes__gte=-1).order_by(*order_by)
+            else:
+                query = AllBabe_view.objects.filter(**{ query_filter: search },likes__gte=-1).order_by(*order_by)
             #TODO: put filter into variable and have one query
             if order=='-age' or order=='age':
                 #filter_conditions = { **{ query_filter: search }, "likes__gte": -1, "age__regex": r'^[0-9]*$' }            
