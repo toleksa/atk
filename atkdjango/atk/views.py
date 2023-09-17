@@ -435,12 +435,11 @@ def search(request,site,search='',category='',page=1,per_page=20,order=''):
             if category in ['uname']:
                 query = Atk_toppic.objects.filter(name__icontains=search,likes__gte=-1).order_by(*order_by)
             else:
-                query_filter = str(category + '__icontains')
-                query = AllBabe_view.objects.filter(**{ query_filter: search },likes__gte=-1).order_by(*order_by)
+                filters = {str(category + '__icontains'): search}
+                filters['likes__gte'] = -1
                 if order=='-age' or order=='age':
-                    #TODO: put filter into variable and have one query
-                    #filter_conditions = { **{ query_filter: search }, "likes__gte": -1, "age__regex": r'^[0-9]*$' }
-                    query = AllBabe_view.objects.filter(**{ query_filter: search },likes__gte=-1,age__regex=r'^[0-9]*$').order_by(*order_by)
+                    filters['age__regex'] = r'^[0-9]*$'
+                query = AllBabe_view.objects.filter(**filters).order_by(*order_by)
             babes = query[offset:offset+per_page]
             numResults = len(query)
             if not babes:
