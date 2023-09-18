@@ -432,14 +432,18 @@ def search(request,site,search='',category='',page=1,per_page=20,order=''):
             #order_by=(str(F('age').asc(nulls_last=True)),*order_by)
             order_by=(order,*order_by)
         if site=='search':
+            filters = {str(category + '__icontains'): search}
             if category in ['uname']:
-                query = Atk_toppic.objects.filter(name__icontains=search,likes__gte=-1).order_by(*order_by)
+                filters = {str('name' + '__icontains'): search}
+            filters['likes__gte'] = -1
+            if order=='-age' or order=='age':
+                filters['age__regex'] = r'^[0-9]*$'
+
+            if category in ['uname']:
+                query = Atk_toppic.objects.filter(**filters).order_by(*order_by)
             else:
-                filters = {str(category + '__icontains'): search}
-                filters['likes__gte'] = -1
-                if order=='-age' or order=='age':
-                    filters['age__regex'] = r'^[0-9]*$'
                 query = AllBabe_view.objects.filter(**filters).order_by(*order_by)
+
             babes = query[offset:offset+per_page]
             numResults = len(query)
             if not babes:
