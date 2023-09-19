@@ -288,13 +288,16 @@ def top(request,site,page=1,votemonth=0):
         
         if site=='allmodel':
             per_page=100
-            liked = AllBabe_view.objects.values('name').annotate(vote=Sum('totallikes')).order_by('-vote')[(page-1)*per_page:page*per_page]
-            babes = []
-            for like in liked:
-                #TODO: this is ugly as fuck
-                babee = list(AllBabe_view.objects.filter(name=like['name']).order_by('-totallikes')[0:1])
-                for babe in babee:
-                    babes.append(babe) 
+            #liked = AllBabe_view.objects.values('name').annotate(vote=Sum('totallikes')).order_by('-vote')[(page-1)*per_page:page*per_page]
+            #babes = []
+            #for like in liked:
+            #    #TODO: this is ugly as fuck
+            #    babee = list(AllBabe_view.objects.filter(name=like['name']).order_by('-totallikes')[0:1])
+            #    for babe in babee:
+            #        babes.append(babe) 
+            babes = Atk_toppic.objects.order_by('-vote','-likes','-duellikes','-monthlikes')[(page-1)*per_page:page*per_page]
+            #TODO: this should be removed from template
+            liked = babes
 
         if site=='allscore':
             per_page=100

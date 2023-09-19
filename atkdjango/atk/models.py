@@ -115,6 +115,7 @@ class Atk_toppic(models.Model):
     duellikes = models.IntegerField(default=0)
     totallikes = models.IntegerField(default=0)
     maxlikes = models.IntegerField(default=0)
+    vote = models.IntegerField(default=0)
     class Meta:
         managed = False
         db_table = "atk_toppic"
