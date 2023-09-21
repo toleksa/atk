@@ -435,10 +435,16 @@ def search(request,site,search='',category='',page=1,per_page=20,order=''):
             #order_by=(str(F('age').asc(nulls_last=True)),*order_by)
             order_by=(order,*order_by)
         if site=='search':
-            filters = {str(category + '__icontains'): search}
+            filter_category = category
             if category in ['uname']:
-                filters = {str('name' + '__icontains'): search}
-            filters['likes__gte'] = -1
+                filter_category = 'name'
+            filter_criteria = '__icontains'
+            filter_search = search
+            if search.startswith("^"):
+                filter_criteria = '__istartswith'
+                filter_search = search.replace("^","")
+
+            filters = {str(filter_category + filter_criteria): filter_search, 'likes__gte': -1}
             if order=='-age' or order=='age':
                 filters['age__regex'] = r'^[0-9]*$'
 
