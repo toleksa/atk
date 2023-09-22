@@ -429,12 +429,25 @@ def search(request,site,search='',category='',page=1,per_page=20,order=''):
     show_search_sort=''
     show_sort=''
     try:
+        babes = []
+        page_title = site.capitalize()
         order_by=('-date','site','-id')
         if order!='':
             #TODO: .asc() should help with #24 - copied from def stats()
             #order_by=(str(F('age').asc(nulls_last=True)),*order_by)
             order_by=(order,*order_by)
-        if site=='search':
+        filters = {}
+
+        if site=='debiut':
+            query = Atk_debiut.objects.order_by('-mindate')
+            babes = query[offset:offset+per_page]
+            numResults = len(query)
+        elif site=='lastvote':
+            lastVote = Vote.objects.filter(vote__gt=0,second__gt=0).order_by('-id').first()
+            babes = list(AllBabe_view.objects.filter(id=lastVote.vote))
+            babes += list(AllBabe_view.objects.filter(id=lastVote.second))
+            numResults = len(babes)
+        elif site=='search':
             filter_category = category
             if category in ['uname']:
                 filter_category = 'name'
@@ -444,76 +457,49 @@ def search(request,site,search='',category='',page=1,per_page=20,order=''):
                 filter_criteria = '__istartswith'
                 filter_search = search.replace("^","")
 
-            filters = {str(filter_category + filter_criteria): filter_search, 'likes__gte': -1}
             if order=='-age' or order=='age':
                 filters['age__regex'] = r'^[0-9]*$'
 
-            if category in ['uname']:
+            filters = {str(filter_category + filter_criteria): filter_search, 'likes__gte': -1}
+
+            page_title = category + ":" + search
+            show_search_sort='true'
+        elif site in ['exotics','hairy','galleria','blog']:
+            filters = {'site': site, 'likes__gte': 0}
+            show_sort='true'
+        elif site=='allsites':
+            filters = {'likes__gte': 0}
+            show_sort='true'
+        elif site=='hidden':
+            filters = {'likes': -1}
+            show_sort='true'
+        elif site=='banned':
+            filters = {'likes__lt': -1}
+            show_sort='true'
+        elif site=='alles':
+            show_sort='true'
+        elif site=='novote':
+            filters = {'likes': 0, 'duellikes': 0, 'monthlikes': 0}
+        elif site=='nolikes':
+            filters = {'likes': 0}
+        elif site=='models':
+            order_by=('name',*order_by)
+
+        else:
+            return error(request,'wrong site|se5hsfwdwz')
+
+        if babes == []:
+            if category in ['uname'] or site in ['models']:
                 query = Atk_toppic.objects.filter(**filters).order_by(*order_by)
             else:
                 query = AllBabe_view.objects.filter(**filters).order_by(*order_by)
 
             babes = query[offset:offset+per_page]
             numResults = len(query)
-            if not babes:
-                modeldetail=get_modeldetails(search,babes.count())
-            page_title = category + ":" + search
-            show_search_sort='true'
-        elif site in ['exotics','hairy','galleria','blog']:
-            babes = AllBabe_view.objects.filter(site=site,likes__gte=0).order_by(*order_by)[offset:offset+per_page]
-            numResults = AllBabe_view.objects.filter(site=site,likes__gte=0).count()
-            page_title = site.capitalize()
-            show_sort='true'
-        elif site=='allsites':
-            babes = AllBabe_view.objects.filter(likes__gte=0).order_by(*order_by)[offset:offset+per_page]
-            numResults = AllBabe_view.objects.filter(likes__gte=0).count()
-            show_sort='true'
-        elif site=='hidden':
-            babes = AllBabe_view.objects.filter(likes=-1).order_by(*order_by)[offset:offset+per_page]
-            numResults = AllBabe_view.objects.filter(likes=-1).count()
-            page_title = site.capitalize()
-            show_sort='true'
-        elif site=='banned':
-            babes = AllBabe_view.objects.filter(likes__lt=-1).order_by(*order_by)[offset:offset+per_page]
-            numResults = AllBabe_view.objects.filter(likes__lt=-1).count()
-            page_title = site.capitalize()
-            show_sort='true'
-        elif site=='alles':
-            babes = AllBabe_view.objects.order_by(*order_by)[offset:offset+per_page]
-            numResults = AllBabe_view.objects.count()
-            page_title = site.capitalize()
-            show_sort='true'
-        elif site=='novote':
-            query = AllBabe_view.objects.filter(likes=0,duellikes=0,monthlikes=0).order_by(*order_by)
-            babes = query[offset:offset+per_page]
-            numResults = len(query)
-            page_title = site.capitalize()
-        elif site=='nolikes':
-            query = AllBabe_view.objects.filter(likes=0).order_by(*order_by)
-            babes = query[offset:offset+per_page]
-            numResults = len(query)
-            page_title = site.capitalize()
-        elif site=='lastvote':
-            lastVote = Vote.objects.filter(vote__gt=0,second__gt=0).order_by('-id').first()
-            babes = list(AllBabe_view.objects.filter(id=lastVote.vote))
-            babes += list(AllBabe_view.objects.filter(id=lastVote.second))
-            numResults = len(babes)
-            page_title = site.capitalize()
-        elif site=='debiut':
-            query = Atk_debiut.objects.order_by('-mindate')
-            babes = query[offset:offset+per_page]
-            numResults = len(query)
-            page_title = site.capitalize()
-        elif site=='models':
-            babes = []
-            query = AllBabe_view.objects.values('name').annotate(votes=Max('totallikes'))
-            result = query[offset:offset+per_page]
-            for babe in result:
-                babes.append(   AllBabe_view.objects.filter(name=babe['name'],totallikes=babe['votes']).first()    )
-            numResults = len(query)
-            page_title = site.capitalize()
-        else:
-            return error(request,'wrong site|se5hsfwdwz')
+        # if no results, display search-links modules
+        if not babes:
+            modeldetail=get_modeldetails(search,babes.count())
+
     except ObjectDoesNotExist:
         err='babe not found'
         return error(request,err)
