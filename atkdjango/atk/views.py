@@ -401,7 +401,7 @@ def search(request,site,search='',category='',page=1,per_page=20,order=''):
         err='site not found|syvffserck|' + site
         return error(request,err,site)
     if order!='':
-        if order not in ['-date','date','-id','id','-site','site','-age','age','-likes','likes','-monthlikes','monthlikes','-totallikes','totallikes','-duellikes','duellikes']:
+        if order not in ['-date','date','-id','id','-site','site','-age','age','-likes','likes','-monthlikes','monthlikes','-totallikes','totallikes','-duellikes','duellikes','-name','name']:
             err='order keyword: ' + order + ' not recognized|43f3gf3wwg5'
             return error(request,err,site)
     if search=='':
