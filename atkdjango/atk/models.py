@@ -120,6 +120,29 @@ class Atk_toppic(models.Model):
         managed = False
         db_table = "atk_toppic"
 
+class Atk_top_duel(models.Model):
+    id = models.IntegerField(primary_key=True, unique=True)
+    date = models.CharField(max_length=8, default=None, blank=True, null=True)
+    name = models.CharField(max_length=50, default=None, blank=True, null=True)
+    site = models.CharField(max_length=8, default=None, blank=True, null=True)
+    gallery = models.CharField(max_length=100, default=None, blank=True, null=True)
+    model = models.CharField(max_length=100, default=None, blank=True, null=True)
+    file = models.ImageField(upload_to='pics')
+    tn = models.ImageField(upload_to='pics')
+    age = models.IntegerField(default=None, blank=True, null=True)
+    pob = models.CharField(max_length=50, default=None, blank=True, null=True)
+    occ = models.CharField(max_length=50, default=None, blank=True, null=True)
+    tags = models.CharField(max_length=1000, default=None, blank=True, null=True)
+    likes = models.IntegerField(default=0)
+    monthlikes = models.IntegerField(default=0)
+    duellikes = models.IntegerField(default=0)
+    totallikes = models.IntegerField(default=0)
+    maxlikes = models.IntegerField(default=0)
+    vote = models.IntegerField(default=0)
+    class Meta:
+        managed = False
+        db_table = "atk_top_duel"
+
 class Vote(models.Model):
     id = models.IntegerField(primary_key=True, unique=True)
     date = models.DateTimeField(auto_now_add=True)

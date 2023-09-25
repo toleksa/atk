@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpRequest
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Count, F, Sum, Lookup, Field, Max, Min
 from django.db.models.query import QuerySet
-from .models import Babe, SiteBabe, AllBabe, AllBabe_view, Vote, Novote, AllScore, BestScore, ExternalSite, Atk_debiut, Atk_toppic
+from .models import Babe, SiteBabe, AllBabe, AllBabe_view, Vote, Novote, AllScore, BestScore, ExternalSite, Atk_debiut, Atk_toppic, Atk_top_duel
 import os
 import random
 import datetime
@@ -325,13 +325,17 @@ def top(request,site,page=1,votemonth=0):
 
         if site=='dueltopmodel':
             per_page=100
-            liked = AllBabe_view.objects.values('name').annotate(vote=Sum('duellikes')).order_by('-vote')[(page-1)*per_page:page*per_page]
-            babes = []
-            for like in liked:
-                #TODO: this is ugly as fuck
-                babee = list(AllBabe_view.objects.filter(name=like['name']).order_by('-duellikes')[0:1])
-                for babe in babee:
-                    babes.append(babe)
+            #liked = AllBabe_view.objects.values('name').annotate(vote=Sum('duellikes')).order_by('-vote')[(page-1)*per_page:page*per_page]
+            #babes = []
+            #for like in liked:
+            #    #TODO: this is ugly as fuck
+            #    babee = list(AllBabe_view.objects.filter(name=like['name']).order_by('-duellikes')[0:1])
+            #    for babe in babee:
+            #        babes.append(babe)
+            babes = Atk_top_duel.objects.order_by('-vote','-likes','-duellikes','-monthlikes')[(page-1)*per_page:page*per_page]
+            #TODO: this should be removed from template
+            liked = babes
+
 
         if site=='monthmodel':
             per_page=100
