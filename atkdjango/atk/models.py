@@ -97,7 +97,7 @@ class Atk_debiut(models.Model):
         managed = False
         db_table = "atk_debiut"
 
-class Atk_toppic(models.Model):
+class Atk_top_total(models.Model):
     id = models.IntegerField(primary_key=True, unique=True)
     date = models.CharField(max_length=8, default=None, blank=True, null=True)
     name = models.CharField(max_length=50, default=None, blank=True, null=True)
@@ -118,7 +118,7 @@ class Atk_toppic(models.Model):
     vote = models.IntegerField(default=0)
     class Meta:
         managed = False
-        db_table = "atk_toppic"
+        db_table = "atk_top_total"
 
 class Atk_top_duel(models.Model):
     id = models.IntegerField(primary_key=True, unique=True)
