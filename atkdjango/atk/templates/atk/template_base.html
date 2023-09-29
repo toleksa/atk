@@ -771,7 +771,7 @@
                   {% for vote in topvotes %}
                     {% if vote.name == babe.name %}
                       {% if site == 'bestscore/top' or site == 'allscore/top' %}
-                        Score: {{ vote.vote }}
+                        Score: {{ vote.score }}
                       {% else %}
                         Total likes: {{ vote.vote }}
                       {% endif %}
