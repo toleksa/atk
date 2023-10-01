@@ -288,26 +288,12 @@ def top(request,site,page=1,votemonth=0):
         
         if site=='allmodel':
             per_page=100
-            #liked = AllBabe_view.objects.values('name').annotate(vote=Sum('totallikes')).order_by('-vote')[(page-1)*per_page:page*per_page]
-            #babes = []
-            #for like in liked:
-            #    #TODO: this is ugly as fuck
-            #    babee = list(AllBabe_view.objects.filter(name=like['name']).order_by('-totallikes')[0:1])
-            #    for babe in babee:
-            #        babes.append(babe) 
             babes = Atk_top_total.objects.order_by('-vote','-likes','-duellikes','-monthlikes')[(page-1)*per_page:page*per_page]
             #TODO: this should be removed from template
             liked = babes
 
         if site=='allscore':
             per_page=100
-            #liked = AllScore.objects.values('name','vote')[(page-1)*per_page:page*per_page]
-            #babes = []
-            #for like in liked:
-            #    #TODO: this is ugly as fuck
-            #    babee = list(AllBabe_view.objects.filter(name=like['name']).order_by('-totallikes')[0:1])
-            #    for babe in babee:
-            #        babes.append(babe)
             babes = Atk_top_total.objects.order_by('-score','-vote','-likes','-duellikes','-monthlikes')[(page-1)*per_page:page*per_page]
             #TODO: this should be removed from template
             liked = babes
@@ -318,53 +304,24 @@ def top(request,site,page=1,votemonth=0):
 
         if site=='liked':
             per_page=100
-            #liked = AllBabe_view.objects.values('name').annotate(vote=Sum('likes')).order_by('-vote')[(page-1)*per_page:page*per_page]
-            #babes = []
-            #for like in liked:
-            #    #TODO: this is ugly as fuck
-            #    babee = list(AllBabe_view.objects.filter(name=like['name']).order_by('-likes')[0:1])
-            #    for babe in babee:
-            #        babes.append(babe)
             babes = Atk_top_likes.objects.order_by('-vote','-likes','-duellikes','-monthlikes')[(page-1)*per_page:page*per_page]
             #TODO: this should be removed from template
             liked = babes
 
         if site=='dueltopmodel':
             per_page=100
-            #liked = AllBabe_view.objects.values('name').annotate(vote=Sum('duellikes')).order_by('-vote')[(page-1)*per_page:page*per_page]
-            #babes = []
-            #for like in liked:
-            #    #TODO: this is ugly as fuck
-            #    babee = list(AllBabe_view.objects.filter(name=like['name']).order_by('-duellikes')[0:1])
-            #    for babe in babee:
-            #        babes.append(babe)
             babes = Atk_top_duel.objects.order_by('-vote','-likes','-duellikes','-monthlikes')[(page-1)*per_page:page*per_page]
             #TODO: this should be removed from template
             liked = babes
 
-
         if site=='monthmodel':
             per_page=100
-            #liked = AllBabe_view.objects.values('name').annotate(vote=Sum('monthlikes')).order_by('-vote')[(page-1)*per_page:page*per_page]
-            #babes = []
-            #for like in liked:
-            #    #TODO: this is ugly as fuck
-            #    babee = list(AllBabe_view.objects.filter(name=like['name']).order_by('-monthlikes')[0:1])
-            #    for babe in babee:
-            #        babes.append(babe)
             babes = Atk_top_month.objects.order_by('-vote','-likes','-duellikes','-monthlikes')[(page-1)*per_page:page*per_page]
             #TODO: this should be removed from template
             liked = babes
 
         if site=='bestscore':
             per_page=100
-            #liked = BestScore.objects.values('name','vote')[(page-1)*per_page:page*per_page]
-            #babes = []
-            #for like in liked:
-            #    #TODO: this is ugly as fuck
-            #    babee = list(AllBabe_view.objects.filter(name=like['name']).order_by('-likes')[0:1])
-            #    for babe in babee:
-            #        babes.append(babe)
             babes = Atk_top_likes.objects.order_by('-score','-vote','-likes','-duellikes','-monthlikes')[(page-1)*per_page:page*per_page]
             #TODO: this should be removed from template
             liked = babes
