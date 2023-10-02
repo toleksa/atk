@@ -767,16 +767,10 @@
                 Age: {{ babe.age }}<br>
             {% endif %}
             {% block likesblock %}
-                {% if topvotes %}
-                  {% for vote in topvotes %}
-                    {% if vote.name == babe.name %}
-                      {% if site == 'bestscore/top' or site == 'allscore/top' %}
-                        Score: {{ vote.score }}
-                      {% else %}
-                        Total likes: {{ vote.vote }}
-                      {% endif %}
-                    {% endif %}
-                  {% endfor %}
+                {% if site == 'bestscore/top' or site == 'allscore/top' %}
+                  Score: {{ babe.score }}
+                {% elif site == 'allmodel/top' or site == 'liked/top' or site == 'dueltopmodel/top' or site == 'monthmodel/top' %}
+                  Total likes: {{ babe.vote }}
                 {% else %}
                   Likes: {{ babe.likes }} Duel: {{ babe.duellikes }} Month: {{ babe.monthlikes }}
                   {% if babe.totallikes %}

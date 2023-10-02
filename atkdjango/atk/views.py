@@ -289,14 +289,10 @@ def top(request,site,page=1,votemonth=0):
         if site=='allmodel':
             per_page=100
             babes = Atk_top_total.objects.order_by('-vote','-likes','-duellikes','-monthlikes')[(page-1)*per_page:page*per_page]
-            #TODO: this should be removed from template
-            liked = babes
 
         if site=='allscore':
             per_page=100
             babes = Atk_top_total.objects.order_by('-score','-vote','-likes','-duellikes','-monthlikes')[(page-1)*per_page:page*per_page]
-            #TODO: this should be removed from template
-            liked = babes
 
         if site=='monthpic':
             per_page=100
@@ -305,26 +301,18 @@ def top(request,site,page=1,votemonth=0):
         if site=='liked':
             per_page=100
             babes = Atk_top_likes.objects.order_by('-vote','-likes','-duellikes','-monthlikes')[(page-1)*per_page:page*per_page]
-            #TODO: this should be removed from template
-            liked = babes
 
         if site=='dueltopmodel':
             per_page=100
             babes = Atk_top_duel.objects.order_by('-vote','-likes','-duellikes','-monthlikes')[(page-1)*per_page:page*per_page]
-            #TODO: this should be removed from template
-            liked = babes
 
         if site=='monthmodel':
             per_page=100
             babes = Atk_top_month.objects.order_by('-vote','-likes','-duellikes','-monthlikes')[(page-1)*per_page:page*per_page]
-            #TODO: this should be removed from template
-            liked = babes
 
         if site=='bestscore':
             per_page=100
             babes = Atk_top_likes.objects.order_by('-score','-vote','-likes','-duellikes','-monthlikes')[(page-1)*per_page:page*per_page]
-            #TODO: this should be removed from template
-            liked = babes
 
         if site=='age':
             per_page=100
