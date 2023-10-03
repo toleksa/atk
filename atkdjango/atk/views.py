@@ -566,16 +566,6 @@ def get_modeldetails(model,babes_count=1):
     modeldetail['wikifeet_name'] = model.replace(' ','_')
     return modeldetail
 
-def tag(request,tag,page=1,per_page=10):
-    offset = (page - 1) * per_page
-    try:
-        babes = AllBabe.objects.filter(tags__icontains=tag).order_by('-date','-id')
-    except ObjectDoesNotExist:
-        err='babe not found'
-        return error(request,err,site)
-    response = sitedisplay(request,babes,'allsites')
-    return HttpResponse(response)
-
 def atksite(request,site,page=1,per_page=10):
     if site not in ['allsites','exotics','hairy','galleria','blog']:
         err='site not found'

@@ -32,8 +32,6 @@ urlpatterns = [
     path('search/<str:category>/<str:search>/<str:order>/', views.search, {'site': 'search'}),
     path('search/<str:category>/<str:search>/<str:order>/page/<int:page>/', views.search, {'site': 'search'}),
     path('search/', views.search, {'site': 'search'}),
-    #path('tag/<str:search>/page/<int:page>/', views.search, {'site': 'tag'}),
-    #path('tag/<str:search>/', views.search, {'site': 'tag'}),
     path('stats/', views.stats),
     path('random/', views.siterandom),
     path('randomnovotes/', views.randomnovotes),
