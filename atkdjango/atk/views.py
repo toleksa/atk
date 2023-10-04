@@ -178,6 +178,9 @@ def vote(request,site,vote='',second='',num=''):
 def duel(request,site):
     if site=='duel' or site=='duelduel' or site=='month' or site=='novotes':
         votemonth = get_votemonth()
+        if votemonth == -1:
+            err = 'All months are closed for now'
+            return error(request,err)
         maxnum=-1
         numvotes=''
         page_title=''
@@ -657,16 +660,17 @@ class NotEqual(Lookup):
         return '%s <> %s' % (lhs, rhs), params
 
 def get_votemonth():
+    # manually set votemonth
+    #return '1603'
+
     counter=1
     while True:
         currentDate = datetime.datetime.now() - relativedelta(months=counter)
-        #currentDate = datetime.datetime.now() - relativedelta(months=20)
         votemonth = currentDate.strftime("%y%m")
         monthvotes = Vote.objects.values('vote').filter(votemonth=votemonth).count()
         if monthvotes < 500:
             return votemonth
-        # don't show older, and prevent infinite loop
-        if votemonth == '1301':
-            return votemonth
+        # don't go older than 2013, and prevent infinite loop
+        if votemonth == '1212':
+            return -1
         counter+=1
-        #TODO: maybe additional condition to break infinite loop
