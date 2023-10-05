@@ -447,9 +447,7 @@ def search(request,site,search='',category='',page=1,per_page=20,order=''):
         elif site=='nolikes':
             filters = {'likes': 0}
         elif site=='models':
-            if order== '':
-                order_by=('name',*order_by)
-            show_sort='true'
+            order_by=('name',*order_by)
 
         else:
             return error(request,'wrong site|se5hsfwdwz')
