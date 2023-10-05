@@ -447,7 +447,9 @@ def search(request,site,search='',category='',page=1,per_page=20,order=''):
         elif site=='nolikes':
             filters = {'likes': 0}
         elif site=='models':
-            order_by=('name',*order_by)
+            if order== '':
+                order_by=('name',*order_by)
+            show_sort='true'
 
         else:
             return error(request,'wrong site|se5hsfwdwz')
@@ -649,6 +651,7 @@ def get_ip(request):
     #return ipaddress
     return request.META.get('HTTP_X_FORWARDED_FOR', request.META.get('REMOTE_ADDR', '')).split(',')[-1].strip()
 
+#TODO: probably unused
 @Field.register_lookup
 class NotEqual(Lookup):
     lookup_name = 'ne'
