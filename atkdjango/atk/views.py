@@ -555,6 +555,7 @@ def get_modeldetails(model,babes_count=1):
         modeldetail['avg_monthlikes'] = round(modeldetail['monthlikes__sum'] / babes_count,2)
         modeldetail['avg_totallikes'] = round(modeldetail['totallikes__sum'] / babes_count,2)
         modeldetail['total_place'] = Atk_top_total.objects.filter(vote__gt=modeldetail['totallikes__sum']).count() + 1
+        modeldetail['all_models'] = Atk_top_total.objects.count()
     except:
         result="didn't work, LOL"
     modelurls=''

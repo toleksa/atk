@@ -694,7 +694,8 @@
             Total Likes: {{ modeldetail.likes__sum }} ({{ modeldetail.avg_likes}}) <br>
             Duel Likes: {{ modeldetail.duellikes__sum }} ({{ modeldetail.avg_duellikes}}) <br>
             Month Likes: {{ modeldetail.monthlikes__sum }} ({{ modeldetail.avg_monthlikes}}) <br>
-            Total Likes: {{ modeldetail.totallikes__sum }} / {{ modeldetail.total_place }} ({{ modeldetail.avg_totallikes}}) <br>
+            Total Likes: {{ modeldetail.totallikes__sum }} [{{ modeldetail.total_place }}/{{ modeldetail.all_models }}]<br>
+            Allscore: ({{ modeldetail.avg_totallikes}}) <br>
             Galleries: {{ babes|length }}
             {% if photo_num != babes|length %}
               ({{photo_num}})
