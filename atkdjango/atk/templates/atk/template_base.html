@@ -58,6 +58,9 @@
         font-size: 30px;
         color: #1E90FF;
       }
+      td {
+        padding: 0px
+      }
       h1 {
         font-family: 'Pacifico', serif;
         font-size: 40px;
@@ -691,15 +694,17 @@
                 {% endif %}
             </td><td style="width: 18%; vertical-align:top">
             Model: <span id="modelName" onClick="copyToClipboard()">{{ modeldetail.original_name }}</span><br>
-            Total Likes: {{ modeldetail.likes__sum }} ({{ modeldetail.avg_likes}}) <br>
-            Duel Likes: {{ modeldetail.duellikes__sum }} ({{ modeldetail.avg_duellikes}}) <br>
-            Month Likes: {{ modeldetail.monthlikes__sum }} ({{ modeldetail.avg_monthlikes}}) <br>
-            Total Likes: {{ modeldetail.totallikes__sum }} [{{ modeldetail.total_place }}]<br>
-            Allscore: ({{ modeldetail.avg_totallikes}}) [{{ modeldetail.allscore_place }}]<br>
-            Galleries: {{ babes|length }}
+            <table border=0>
+            <tr><td>Total Likes:</td><td>{{ modeldetail.likes__sum }}</td><td>({{ modeldetail.avg_likes}})</td></tr>
+            <tr><td>Duel Likes:</td><td>{{ modeldetail.duellikes__sum }}</td><td>({{ modeldetail.avg_duellikes}})</td></tr>
+            <tr><td>Month Likes:</td><td>{{ modeldetail.monthlikes__sum }}</td><td>({{ modeldetail.avg_monthlikes}})</td></tr>
+            <tr><td>Total Likes:</td><td>{{ modeldetail.totallikes__sum }}</td><td>({{ modeldetail.avg_totallikes}})</td></tr>
+            <tr><td>Allplace:</td><td><center>[{{ modeldetail.total_place }}]</center></td><td><center>[{{ modeldetail.allscore_place }}]</center></td></tr>
+            <tr><td>Galleries:</td><td>{{ babes|length }}</td><td>
             {% if photo_num != babes|length %}
               ({{photo_num}})
-            {% endif %}
+            {% endif %}</td></tr>
+            </table>
             <br>
             <table><tr><td style="vertical-align:top">
             <details>
