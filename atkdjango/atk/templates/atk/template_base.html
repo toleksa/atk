@@ -684,7 +684,7 @@
 {% if babes %}
     {% block modeldetail %}
         {% if modeldetail %}
-            <table><tr><td width="12%">
+            <table><tr><td width="14%">
             <a href='/atk/num/{{ modeldetail.topphoto.id }}'><img style="width:100%"  src=
                 {% if modeldetail.topphoto.site == "blog" %}
                     {% load plus_to_slash %}
@@ -692,10 +692,11 @@
                 {% else %}
                     'http://www.atkmodels.com/{{ modeldetail.topphoto.site }}/img/content/{{ modeldetail.topphoto.date }}_7.jpg'></a>
                 {% endif %}
-            </td><td style="width: 18%; vertical-align:top">
+            </td><td style="width: 16%; vertical-align:top">
             Model: <span id="modelName" onClick="copyToClipboard()">{{ modeldetail.original_name }}</span><br>
             <table border=0>
             <tr><td>Total Likes:</td><td>{{ modeldetail.likes__sum }}</td><td>({{ modeldetail.avg_likes}})</td></tr>
+            <tr><td>Place:</td><td><center>[{{ modeldetail.likes_place }}]</center></td><td><center>[{{ modeldetail.score_place }}]</center></td></tr>
             <tr><td>Duel Likes:</td><td>{{ modeldetail.duellikes__sum }}</td><td>({{ modeldetail.avg_duellikes}})</td></tr>
             <tr><td>Month Likes:</td><td>{{ modeldetail.monthlikes__sum }}</td><td>({{ modeldetail.avg_monthlikes}})</td></tr>
             <tr><td>Total Likes:</td><td>{{ modeldetail.totallikes__sum }}</td><td>({{ modeldetail.avg_totallikes}})</td></tr>

@@ -551,6 +551,8 @@ def get_modeldetails(model,babes_count=1):
     try:
         modeldetail['topphoto'] = list(AllBabe.objects.filter(name=model).order_by('-likes')[0:1])[0]
         modeldetail['avg_likes'] = round(modeldetail['likes__sum'] / babes_count,2)
+        modeldetail['likes_place'] = Atk_top_likes.objects.filter(vote__gt=modeldetail['likes__sum']).count() + 1
+        modeldetail['score_place'] = Atk_top_likes.objects.filter(score__gt=modeldetail['avg_likes']).count() + 1
         modeldetail['avg_duellikes'] = round(modeldetail['duellikes__sum'] / babes_count,2)
         modeldetail['avg_monthlikes'] = round(modeldetail['monthlikes__sum'] / babes_count,2)
         modeldetail['avg_totallikes'] = round(modeldetail['totallikes__sum'] / babes_count,2)
