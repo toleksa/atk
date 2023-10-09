@@ -486,7 +486,7 @@ def search(request,site,search='',category='',page=1,per_page=20,order=''):
     response = template.render(context, request)
     return HttpResponse(response)
 
-def model(request,model,filter='none',sort='none',page=1,per_page=10):
+def model(request,model,filter='none',details=False,sort='none',page=1,per_page=10):
     site='allsites'
     if sort not in ['none', 'likes','duellikes','monthlikes','totallikes']:
         err='order sort: ' + sort + ' not recognized|564ye45tge'
@@ -522,7 +522,7 @@ def model(request,model,filter='none',sort='none',page=1,per_page=10):
     photo_num=babes.count()
     if filter != 'none':
         photo_num=len(AllBabe.objects.filter(name=model))
-    modeldetail=get_modeldetails(model,photo_num)
+    modeldetail=get_modeldetails(model,photo_num,details)
     template = loader.get_template('atk/template_base.html')
     context = {
         'babes': babes,
@@ -536,7 +536,7 @@ def model(request,model,filter='none',sort='none',page=1,per_page=10):
     #response = sitedisplay(request,babes,site,page,'atk/likes.html')
     return HttpResponse(response)
 
-def get_modeldetails(model,babes_count=1):
+def get_modeldetails(model,babes_count=1,details=False):
     modeldetail={}
     modeldetail = AllBabe.objects.filter(name=model).aggregate(Sum('likes'))
     modeldetail['monthlikes__sum']=AllBabe.objects.filter(name=model).aggregate(Sum('monthlikes'))['monthlikes__sum']
@@ -551,14 +551,14 @@ def get_modeldetails(model,babes_count=1):
     try:
         modeldetail['topphoto'] = list(AllBabe.objects.filter(name=model).order_by('-likes')[0:1])[0]
         modeldetail['avg_likes'] = round(modeldetail['likes__sum'] / babes_count,2)
-        modeldetail['likes_place'] = Atk_top_likes.objects.filter(vote__gt=modeldetail['likes__sum']).count() + 1
-        modeldetail['score_place'] = Atk_top_likes.objects.filter(score__gt=modeldetail['avg_likes']).count() + 1
         modeldetail['avg_duellikes'] = round(modeldetail['duellikes__sum'] / babes_count,2)
         modeldetail['avg_monthlikes'] = round(modeldetail['monthlikes__sum'] / babes_count,2)
         modeldetail['avg_totallikes'] = round(modeldetail['totallikes__sum'] / babes_count,2)
-        modeldetail['total_place'] = Atk_top_total.objects.filter(vote__gt=modeldetail['totallikes__sum']).count() + 1
-        modeldetail['allscore_place'] = Atk_top_total.objects.filter(score__gt=modeldetail['avg_totallikes']).count() + 1
-        modeldetail['all_models'] = Atk_top_total.objects.count()
+        if details:
+            modeldetail['likes_place'] = Atk_top_likes.objects.filter(vote__gt=modeldetail['likes__sum']).count() + 1
+            modeldetail['score_place'] = Atk_top_likes.objects.filter(score__gt=modeldetail['avg_likes']).count() + 1
+            modeldetail['total_place'] = Atk_top_total.objects.filter(vote__gt=modeldetail['totallikes__sum']).count() + 1
+            modeldetail['allscore_place'] = Atk_top_total.objects.filter(score__gt=modeldetail['avg_totallikes']).count() + 1
     except:
         result="didn't work, LOL"
     modelurls=''
