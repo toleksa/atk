@@ -500,6 +500,7 @@
       <a href="/atk/nolikes/">nolikes</a>
       <a href="/atk/debiut/">debiut</a>
       <a href="/atk/models/">models</a>
+      <a href="/atk/halloffame/">halloffame</a>
       <a href="/atk/age/top/">age</a>
       <a href='/atk/lastvote/'>lastvote</a>
       <a href='/atk/stats'>stats</a>
@@ -778,6 +779,8 @@
                   Score: {{ babe.score }}
                 {% elif site == 'allmodel/top' or site == 'liked/top' or site == 'dueltopmodel/top' or site == 'monthmodel/top' %}
                   Total likes: {{ babe.vote }}
+                {% elif site == 'halloffame' %}
+                  Count: {{ babe.count }} Total Likes: {{ babe.vote }} ({{ babe.score }})
                 {% else %}
                   Likes: {{ babe.likes }} Duel: {{ babe.duellikes }} Month: {{ babe.monthlikes }}
                   {% if babe.totallikes %}

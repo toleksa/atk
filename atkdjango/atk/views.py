@@ -361,7 +361,7 @@ def sitenum(request,num,site = 'allsites'):
 
 
 def search(request,site,search='',category='',page=1,per_page=20,order=''):
-    if site not in ['allsites','exotics','hairy','galleria','blog','search','hidden','banned','novote','nolikes','alles','lastvote','debiut','models']:
+    if site not in ['allsites','exotics','hairy','galleria','blog','search','hidden','banned','novote','nolikes','alles','lastvote','debiut','models','halloffame']:
         err='site not found|syvffserck|' + site
         return error(request,err,site)
     if order!='':
@@ -377,7 +377,7 @@ def search(request,site,search='',category='',page=1,per_page=20,order=''):
             url = '/atk/search/' + category + '/' + request.GET['name']
             return redirect(url)
         else:
-            if site not in ['allsites','exotics','hairy','galleria','blog','hidden','banned','novote','nolikes','alles','lastvote','debiut','models']:
+            if site not in ['allsites','exotics','hairy','galleria','blog','hidden','banned','novote','nolikes','alles','lastvote','debiut','models','halloffame']:
                 err='empty search string'
                 return error(request,err)
     else:
@@ -448,12 +448,14 @@ def search(request,site,search='',category='',page=1,per_page=20,order=''):
             filters = {'likes': 0}
         elif site=='models':
             order_by=('name',*order_by)
+        elif site=='halloffame':
+            order_by=('-count',*order_by)
 
         else:
             return error(request,'wrong site|se5hsfwdwz')
 
         if babes == []:
-            if category in ['uname'] or site in ['models']:
+            if category in ['uname'] or site in ['models','halloffame']:
                 query = Atk_top_total.objects.filter(**filters).order_by(*order_by)
             else:
                 query = AllBabe_view.objects.filter(**filters).order_by(*order_by)
