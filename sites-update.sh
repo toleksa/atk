@@ -11,7 +11,7 @@ for DAYS in `seq 0 3650`; do
     ERR=0
     for SITE in exotics galleria hairy
     do
-        LINK="http://www.atkmodels.com/$SITE/index.php?day=$DATE"
+        LINK="https://www.atkmodels.com/$SITE/index.php?day=$DATE"
         NAME=$(curl --silent "$LINK" | grep "for your pleasure" | gawk -F"we present" '{ print $2 }' | gawk -F"<b>" '{ print $2 }' | gawk -F"</b>" '{ print $1 }' | xargs)
         echo $DATE $SITE
         if [ "$NAME" != "" ]; then
