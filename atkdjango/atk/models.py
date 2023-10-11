@@ -193,6 +193,21 @@ class Atk_top_likes(models.Model):
         managed = False
         db_table = "atk_top_likes"
 
+class Atk_modeldetail(models.Model):
+    id = models.IntegerField(primary_key=True, unique=True)
+    name = models.CharField(max_length=50, default=None, blank=True, null=True)
+    likessum = models.IntegerField(default=0)
+    duellikessum = models.IntegerField(default=0)
+    monthlikessum = models.IntegerField(default=0)
+    totallikessum = models.IntegerField(default=0)
+    avg_likes = models.FloatField(default=0)
+    avg_duellikes = models.FloatField(default=0)
+    avg_monthlikes = models.FloatField(default=0)
+    avg_totallikes = models.FloatField(default=0)
+    class Meta:
+        managed = False
+        db_table = "atk_modeldetail"
+
 class Vote(models.Model):
     id = models.IntegerField(primary_key=True, unique=True)
     date = models.DateTimeField(auto_now_add=True)

@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpRequest
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Count, F, Sum, Lookup, Field, Max, Min
 from django.db.models.query import QuerySet
-from .models import Babe, SiteBabe, AllBabe, AllBabe_view, Vote, Novote, AllScore, BestScore, ExternalSite, Atk_debiut, Atk_top_total, Atk_top_duel, Atk_top_month, Atk_top_likes
+from .models import Babe, SiteBabe, AllBabe, AllBabe_view, Vote, Novote, AllScore, BestScore, ExternalSite, Atk_debiut, Atk_top_total, Atk_top_duel, Atk_top_month, Atk_top_likes, Atk_modeldetail
 import os
 import random
 import datetime
@@ -563,6 +563,30 @@ def get_modeldetails(model,babes_count=1,details=False):
             modeldetail['allscore_place'] = Atk_top_total.objects.filter(score__gt=modeldetail['avg_totallikes']).count() + 1
     except:
         result="didn't work, LOL"
+    #a=b
+
+#    #TODO: new method, unfinished
+#    modeldetail={}
+#    # ~480ms
+#    modeldetail = Atk_modeldetail.objects.filter(name=model).values()[0]
+#    # ~520ms
+#    try:
+#        modeldetail['blogdetails'] = list(AllBabe.objects.filter(name=model,site='blog').order_by('-date')[0:1])[0]
+#        modeldetail['blogdetails']=generate_tags2([modeldetail['blogdetails']])
+#    except:
+#        result="didn't work, LOL"
+#    # ~590ms
+#    modeldetail['topphoto'] = list(AllBabe.objects.filter(name=model).order_by('-likes')[0:1])[0]
+#    # ~800ms
+#    modeldetail['likes_place'] = Atk_top_likes.objects.filter(vote__gt=modeldetail['likessum']).count() + 1
+#    # 1050ms
+#    modeldetail['score_place'] = Atk_top_likes.objects.filter(score__gt=modeldetail['avg_likes']).count() + 1
+#    # 1250ms
+#    modeldetail['total_place'] = Atk_top_total.objects.filter(vote__gt=modeldetail['totallikessum']).count() + 1
+#    # 1500ms
+#    modeldetail['allscore_place'] = Atk_top_total.objects.filter(score__gt=modeldetail['avg_totallikes']).count() + 1
+#    #END
+
     modelurls=''
     try:
         modelurls = list(ExternalSite.objects.filter(name=model))[0].urls
