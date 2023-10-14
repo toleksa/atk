@@ -626,45 +626,7 @@
 
 {% block nav %}
     <center>
-    {% block navigator %}
-        {% if page > 1 %}
-            {% if search %}
-                {% if order %}
-                    <a href='/atk/{{ site }}/{{ category }}/{{ search }}/{{ order }}/page/{{ page|add:"-1" }}'>prev</a>
-                {% else %}
-                    <a href='/atk/{{ site }}/{{ category }}/{{ search }}/page/{{ page|add:"-1" }}'>prev</a>
-                {% endif %}
-            {% else %}
-                {% if order %}
-                  <a href='/atk/{{ site }}/{{ order }}/page/{{ page|add:"-1" }}'>prev</a>
-                {% else %}
-                  <a href='/atk/{{ site }}/page/{{ page|add:"-1" }}'>prev</a>
-                {% endif %}
-            {% endif %}
-        {% endif %}
-        <a href='/'>dash</a>
-        <a href='/atk/'>allsites</a>
-        {% if search %}
-        {% else %}
-            <a href='/atk/{{ site }}/'>home</a>
-        {% endif %}
-        {% if babes|length >= per_page %}
-            {% if search %}
-                {% if order %}
-                    <a href='/atk/{{ site }}/{{ category }}/{{ search }}/{{ order }}/page/{{ page|add:"+1" }}'>next</a>
-                {% else %}
-                    <a href='/atk/{{ site }}/{{ category }}/{{ search }}/page/{{ page|add:"+1" }}'>next</a>
-                {% endif %}
-            {% else %}
-                {% if order %}
-                  <a href='/atk/{{ site }}/{{ order }}/page/{{ page|add:"+1" }}'>next</a>
-                {% else %}
-                  <a href='/atk/{{ site }}/page/{{ page|add:"+1" }}'>next</a>
-                {% endif %}
-            {% endif %}
-        {% endif %}
-    {% endblock %}
-
+    {% include 'atk/navigator.html' %}
     <br>
     {% block navnumbers %}
         babes: {{ babes|length }}
@@ -874,25 +836,7 @@
 {% block footer %}
     <br>
     <center>
-
-    {% if page > 1 %}
-        {% if search %}
-            <a href='/atk/{{ site }}/{{ category }}/{{ search }}/page/{{ page|add:"-1" }}'>prev</a>
-        {% else %}
-            <a href='/atk/{{ site }}/page/{{ page|add:"-1" }}'>prev</a>
-        {% endif %}
-    {% endif %}
-    <a href='/'>dash</a>
-    <a href='/atk/'>allsites</a>
-    <a href='/atk/{{ site }}/'>home</a>
-    {% if babes|length >= per_page %}
-        {% if search %}
-            <a href='/atk/{{ site }}/{{ category }}/{{ search }}/page/{{ page|add:"+1" }}'>next</a>
-        {% else %}
-            <a href='/atk/{{ site }}/page/{{ page|add:"+1" }}'>next</a>
-        {% endif %}
-    {% endif %}
-
+    {% include 'atk/navigator.html' %}
     </center>
     <br>
     <br>

@@ -1,0 +1,39 @@
+    {% block navigator %}
+        {% if page > 1 %}
+            {% if search %}
+                {% if order %}
+                    <a href='/atk/{{ site }}/{{ category }}/{{ search }}/{{ order }}/page/{{ page|add:"-1" }}'>prev</a>
+                {% else %}
+                    <a href='/atk/{{ site }}/{{ category }}/{{ search }}/page/{{ page|add:"-1" }}'>prev</a>
+                {% endif %}
+            {% else %}
+                {% if order %}
+                  <a href='/atk/{{ site }}/{{ order }}/page/{{ page|add:"-1" }}'>prev</a>
+                {% else %}
+                  <a href='/atk/{{ site }}/page/{{ page|add:"-1" }}'>prev</a>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+        <a href='/'>dash</a>
+        <a href='/atk/'>allsites</a>
+        {% if search %}
+        {% else %}
+            <a href='/atk/{{ site }}/'>home</a>
+        {% endif %}
+        {% if babes|length >= per_page %}
+            {% if search %}
+                {% if order %}
+                    <a href='/atk/{{ site }}/{{ category }}/{{ search }}/{{ order }}/page/{{ page|add:"+1" }}'>next</a>
+                {% else %}
+                    <a href='/atk/{{ site }}/{{ category }}/{{ search }}/page/{{ page|add:"+1" }}'>next</a>
+                {% endif %}
+            {% else %}
+                {% if order %}
+                  <a href='/atk/{{ site }}/{{ order }}/page/{{ page|add:"+1" }}'>next</a>
+                {% else %}
+                  <a href='/atk/{{ site }}/page/{{ page|add:"+1" }}'>next</a>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    {% endblock %}
+
