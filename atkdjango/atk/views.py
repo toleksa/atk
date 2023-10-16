@@ -66,7 +66,7 @@ def stats(request):
     #return HttpResponse(ages)
     response += "<br>Ages:<br>"
     for age in ages:
-        response += "<a href='/atk/search/age/" + str(age['age']) + "'>" + str(age['age']) + "</a>" + " " + str(age['ncount']) + "[" + str(age['alllikes']) + "]" + "<br>"
+        response += "<a href='/atk/search/age/" + str(age['age']) + "'>" + str(age['age']) + "</a>" + " " + str(age['ncount']) + " [likes: " + str(age['alllikes']) + " (" + str(round(age['alllikes']/age['ncount'],2)) + ") ]" + "<br>"
     response += "<br>Votemonth<br>"
     votemonths = Vote.objects.values('votemonth').annotate(ncount=Count('votemonth')).order_by('-votemonth')
     for votemonth in votemonths:
