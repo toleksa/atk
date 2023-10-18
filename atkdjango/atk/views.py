@@ -65,9 +65,11 @@ def stats(request):
     ages = Babe.objects.values('age').annotate(ncount=Count('*'),alllikes=Sum('likes'),allmonthlikes=Sum('monthlikes'),allduellikes=Sum('duellikes')).order_by(F('age').asc(nulls_last=True))
     #return HttpResponse(ages)
     response += "<br>Ages:<br>"
+    response += "<table>"
     for age in ages:
         totallikes = age['alllikes']+age['allduellikes']+age['allmonthlikes']
-        response += "<a href='/atk/search/age/" + str(age['age']) + "'>" + str(age['age']) + "</a>" + " " + str(age['ncount']) + " [likes: " + str(age['alllikes']) + " (" + str(round(age['alllikes']/age['ncount'],2)) + ") totallikes: " + str(totallikes) + " (" + str(round(totallikes/age['ncount'],2)) + ")" + "]" + "<br>"
+        response += "<tr><td><a href='/atk/search/age/" + str(age['age']) + "'>" + str(age['age']) + "</a></td><td>" + str(age['ncount']) + "</td><td>[likes: " + str(age['alllikes']) + " (" + str(round(age['alllikes']/age['ncount'],2)) + ")</td><td>totallikes: " + str(totallikes) + " (" + str(round(totallikes/age['ncount'],2)) + ")" + "]</td></tr>"
+    response += "</table>"
     response += "<br>Votemonth<br>"
     votemonths = Vote.objects.values('votemonth').annotate(ncount=Count('votemonth')).order_by('-votemonth')
     for votemonth in votemonths:
