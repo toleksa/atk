@@ -62,14 +62,15 @@ def stats(request):
     liked = AllBabe.objects.values('name').annotate(ssum=Sum('likes')).order_by('-ssum')[0:100]
     for like in liked:
         response += str(like['ssum']) + " <a href='/atk/model/" + like['name'] + "/'>" + like['name'] + "</a><br>"
+    response += "</br>"
     ages = Babe.objects.values('age').annotate(ncount=Count('*'),alllikes=Sum('likes'),allmonthlikes=Sum('monthlikes'),allduellikes=Sum('duellikes')).order_by(F('age').asc(nulls_last=True))
     ages_likes = Babe.objects.aggregate(Sum('likes'))['likes__sum']
     ages_totallikes = Babe.objects.aggregate(ages_totallikes=Sum(F('likes') + F('duellikes') + F('monthlikes') ))['ages_totallikes']
     response += "<table><th>Age</th><th>Count</th><th>Likes</th><th>Avg</th><th>%</th><th>Total</th><th>Avg</th><th>%</th>"
-    response += "<br>Ages:<br>"
     for age in ages:
         totallikes = age['alllikes']+age['allduellikes']+age['allmonthlikes']
         response += "<tr align='right'><td><a href='/atk/search/age/" + str(age['age']) + "'>" + str(age['age']) + "</a></td><td>" + str(age['ncount']) + "</td><td>" + str(age['alllikes']) + "</td><td>" + str(round(age['alllikes']/age['ncount'],2)) + "</td><td>" + str( round( (age['alllikes'] / ages_likes) * 100,2)) + "%</td><td>" + str(totallikes) + "</td><td>" + str(round(totallikes/age['ncount'],2)) + "</td><td>" + str( round( (totallikes / ages_totallikes) * 100,2)) + "%</td></tr>"
+    response += "<tr align='right'><td><b>Total:</b></td><td></td><td>" + str(ages_likes) + "</td><td></td><td></td><td>" + str(ages_totallikes) + "</td><td></td><td></td></tr>"
     response += "</table>"
     response += "<br>Votemonth<br>"
     votemonths = Vote.objects.values('votemonth').annotate(ncount=Count('votemonth')).order_by('-votemonth')
