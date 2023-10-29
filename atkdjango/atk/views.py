@@ -126,7 +126,7 @@ def randomnolikes(request):
 
 def vote(request,site,vote='',second='',num=''):
     #return HttpResponse(request.META.get('HTTP_X_FORWARDED_FOR', request.META.get('REMOTE_ADDR', '')).split(',')[0].strip())
-    if site=='duel' or site=='duelduel' or site=='month' or site=='novotes' or site=='randomnovotes' or site=='random' or site=='randomrandom' or site=='num':
+    if site=='duel' or site=='duelduel' or site=='month' or site=='novotes' or site=='randomnovotes' or site=='random' or site=='randomrandom' or site=='num' or site=='randomnolikes':
         if vote == second:
             err='vote cannot be same as second'
             return error(request,err)
@@ -161,7 +161,7 @@ def vote(request,site,vote='',second='',num=''):
         elif site=='month':
             babe.monthlikes += 1
             babe.save()
-        elif site=='random' or site=='randomnovotes' or site=='num' or site=='randomrandom':
+        elif site=='random' or site=='randomnovotes' or site=='num' or site=='randomrandom' or site=='randomnolikes':
             if vote>0 and second==0:
                 babe.likes+=1
                 babe.save()
@@ -179,7 +179,7 @@ def vote(request,site,vote='',second='',num=''):
         url='/atk/' + site + '/'
         return redirect(url)
     else:
-        return error(request,'site not found')
+        return error(request,'site not found|bgegtgr')
 
 def duel(request,site):
     if site=='duel' or site=='duelduel' or site=='month' or site=='novotes':
