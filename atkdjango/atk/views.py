@@ -594,10 +594,8 @@ def get_modeldetails(model,babes_count=1,details=False):
 #    #END
 
     modelurls=''
-    try:
+    if model:
         modelurls = list(ExternalSite.objects.filter(name=model))[0].urls
-    except:
-        something='wrong'
     if modelurls!='':
         modeldetail['external_sites'] = generate_urls(modelurls)
     modeldetail['original_name'] = model
