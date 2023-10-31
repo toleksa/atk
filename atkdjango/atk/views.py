@@ -595,9 +595,9 @@ def get_modeldetails(model,babes_count=1,details=False):
 
     modelurls=''
     if model:
-        modelurls = list(ExternalSite.objects.filter(name=model))[0].urls
-    if modelurls!='':
-        modeldetail['external_sites'] = generate_urls(modelurls)
+        modelurls = ExternalSite.objects.filter(name=model)
+    if modelurls:
+        modeldetail['external_sites'] = generate_urls(list(modelurls)[0].urls)
     modeldetail['original_name'] = model
     modeldetail['external_name'] = model.replace(' ','-').lower()
     modeldetail['vipergirls_name'] = model.replace(' ','+')
