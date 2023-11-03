@@ -16,7 +16,7 @@ BABELETTER=$(echo $URLBABE | cut -c 1-1)
 
 URLS=''
 for SITE in $(cat external-sites.txt); do
-#    echo "http://$SITE/pornstar/$BABELETTER"
+    #echo "http://$SITE/pornstar/$BABELETTER"
     CURL=$(curl --silent "http://$SITE/pornstar/$BABELETTER" | grep "\"/pornstar/$URLBABE\"")
     if [ "$CURL" ]; then
         #echo $CURL
