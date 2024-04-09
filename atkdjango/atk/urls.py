@@ -38,6 +38,7 @@ urlpatterns = [
     path('randomnovotes/', views.randomnovotes),
     path('randomnolikes/', views.randomnolikes),
     path('random/<str:site>/', views.siterandom),
+    path('random/<str:category>/<str:search>/', views.search, {'site': 'search', 'randomize': True}),
     path('randomrandom/', views.randomrandom),
     path('duel/', views.duel, {'site': 'duel'}),
     path('duelduel/', views.duel, {'site': 'duelduel'}),

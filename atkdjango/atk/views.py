@@ -86,15 +86,18 @@ def randomrandom(request):
     return HttpResponse(response)
 
 def siterandom(request,site='allsites'):
-    if site not in ['allsites','exotics','hairy','galleria','blog']:
+    if site not in ['allsites','exotics','hairy','galleria','blog','alles']:
         err='site not found'
         return error(request,err,site)
     babes = []
-    if site == 'allsites':
-        randomnum = random.randrange(AllBabe.objects.filter(likes__gte=0).count())
-        babes = AllBabe.objects.filter(likes__gte=0).order_by('id')[randomnum:randomnum+1]
+    min_likes=0
+    if site == 'alles':
+        min_likes=-999
+    if site == 'allsites' or site =='alles':
+        randomnum = random.randrange(AllBabe.objects.filter(likes__gte=min_likes).count())
+        babes = AllBabe.objects.filter(likes__gte=min_likes).order_by('id')[randomnum:randomnum+1]
     else:
-        query = AllBabe.objects.filter(site=site,likes__gte=0)
+        query = AllBabe.objects.filter(site=site,likes__gte=min_likes)
         maxnum = len(query)
         if maxnum > 0:
             randomnum = random.randrange(maxnum)
@@ -366,7 +369,7 @@ def sitenum(request,num,site = 'allsites'):
     return HttpResponse(response)
 
 
-def search(request,site,search='',category='',page=1,per_page=20,order=''):
+def search(request,site,search='',category='',page=1,per_page=20,order='',randomize=False):
     if site not in ['allsites','exotics','hairy','galleria','blog','search','hidden','banned','novote','nolikes','alles','lastvote','debiut','models','halloffame']:
         err='site not found|syvffserck|' + site
         return error(request,err,site)
@@ -475,6 +478,12 @@ def search(request,site,search='',category='',page=1,per_page=20,order=''):
     except ObjectDoesNotExist:
         err='babe not found'
         return error(request,err)
+    if randomize==True:
+        maxnum = len(query)
+        if maxnum > 0:
+            randomnum = random.randrange(maxnum)
+            babes = query[randomnum:randomnum+1]
+        
     template = loader.get_template('atk/search.html')
     context = {
         'babes': babes,

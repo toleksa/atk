@@ -17,6 +17,11 @@
         <a href='/'>dash</a>
         <a href='/atk/'>allsites</a>
         {% if search %}
+        <a href='/atk/random/{{ category }}/{{ search }}'>randomize</a>
+        {% elif 'duel' not in site and '/top' not in site and 'novotes' not in site and 'month' not in site and 'random' not in site and 'hidden' not in site and 'banned' not in site and 'novote' not in site and 'nolikes' not in site and 'debiut' not in site and site != 'models' and site != 'halloffame' and site != 'lastvote' %}
+        <a href='/atk/random/{{ site }}'>randomize</a>
+        {% endif %}
+        {% if search %}
         {% else %}
             <a href='/atk/{{ site }}/'>home</a>
         {% endif %}
