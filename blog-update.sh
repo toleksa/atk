@@ -34,8 +34,8 @@ for PAGE in `seq 1 500` ; do
     DATE=`grep 'postinfo' babe.html | gawk -F"postinfo\">" '{ print $2 }' | gawk -F"," '{ print $1 }'`
     DATE=$( convert_date $DATE )
     AGE=`grep '<span>Age</span>' babe.html | gawk -F "<span>Age</span> : " '{ print $2 }' | gawk -F"<" '{ print $1 }'`
-    POB=`grep '<span>Place Of Birth</span>' babe.html | gawk -F "<span>Place Of Birth</span> : " '{ print $2 }' | gawk -F"<" '{ print $1 }'`
-    OCC=`grep '<span>Occupation</span>' babe.html | gawk -F "<span>Occupation</span> : " '{ print $2 }' | gawk -F"<" '{ print $1 }'`
+    POB=`grep '<span>Place Of Birth</span>' babe.html | gawk -F "<span>Place Of Birth</span> : " '{ print $2 }' | gawk -F"<" '{ print $1 }'` | sed -e "s/'/\\\'/g"
+    OCC=`grep '<span>Occupation</span>' babe.html | gawk -F "<span>Occupation</span> : " '{ print $2 }' | gawk -F"<" '{ print $1 }'` | sed -e "s/'/\\\'/g"
     TAGS=""
     for TAG in `grep 'Tags:' babe.html | gawk -F"Tags:" '{ print $2 }' | sed -e 's/,/\n/g' | gawk -F"\"" '{ print $2 }' ` ; do TAGS="$TAGS|$TAG" ; done
     TAGS=`echo $TAGS | sed 's/^|\(.*\)/\1/'`
