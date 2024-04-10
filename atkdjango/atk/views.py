@@ -515,21 +515,18 @@ def model(request,model,filter='none',details=False,sort='none',page=1,per_page=
         if sort!='none':
             order_by=('-'+sort,*order_by)
 
+        filters = {'name': model}
         if filter=='none':
-            babes = AllBabe_view.objects.filter(name=model).order_by(*order_by)
+            pass
         elif filter=='nolikes':
-            babes = AllBabe.objects.filter(name=model,likes=0).order_by('-date','-id')
-        elif filter=='blog':
-            babes = AllBabe.objects.filter(name=model,site='blog').order_by('-date','-id')
-        elif filter=='exotics':
-            babes = AllBabe.objects.filter(name=model,site='exotics').order_by('-date','-id')
-        elif filter=='galleria':
-            babes = AllBabe.objects.filter(name=model,site='galleria').order_by('-date','-id')
-        elif filter=='hairy':
-            babes = AllBabe.objects.filter(name=model,site='hairy').order_by('-date','-id')
+            filters['likes']=0
+        elif filter in ['blog','exotics','galleria','hairy']:
+            filters['site']=filter
         else:
             err='filter: ' + filter + ' not recognized|frhf5tdgf'
             return error(request,err,site)
+
+        babes = AllBabe_view.objects.filter(**filters).order_by(*order_by)
     except ObjectDoesNotExist:
         err='babe not found|cve65yhfsfw'
         return error(request,err,site)
