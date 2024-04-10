@@ -573,6 +573,8 @@ def get_modeldetails(model,babes_count=1,details=False,filters=False):
             modeldetail['score_place'] = Atk_top_likes.objects.filter(score__gt=modeldetail['avg_likes']).count() + 1
             modeldetail['total_place'] = Atk_top_total.objects.filter(vote__gt=modeldetail['totallikes__sum']).count() + 1
             modeldetail['allscore_place'] = Atk_top_total.objects.filter(score__gt=modeldetail['avg_totallikes']).count() + 1
+            galleries=Atk_top_total.objects.filter(name=model).values_list('count', flat=True)
+            modeldetail['halloffame_place'] = Atk_top_total.objects.filter(count__gt=galleries).count() + 1
         if filters:
             modeldetail['filter_blog'] = AllBabe.objects.filter(name=model,site='blog').count()
             modeldetail['filter_exotics'] = AllBabe.objects.filter(name=model,site='exotics').count()

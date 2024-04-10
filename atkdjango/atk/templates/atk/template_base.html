@@ -673,6 +673,9 @@
             {% if photo_num != babes|length %}
               ({{photo_num}})
             {% endif %}</td></tr>
+            {% if modeldetail.halloffame_place %}
+            <tr><td>Halloffame:</td><td>[{{ modeldetail.halloffame_place }}]</td></tr>
+            {% endif %}
             </table>
             <br>
             <table><tr><td style="vertical-align:top">
