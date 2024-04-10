@@ -536,7 +536,7 @@ def model(request,model,filter='none',details=False,sort='none',page=1,per_page=
     photo_num=babes.count()
     if filter != 'none':
         photo_num=len(AllBabe.objects.filter(name=model))
-    modeldetail=get_modeldetails(model,photo_num,details)
+    modeldetail=get_modeldetails(model,photo_num,details,True)
     template = loader.get_template('atk/template_base.html')
     context = {
         'babes': babes,
@@ -550,7 +550,7 @@ def model(request,model,filter='none',details=False,sort='none',page=1,per_page=
     #response = sitedisplay(request,babes,site,page,'atk/likes.html')
     return HttpResponse(response)
 
-def get_modeldetails(model,babes_count=1,details=False):
+def get_modeldetails(model,babes_count=1,details=False,filters=False):
     modeldetail={}
     modeldetail = AllBabe.objects.filter(name=model).aggregate(Sum('likes'))
     modeldetail['monthlikes__sum']=AllBabe.objects.filter(name=model).aggregate(Sum('monthlikes'))['monthlikes__sum']
@@ -573,6 +573,12 @@ def get_modeldetails(model,babes_count=1,details=False):
             modeldetail['score_place'] = Atk_top_likes.objects.filter(score__gt=modeldetail['avg_likes']).count() + 1
             modeldetail['total_place'] = Atk_top_total.objects.filter(vote__gt=modeldetail['totallikes__sum']).count() + 1
             modeldetail['allscore_place'] = Atk_top_total.objects.filter(score__gt=modeldetail['avg_totallikes']).count() + 1
+        if filters:
+            modeldetail['filter_blog'] = AllBabe.objects.filter(name=model,site='blog').count()
+            modeldetail['filter_exotics'] = AllBabe.objects.filter(name=model,site='exotics').count()
+            modeldetail['filter_galleria'] = AllBabe.objects.filter(name=model,site='galleria').count()
+            modeldetail['filter_hairy'] = AllBabe.objects.filter(name=model,site='hairy').count()
+            modeldetail['filter_nolikes'] = AllBabe.objects.filter(name=model,likes=0).count()
     except:
         result="didn't work, LOL"
     #a=b
