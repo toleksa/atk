@@ -660,11 +660,15 @@
             Model: <span id="modelName" onClick="copyToClipboard()">{{ modeldetail.original_name }}</span>&nbsp;&nbsp;<a href='/atk/model/{{ modeldetail.original_name }}/+'>+</a><br>
             <table border=0>
             <tr><td>Total Likes:</td><td>{{ modeldetail.likes__sum }}</td><td>({{ modeldetail.avg_likes}})</td></tr>
+            {% if modeldetail.score_place %}
             <tr><td>Place:</td><td><center>[{{ modeldetail.likes_place }}]</center></td><td><center>[{{ modeldetail.score_place }}]</center></td></tr>
+            {% endif %}
             <tr><td>Duel Likes:</td><td>{{ modeldetail.duellikes__sum }}</td><td>({{ modeldetail.avg_duellikes}})</td></tr>
             <tr><td>Month Likes:</td><td>{{ modeldetail.monthlikes__sum }}</td><td>({{ modeldetail.avg_monthlikes}})</td></tr>
             <tr><td>Total Likes:</td><td>{{ modeldetail.totallikes__sum }}</td><td>({{ modeldetail.avg_totallikes}})</td></tr>
+            {% if modeldetail.allscore_place %}
             <tr><td>Allplace:</td><td><center>[{{ modeldetail.total_place }}]</center></td><td><center>[{{ modeldetail.allscore_place }}]</center></td></tr>
+            {% endif %}
             <tr><td>Galleries:</td><td>{{ babes|length }}</td><td>
             {% if photo_num != babes|length %}
               ({{photo_num}})
