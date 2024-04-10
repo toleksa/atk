@@ -657,7 +657,7 @@
                     'http://www.atkmodels.com/{{ modeldetail.topphoto.site }}/img/content/{{ modeldetail.topphoto.date }}_7.jpg'></a>
                 {% endif %}
             </td><td style="width: 16%; vertical-align:top">
-            Model: <span id="modelName" onClick="copyToClipboard()">{{ modeldetail.original_name }}</span><br>
+            Model: <span id="modelName" onClick="copyToClipboard()">{{ modeldetail.original_name }}</span>&nbsp;&nbsp;<a href='/atk/model/{{ modeldetail.original_name }}/+'>+</a><br>
             <table border=0>
             <tr><td>Total Likes:</td><td>{{ modeldetail.likes__sum }}</td><td>({{ modeldetail.avg_likes}})</td></tr>
             <tr><td>Place:</td><td><center>[{{ modeldetail.likes_place }}]</center></td><td><center>[{{ modeldetail.score_place }}]</center></td></tr>
