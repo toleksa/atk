@@ -10,17 +10,19 @@ if [ ! -f external-sites.txt ]; then
     exit 1
 fi
 
-BABE=$(echo $1 | sed -e 's/-/ /g')
+#BABE=$(echo $1 | sed -e 's/-/ /g')
+BABE="$1"
 URLBABE=$(echo $1 | tr '[:upper:]' '[:lower:]' | sed -e 's/ /-/g')
 BABELETTER=$(echo $URLBABE | cut -c 1-1)
 
 URLS=''
 for SITE in $(cat external-sites.txt); do
-    #echo "http://$SITE/pornstar/$BABELETTER"
-    CURL=$(curl --silent "http://$SITE/pornstar/$BABELETTER" | grep "\"/pornstar/$URLBABE\"")
+    URL="https://$SITE/pornstar/$BABELETTER"
+    #echo $URL
+    CURL=$(curl --silent "$URL" | grep "https://${SITE}/pornstar/$URLBABE")
+    #echo "$CURL"
     if [ "$CURL" ]; then
-        #echo $CURL
-        NUM=$(echo $CURL | gawk -F'[()]' '{ print $2 }')
+        NUM=$(curl --silent "https://${SITE}/pornstar/$URLBABE" | grep "<a href=\"https://${SITE}/" | wc -l)
         #echo $NUM
         URLS="${URLS}${SITE};${NUM}|"
     fi
@@ -39,6 +41,7 @@ URLS=`echo $URLS | sed 's/.$//'`
 if [ "$URLS" ]; then
     echo $URLS
     if [ "$2" == "sql" ]; then
+        #echo "insert or replace into atk_externalsite (name,urls) values ('$BABE','$URLS');"
         sqlite3 atk.sqlite "insert or replace into atk_externalsite (name,urls) values ('$BABE','$URLS');"
     fi
 else

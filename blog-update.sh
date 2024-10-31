@@ -75,7 +75,10 @@ for PAGE in `seq 1 500` ; do
     else
         echo ok
         echo "external-sites.sh"
-        ./external-sites.sh "$NAME" sql
+        #20240925 - disabling as those sites doesn't seem to work anymore
+        #20241031 - fixed, but results are quite shitty
+        ./external-sites.sh "$NAME" sql &
+        echo "DISABLED"
     fi
   done
 done

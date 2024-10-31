@@ -33,7 +33,10 @@ for DAYS in `seq 0 3650`; do
             else
                 echo ok
                 echo "external-sites.sh"
-                ./external-sites.sh "$NAME" sql
+                #20240925 - disabling as those sites doesn't seem to work anymore
+                #20241031 - fixed, but results are quite shitty
+                ./external-sites.sh "$NAME" sql &
+                echo "DISABLED"
             fi
             QUERY="update atk_sitebabe set name = '$NAME' where date='$DATE' and site='$SITE';"
             echo $QUERY
