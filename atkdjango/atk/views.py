@@ -228,6 +228,7 @@ def duel(request,site):
         if site=='month':
             babes  = list(AllBabe.objects.filter(date__istartswith=votemonth,likes__gte=0,monthlikes__gte=treshold).order_by('id')[randomnum1:randomnum1+1])
             babes += list(AllBabe.objects.filter(date__istartswith=votemonth,likes__gte=0,monthlikes__gte=treshold).order_by('id')[randomnum2:randomnum2+1])
+            month_participants = AllBabe.objects.filter(date__istartswith=votemonth,likes__gte=0,monthlikes__gte=treshold).order_by('id').count()
             page_title='Duel Month'
         elif site=='duel' or site=='duelduel':
             babes  = list(AllBabe.objects.filter(likes__gte=0).order_by('id')[randomnum1:randomnum1+1])
@@ -243,7 +244,7 @@ def duel(request,site):
         template='atk/' + site + '.html'
         if site=='novotes' or site=='month':
             template='atk/duel.html'
-        response = sitedisplay(request,babes,site,1,template,babes,0,'',numvotes,2,treshold,page_title=page_title)
+        response = sitedisplay(request,babes,site,1,template,babes,0,'',numvotes,2,treshold,page_title=page_title,month_participants=month_participants)
         return HttpResponse(response)
     else:
         return error(request,'site not found')
@@ -636,7 +637,7 @@ def atksite(request,site,page=1,per_page=10):
     response = sitedisplay(request,babes,site,page)
     return HttpResponse(response)
 
-def sitedisplay(request, babes, site='allsites', page = 1, template = 'atk/template_base.html',related = '', detail = 0, topvotes = '', numvotes = '', per_page = 20, treshold = 0, page_title=''):
+def sitedisplay(request, babes, site='allsites', page = 1, template = 'atk/template_base.html',related = '', detail = 0, topvotes = '', numvotes = '', per_page = 20, treshold = 0, page_title='', month_participants=''):
     template = loader.get_template(template)
     context = {
         'babes': babes,
@@ -649,6 +650,7 @@ def sitedisplay(request, babes, site='allsites', page = 1, template = 'atk/templ
         'per_page' : per_page,
         'treshold' : treshold,
         'page_title' : page_title,
+        'month_participants' : month_participants,
     }
     response = template.render(context, request)
     return HttpResponse(response)

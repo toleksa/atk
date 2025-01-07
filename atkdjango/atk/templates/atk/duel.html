@@ -4,9 +4,12 @@
 {% block navnumbers %}
   {% if site == "month" %}
     Monthvotes: {{ numvotes }}
-  {% endif %}
-  {% if treshold %}
-    (limit: {{ treshold }})
+    {% if treshold %}
+      (limit: {{ treshold }})
+    {% endif %}
+    {% if month_participants %}
+      (in play: {{ month_participants }})
+    {% endif %}
   {% endif %}
   {% if site == "duel" %}
     Duelvotes: {{ numvotes }}
