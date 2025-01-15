@@ -207,7 +207,10 @@ def duel(request,site):
                 treshold=5
             if numvotes >= 400:
                 treshold=10
+            #treshold=10
             maxnum = AllBabe.objects.filter(date__istartswith=votemonth,likes__gte=0,monthlikes__gte=treshold).count()
+            if maxnum<2:
+                return error(request,'no suitable babes found|sfergfyd')
         elif site=='duel' or site=='duelduel':
             maxnum = AllBabe.objects.filter(likes__gte=0).count()
             numvotes = Vote.objects.values('vote').filter(votemonth__isnull=True,vote__gt=0,second__gt=0).count()
@@ -225,6 +228,7 @@ def duel(request,site):
             randomnum2 = random.randrange(maxnum)
             if randomnum1 != randomnum2:
                 break
+        month_participants=''
         if site=='month':
             babes  = list(AllBabe.objects.filter(date__istartswith=votemonth,likes__gte=0,monthlikes__gte=treshold).order_by('id')[randomnum1:randomnum1+1])
             babes += list(AllBabe.objects.filter(date__istartswith=votemonth,likes__gte=0,monthlikes__gte=treshold).order_by('id')[randomnum2:randomnum2+1])
