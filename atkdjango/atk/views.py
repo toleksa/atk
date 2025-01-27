@@ -727,6 +727,6 @@ def get_votemonth():
         if monthvotes < 500:
             return votemonth
         # don't go older than 2013, and prevent infinite loop
-        if votemonth == '1212':
+        if votemonth == '1209':
             return -1
         counter+=1
