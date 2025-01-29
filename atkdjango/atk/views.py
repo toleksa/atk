@@ -186,15 +186,15 @@ def vote(request,site,vote='',second='',num=''):
 
 def duel(request,site):
     if site=='duel' or site=='duelduel' or site=='month' or site=='novotes':
-        votemonth = get_votemonth()
-        if votemonth == -1:
-            err = 'All months are closed for now'
-            return error(request,err)
         maxnum=-1
         numvotes=''
         page_title=''
         treshold=0
         if site=='month':
+            votemonth = get_votemonth()
+            if votemonth == -1:
+                err = 'All months are closed for now'
+                return error(request,err)
             numvotes = Vote.objects.values('vote').filter(votemonth=votemonth).count()
             if numvotes >= 500:
                 err = 'There are ' + str(numvotes) + ' votes for that month, voting is closed'
