@@ -39,7 +39,7 @@ done
 URLS=`echo $URLS | sed 's/.$//'`
 
 if [ "$URLS" ]; then
-    echo $URLS
+    #echo $URLS
     if [ "$2" == "sql" ]; then
         #echo "insert or replace into atk_externalsite (name,urls) values ('$BABE','$URLS');"
         sqlite3 atk.sqlite "insert or replace into atk_externalsite (name,urls) values ('$BABE','$URLS');"
