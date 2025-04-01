@@ -479,6 +479,7 @@
       <a title="Allpic" href='/atk/allpic/top/'>all-pic</a>
       <a title="Allmodel" href='/atk/allmodel/top/'>all-model</a>
       <a title="Allmodel" href='/atk/allscore/top/'>all-score</a>
+      <a title="Allmodel, min 4 galleries" href='/atk/allscore4/top/'>all-score4</a>
     </div>
   </div>
   <div class="dropdown-more">
@@ -743,7 +744,7 @@
                 Age: {{ babe.age }}<br>
             {% endif %}
             {% block likesblock %}
-                {% if site == 'bestscore/top' or site == 'bestscore4/top' or site == 'allscore/top' %}
+                {% if site == 'bestscore/top' or site == 'bestscore4/top' or site == 'allscore/top' or site == 'allscore4/top' %}
                   Score: {{ babe.score }}
                 {% elif site == 'allmodel/top' or site == 'liked/top' or site == 'dueltopmodel/top' or site == 'monthmodel/top' %}
                   Total likes: {{ babe.vote }}

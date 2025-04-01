@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpRequest
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Count, F, Sum, Lookup, Field, Max, Min
 from django.db.models.query import QuerySet
-from .models import Babe, SiteBabe, AllBabe, AllBabe_view, Vote, Novote, AllScore, BestScore, ExternalSite, Atk_debiut, Atk_top_total, Atk_top_duel, Atk_top_month, Atk_top_likes, Atk_modeldetail, Atk_top_likes4
+from .models import Babe, SiteBabe, AllBabe, AllBabe_view, Vote, Novote, AllScore, BestScore, ExternalSite, Atk_debiut, Atk_top_total, Atk_top_duel, Atk_top_month, Atk_top_likes, Atk_modeldetail, Atk_top_likes4, Atk_top_total4
 import os
 import random
 import datetime
@@ -265,7 +265,7 @@ def top(request,site,page=1,votemonth=0):
     per_page=''
     template='atk/template_base.html'
     
-    if site=='duel' or site=='duelduel' or site=='month' or site=='monthrank' or site=='monthlist' or site == 'likes' or site == 'liked' or site == 'dueltopmodel' or site=='monthmodel' or site=='bestscore' or site=='bestscore4' or site == 'monthpic' or site == 'allpic' or site == 'allmodel' or site == 'allscore' or site == 'votemonth' or site == 'age':
+    if site=='duel' or site=='duelduel' or site=='month' or site=='monthrank' or site=='monthlist' or site == 'likes' or site == 'liked' or site == 'dueltopmodel' or site=='monthmodel' or site=='bestscore' or site=='bestscore4' or site == 'monthpic' or site == 'allpic' or site == 'allmodel' or site == 'allscore' or site == 'allscore4' or site == 'votemonth' or site == 'age':
         if site=='duel' or site=='duelduel':
             per_page=100
             babes = AllBabe_view.objects.order_by('-duellikes','-likes','-monthlikes')[(page-1)*per_page:page*per_page]
@@ -314,6 +314,10 @@ def top(request,site,page=1,votemonth=0):
         if site=='allscore':
             per_page=100
             babes = Atk_top_total.objects.order_by('-score','-vote','-likes','-duellikes','-monthlikes')[(page-1)*per_page:page*per_page]
+
+        if site=='allscore4':
+            per_page=100
+            babes = Atk_top_total4.objects.order_by('-score','-vote','-likes','-duellikes','-monthlikes')[(page-1)*per_page:page*per_page]
 
         if site=='monthpic':
             per_page=100
