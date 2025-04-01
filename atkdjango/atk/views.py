@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpRequest
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Count, F, Sum, Lookup, Field, Max, Min
 from django.db.models.query import QuerySet
-from .models import Babe, SiteBabe, AllBabe, AllBabe_view, Vote, Novote, AllScore, BestScore, ExternalSite, Atk_debiut, Atk_top_total, Atk_top_duel, Atk_top_month, Atk_top_likes, Atk_modeldetail
+from .models import Babe, SiteBabe, AllBabe, AllBabe_view, Vote, Novote, AllScore, BestScore, ExternalSite, Atk_debiut, Atk_top_total, Atk_top_duel, Atk_top_month, Atk_top_likes, Atk_modeldetail, Atk_top_likes4
 import os
 import random
 import datetime
@@ -73,6 +73,10 @@ def stats(request):
         response += "<tr align='right'><td><a href='/atk/search/age/" + str(age['age']) + "'>" + str(age['age']) + "</a></td><td>" + str(age['ncount']) + "</td><td>" + str(round((age['ncount']/ages_count) * 100,2)) + "%</td><td>" + str(age['alllikes']) + "</td><td>" + str(round(age['alllikes']/age['ncount'],2)) + "</td><td>" + str( round( (age['alllikes'] / ages_likes) * 100,2)) + "%</td><td>" + str(totallikes) + "</td><td>" + str(round(totallikes/age['ncount'],2)) + "</td><td>" + str( round( (totallikes / ages_totallikes) * 100,2)) + "%</td></tr>"
     response += "<tr align='right'><td><b>Total:</b></td><td>" + str(ages_count) + "</td><td></td><td>" + str(ages_likes) + "</td><td></td><td></td><td>" + str(ages_totallikes) + "</td><td></td><td></td></tr>"
     response += "</table>"
+    response += "<br>POB<br>"
+    pobs = Babe.objects.exclude(pob__in=[None, "N/A", "n/a"]).values('pob').annotate(ncount=Count('pob')).order_by('-ncount')[:50]
+    for pob in pobs:
+        response += str(pob['ncount']) + " <a href='/atk/search/pob/" + str(pob['pob']) + "/'>" + str(pob['pob']) + "</a>" + "<br>"
     response += "<br>Votemonth<br>"
     votemonths = Vote.objects.values('votemonth').annotate(ncount=Count('votemonth')).order_by('-votemonth')
     for votemonth in votemonths:
@@ -261,7 +265,7 @@ def top(request,site,page=1,votemonth=0):
     per_page=''
     template='atk/template_base.html'
     
-    if site=='duel' or site=='duelduel' or site=='month' or site=='monthrank' or site=='monthlist' or site == 'likes' or site == 'liked' or site == 'dueltopmodel' or site=='monthmodel' or site=='bestscore' or site == 'monthpic' or site == 'allpic' or site == 'allmodel' or site == 'allscore' or site == 'votemonth' or site == 'age':
+    if site=='duel' or site=='duelduel' or site=='month' or site=='monthrank' or site=='monthlist' or site == 'likes' or site == 'liked' or site == 'dueltopmodel' or site=='monthmodel' or site=='bestscore' or site=='bestscore4' or site == 'monthpic' or site == 'allpic' or site == 'allmodel' or site == 'allscore' or site == 'votemonth' or site == 'age':
         if site=='duel' or site=='duelduel':
             per_page=100
             babes = AllBabe_view.objects.order_by('-duellikes','-likes','-monthlikes')[(page-1)*per_page:page*per_page]
@@ -331,6 +335,10 @@ def top(request,site,page=1,votemonth=0):
             per_page=100
             babes = Atk_top_likes.objects.order_by('-score','-vote','-likes','-duellikes','-monthlikes')[(page-1)*per_page:page*per_page]
 
+        if site=='bestscore4':
+            per_page=100
+            babes = Atk_top_likes4.objects.order_by('-score','-vote','-likes','-duellikes','-monthlikes')[(page-1)*per_page:page*per_page]
+
         if site=='age':
             per_page=100
             babes = AllBabe_view.objects.filter(likes__gte=-1,age__regex=r'^[0-9]*$').order_by('-age','-date','-id')[(page-1)*per_page:page*per_page]
@@ -398,7 +406,7 @@ def search(request,site,search='',category='',page=1,per_page=20,order='',random
         if category not in ['uname','name','tags','pob','age']:
             err='unrecognized search category: ' + category
             return error(request,err,site)
-        if len(search) < 3 and category!='age':
+        if len(search) < 3 and category!='age' and category!='pob':
             err="search string must have at least 3 characters"
             return error(request,err)
     offset = (page - 1) * per_page

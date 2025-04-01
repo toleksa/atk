@@ -475,6 +475,7 @@
       <a title="Likes (total votes for pic)" href='/atk/likes/top/'>likes-pic</a>
       <a title="Most liked models" href='/atk/liked/top/'>liked-models</a>
       <a title="Best AVG score" href='/atk/bestscore/top/'>bestscore</a>
+      <a title="Best AVG score, min 4 galleries" href='/atk/bestscore4/top/'>bestscore4</a>
       <a title="Allpic" href='/atk/allpic/top/'>all-pic</a>
       <a title="Allmodel" href='/atk/allmodel/top/'>all-model</a>
       <a title="Allmodel" href='/atk/allscore/top/'>all-score</a>
@@ -742,7 +743,7 @@
                 Age: {{ babe.age }}<br>
             {% endif %}
             {% block likesblock %}
-                {% if site == 'bestscore/top' or site == 'allscore/top' %}
+                {% if site == 'bestscore/top' or site == 'bestscore4/top' or site == 'allscore/top' %}
                   Score: {{ babe.score }}
                 {% elif site == 'allmodel/top' or site == 'liked/top' or site == 'dueltopmodel/top' or site == 'monthmodel/top' %}
                   Total likes: {{ babe.vote }}
