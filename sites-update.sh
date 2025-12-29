@@ -2,7 +2,7 @@
 
 echo "=========`date`========"
 
-for DAYS in `seq 0 3650`; do
+for DAYS in `seq -1 3650`; do
     DATE=$(date  --date="$DAYS days ago" +%y%m%d)
     if [ "$DATE" == "120101" ]; then
         echo "1201010 - that's enough"
