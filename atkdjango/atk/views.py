@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpRequest
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Count, F, Sum, Lookup, Field, Max, Min, Value, IntegerField, FloatField
 from django.db.models.query import QuerySet
+from django.db.models.functions import Round
 from .models import Babe, SiteBabe, AllBabe, AllBabe_view, Vote, Novote, AllScore, BestScore, ExternalSite, Atk_debiut, Atk_top_total, Atk_top_duel, Atk_top_month, Atk_top_likes, Atk_modeldetail, Atk_top_likes4, Atk_top_total4
 import os
 import random
@@ -309,10 +310,25 @@ def top(request,site,page=1,votemonth=0):
             per_page=1
             years = list(range(datetime.datetime.now().year-1, 2011, -1))
             babes = []
+            order='-yearlikes'
             for year in years:
-                ylist = list(AllBabe_view.objects.filter(date__startswith=f"{year % 100:02d}").values("name").annotate(yearlikes=Sum("monthlikes"),count=Count("name")).order_by('-yearlikes')[0+(page-1)*4:4+(page-1)*4]) 
+                ylist = list(
+                    AllBabe_view.objects
+                    .filter(date__startswith=f"{year % 100:02d}")
+                    .values("name")
+                    .annotate(yearlikes=Sum("monthlikes"),count=Count("name"))
+                    .annotate(score=Round((F("yearlikes") * 100.0 / F("count")) / Value(100.0)))
+                    .order_by(order)[0+(page-1)*4:4+(page-1)*4]) 
                 for babe in ylist:
-                    record=AllBabe_view.objects.filter(name=babe['name'],date__startswith=f"{year % 100:02d}").annotate(yearlikes=Value(babe['yearlikes'],output_field=IntegerField()),score=Value(round(babe['yearlikes']/babe['count'],2),output_field=FloatField()),count=Value(babe['count'],output_field=IntegerField())).order_by('-monthlikes','-duellikes','-likes').first()
+                    record=(
+                        AllBabe_view.objects
+                        .filter(name=babe['name'],date__startswith=f"{year % 100:02d}")
+                        .annotate(
+                            yearlikes=Value(babe['yearlikes'],output_field=IntegerField())
+                            ,score=Value(round(babe['yearlikes']/babe['count'],2),output_field=FloatField())
+                            ,count=Value(babe['count'],output_field=IntegerField()))
+                        .order_by('-monthlikes','-duellikes','-likes').first()
+                    )
                     babes.append(record)
             detail={ 'places': str(1+(page-1)*4) + "-" + str(4+(page-1)*4) }
 
