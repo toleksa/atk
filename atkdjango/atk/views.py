@@ -265,7 +265,7 @@ def top(request,site,page=1,votemonth=0):
     per_page=''
     template='atk/template_base.html'
     
-    if site=='duel' or site=='duelduel' or site=='month' or site=='monthrank' or site=='monthlist' or site == 'likes' or site == 'liked' or site == 'dueltopmodel' or site=='monthmodel' or site=='bestscore' or site=='bestscore4' or site == 'monthpic' or site == 'allpic' or site == 'allmodel' or site == 'allscore' or site == 'allscore4' or site == 'votemonth' or site == 'age':
+    if site=='duel' or site=='duelduel' or site=='month' or site=='monthrank' or site=='monthlist' or site == 'likes' or site == 'liked' or site == 'dueltopmodel' or site=='monthmodel' or site=='bestscore' or site=='bestscore4' or site == 'monthpic' or site == 'allpic' or site == 'allmodel' or site == 'allscore' or site == 'allscore4' or site == 'votemonth' or site == 'age' or site =='yearrank':
         if site=='duel' or site=='duelduel':
             per_page=100
             babes = AllBabe_view.objects.order_by('-duellikes','-likes','-monthlikes')[(page-1)*per_page:page*per_page]
@@ -294,6 +294,14 @@ def top(request,site,page=1,votemonth=0):
                 #TODO: this sorting is dynamic, think about something more static
                 monthlist = list(AllBabe_view.objects.filter(date__startswith=month['votemonth']).order_by('-monthlikes','-duellikes','-likes')[0:4])
                 for babe in monthlist:
+                    babes.append(babe)
+        if site=='yearrank':
+            per_page=48
+            years = list(range(datetime.datetime.now().year-1, 2011, -1))[int((page-1)*per_page/4):int(page*per_page/4)]
+            babes = []
+            for year in years:
+                yearlist = list(AllBabe_view.objects.filter(date__startswith=f"{year % 100:02d}").order_by('-totallikes','-monthlikes','-duellikes','-likes')[0:4])
+                for babe in yearlist:
                     babes.append(babe)
 
         if site=='monthlist':
