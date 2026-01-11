@@ -266,7 +266,7 @@ def top(request,site,page=1,votemonth=0):
     per_page=''
     template='atk/template_base.html'
     
-    if site=='duel' or site=='duelduel' or site=='month' or site=='monthrank' or site=='monthlist' or site == 'likes' or site == 'liked' or site == 'dueltopmodel' or site=='monthmodel' or site=='bestscore' or site=='bestscore4' or site == 'monthpic' or site == 'allpic' or site == 'allmodel' or site == 'allscore' or site == 'allscore4' or site == 'votemonth' or site == 'age' or site == 'yearrank' or site == 'yearmodel':
+    if site=='duel' or site=='duelduel' or site=='month' or site=='monthrank' or site=='monthlist' or site == 'likes' or site == 'liked' or site == 'dueltopmodel' or site=='monthmodel' or site=='bestscore' or site=='bestscore4' or site == 'monthpic' or site == 'allpic' or site == 'allmodel' or site == 'allscore' or site == 'allscore4' or site == 'votemonth' or site == 'age' or site == 'yearrank' or site == 'yearmodel' or site == 'yearscore':
         if site=='duel' or site=='duelduel':
             per_page=100
             babes = AllBabe_view.objects.order_by('-duellikes','-likes','-monthlikes')[(page-1)*per_page:page*per_page]
@@ -306,11 +306,13 @@ def top(request,site,page=1,votemonth=0):
                     babes.append(babe)
             detail={ 'places': str(1+(page-1)*4) + "-" + str(4+(page-1)*4) }
 
-        if site=='yearmodel':
+        if site=='yearmodel' or site=='yearscore':
             per_page=1
             years = list(range(datetime.datetime.now().year-1, 2011, -1))
             babes = []
             order='-yearlikes'
+            if site=='yearscore':
+                order='-score'
             for year in years:
                 ylist = list(
                     AllBabe_view.objects
