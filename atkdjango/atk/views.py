@@ -300,7 +300,7 @@ def top(request,site,page=1,votemonth=0):
             years = list(range(datetime.datetime.now().year-1, 2011, -1))[int((page-1)*per_page/4):int(page*per_page/4)]
             babes = []
             for year in years:
-                yearlist = list(AllBabe_view.objects.filter(date__startswith=f"{year % 100:02d}").order_by('-totallikes','-monthlikes','-duellikes','-likes')[0:4])
+                yearlist = list(AllBabe_view.objects.filter(date__startswith=f"{year % 100:02d}").order_by('-monthlikes','-duellikes','-likes')[0:4])
                 for babe in yearlist:
                     babes.append(babe)
 
