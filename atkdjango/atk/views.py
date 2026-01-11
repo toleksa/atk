@@ -258,7 +258,7 @@ def duel(request,site):
     else:
         return error(request,'site not found')
 
-def top(request,site,page=1,votemonth=0):
+def top(request,site,page=1,votemonth=0,year=0):
     related=''
     detail=0
     liked=''
@@ -308,7 +308,10 @@ def top(request,site,page=1,votemonth=0):
 
         if site=='yearmodel' or site=='yearscore' or site=='yearscore4':
             per_page=1
-            years = list(range(datetime.datetime.now().year-1, 2011, -1))
+            if year==0:
+                year=datetime.datetime.now().year-1
+            endyear=year-4
+            years = list(range(year, endyear, -1))
             babes = []
             min_count = 0
             order='-yearlikes'
@@ -316,10 +319,10 @@ def top(request,site,page=1,votemonth=0):
                 order = '-score'
                 if site=='yearscore4':
                     min_count = 4
-            for year in years:
+            for yr in years:
                 ylist = list(
                     AllBabe_view.objects
-                    .filter(date__startswith=f"{year % 100:02d}")
+                    .filter(date__startswith=f"{yr % 100:02d}")
                     .values("name")
                     .annotate(yearlikes=Sum("monthlikes"),count=Count("name"))
                     .annotate(score=Round((F("yearlikes") * 100.0 / F("count")) / Value(100.0)))
@@ -328,7 +331,7 @@ def top(request,site,page=1,votemonth=0):
                 for babe in ylist:
                     record=(
                         AllBabe_view.objects
-                        .filter(name=babe['name'],date__startswith=f"{year % 100:02d}")
+                        .filter(name=babe['name'],date__startswith=f"{yr % 100:02d}")
                         .annotate(
                             yearlikes=Value(babe['yearlikes'],output_field=IntegerField())
                             ,score=Value(round(babe['yearlikes']/babe['count'],2),output_field=FloatField())
@@ -336,7 +339,18 @@ def top(request,site,page=1,votemonth=0):
                         .order_by('-monthlikes','-duellikes','-likes').first()
                     )
                     babes.append(record)
-            detail={ 'places': str(1+(page-1)*4) + "-" + str(4+(page-1)*4) }
+            detail={ 'places': str(1+(page-1)*4) + "-" + str(4+(page-1)*4),
+                     'current_year': year }
+            next_year=year-4
+            if next_year < 2012:
+                next_year=2012
+            if next_year < year:
+                detail['next_year']=next_year
+            prev_year=year+4
+            if prev_year > datetime.datetime.now().year-1:
+                prev_year = datetime.datetime.now().year-1
+            if prev_year > year:
+                detail['prev_year']=prev_year
 
         if site=='monthlist':
             babes = list(AllBabe_view.objects.filter(date__istartswith=get_votemonth(),likes__gte=0).order_by('-date'))

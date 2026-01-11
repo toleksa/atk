@@ -9,6 +9,8 @@
             {% else %}
                 {% if order %}
                   <a href='/atk/{{ site }}/{{ order }}/page/{{ page|add:"-1" }}'>prev</a>
+                {% elif detail.current_year %}
+                  <a href='/atk/{{ site }}/year/{{ detail.current_year }}/page/{{ page|add:"-1" }}'>prev</a> 
                 {% else %}
                   <a href='/atk/{{ site }}/page/{{ page|add:"-1" }}'>prev</a>
                 {% endif %}
@@ -33,10 +35,22 @@
             {% else %}
                 {% if order %}
                   <a href='/atk/{{ site }}/{{ order }}/page/{{ page|add:"+1" }}'>next</a>
+                {% elif detail.current_year %}
+                  <a href='/atk/{{ site }}/year/{{ detail.current_year }}/page/{{ page|add:"+1" }}'>next</a> 
                 {% else %}
                   <a href='/atk/{{ site }}/page/{{ page|add:"+1" }}'>next</a>
                 {% endif %}
             {% endif %}
+        {% endif %}
+        {% if detail.current_year %}
+          </br>
+          {%if detail.prev_year %}
+            <a href='/atk/{{ site }}/year/{{ detail.prev_year }}/'>{{ detail.prev_year }}</a>
+          {% endif %}
+          [{{ detail.current_year }}]
+          {%if detail.next_year %}
+            <a href='/atk/{{ site }}/year/{{ detail.next_year }}/'>{{ detail.next_year }}</a>
+          {% endif %}
         {% endif %}
     {% endblock %}
 
