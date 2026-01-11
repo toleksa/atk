@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.template import loader
 from django.http import HttpResponse, HttpRequest
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Count, F, Sum, Lookup, Field, Max, Min
+from django.db.models import Count, F, Sum, Lookup, Field, Max, Min, Value, IntegerField, FloatField
 from django.db.models.query import QuerySet
 from .models import Babe, SiteBabe, AllBabe, AllBabe_view, Vote, Novote, AllScore, BestScore, ExternalSite, Atk_debiut, Atk_top_total, Atk_top_duel, Atk_top_month, Atk_top_likes, Atk_modeldetail, Atk_top_likes4, Atk_top_total4
 import os
@@ -265,7 +265,7 @@ def top(request,site,page=1,votemonth=0):
     per_page=''
     template='atk/template_base.html'
     
-    if site=='duel' or site=='duelduel' or site=='month' or site=='monthrank' or site=='monthlist' or site == 'likes' or site == 'liked' or site == 'dueltopmodel' or site=='monthmodel' or site=='bestscore' or site=='bestscore4' or site == 'monthpic' or site == 'allpic' or site == 'allmodel' or site == 'allscore' or site == 'allscore4' or site == 'votemonth' or site == 'age' or site =='yearrank':
+    if site=='duel' or site=='duelduel' or site=='month' or site=='monthrank' or site=='monthlist' or site == 'likes' or site == 'liked' or site == 'dueltopmodel' or site=='monthmodel' or site=='bestscore' or site=='bestscore4' or site == 'monthpic' or site == 'allpic' or site == 'allmodel' or site == 'allscore' or site == 'allscore4' or site == 'votemonth' or site == 'age' or site == 'yearrank' or site == 'yearmodel':
         if site=='duel' or site=='duelduel':
             per_page=100
             babes = AllBabe_view.objects.order_by('-duellikes','-likes','-monthlikes')[(page-1)*per_page:page*per_page]
@@ -296,13 +296,25 @@ def top(request,site,page=1,votemonth=0):
                 for babe in monthlist:
                     babes.append(babe)
         if site=='yearrank':
-            per_page=48
-            years = list(range(datetime.datetime.now().year-1, 2011, -1))[int((page-1)*per_page/4):int(page*per_page/4)]
+            per_page=1
+            years = list(range(datetime.datetime.now().year-1, 2011, -1))
             babes = []
             for year in years:
-                yearlist = list(AllBabe_view.objects.filter(date__startswith=f"{year % 100:02d}").order_by('-monthlikes','-duellikes','-likes')[0:4])
+                yearlist = list(AllBabe_view.objects.filter(date__startswith=f"{year % 100:02d}").order_by('-monthlikes','-duellikes','-likes'))[0+(page-1)*4:4+(page-1)*4]
                 for babe in yearlist:
                     babes.append(babe)
+            detail={ 'places': str(1+(page-1)*4) + "-" + str(4+(page-1)*4) }
+
+        if site=='yearmodel':
+            per_page=1
+            years = list(range(datetime.datetime.now().year-1, 2011, -1))
+            babes = []
+            for year in years:
+                ylist = list(AllBabe_view.objects.filter(date__startswith=f"{year % 100:02d}").values("name").annotate(yearlikes=Sum("monthlikes"),count=Count("name")).order_by('-yearlikes')[0+(page-1)*4:4+(page-1)*4]) 
+                for babe in ylist:
+                    record=AllBabe_view.objects.filter(name=babe['name'],date__startswith=f"{year % 100:02d}").annotate(yearlikes=Value(babe['yearlikes'],output_field=IntegerField()),score=Value(round(babe['yearlikes']/babe['count'],2),output_field=FloatField()),count=Value(babe['count'],output_field=IntegerField())).order_by('-monthlikes','-duellikes','-likes').first()
+                    babes.append(record)
+            detail={ 'places': str(1+(page-1)*4) + "-" + str(4+(page-1)*4) }
 
         if site=='monthlist':
             babes = list(AllBabe_view.objects.filter(date__istartswith=get_votemonth(),likes__gte=0).order_by('-date'))
