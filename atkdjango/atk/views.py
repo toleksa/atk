@@ -266,7 +266,7 @@ def top(request,site,page=1,votemonth=0):
     per_page=''
     template='atk/template_base.html'
     
-    if site=='duel' or site=='duelduel' or site=='month' or site=='monthrank' or site=='monthlist' or site == 'likes' or site == 'liked' or site == 'dueltopmodel' or site=='monthmodel' or site=='bestscore' or site=='bestscore4' or site == 'monthpic' or site == 'allpic' or site == 'allmodel' or site == 'allscore' or site == 'allscore4' or site == 'votemonth' or site == 'age' or site == 'yearrank' or site == 'yearmodel' or site == 'yearscore':
+    if site=='duel' or site=='duelduel' or site=='month' or site=='monthrank' or site=='monthlist' or site == 'likes' or site == 'liked' or site == 'dueltopmodel' or site=='monthmodel' or site=='bestscore' or site=='bestscore4' or site == 'monthpic' or site == 'allpic' or site == 'allmodel' or site == 'allscore' or site == 'allscore4' or site == 'votemonth' or site == 'age' or site == 'yearrank' or site == 'yearmodel' or site == 'yearscore' or site == 'yearscore4':
         if site=='duel' or site=='duelduel':
             per_page=100
             babes = AllBabe_view.objects.order_by('-duellikes','-likes','-monthlikes')[(page-1)*per_page:page*per_page]
@@ -306,13 +306,16 @@ def top(request,site,page=1,votemonth=0):
                     babes.append(babe)
             detail={ 'places': str(1+(page-1)*4) + "-" + str(4+(page-1)*4) }
 
-        if site=='yearmodel' or site=='yearscore':
+        if site=='yearmodel' or site=='yearscore' or site=='yearscore4':
             per_page=1
             years = list(range(datetime.datetime.now().year-1, 2011, -1))
             babes = []
+            min_count = 0
             order='-yearlikes'
-            if site=='yearscore':
-                order='-score'
+            if site=='yearscore' or site=='yearscore4':
+                order = '-score'
+                if site=='yearscore4':
+                    min_count = 4
             for year in years:
                 ylist = list(
                     AllBabe_view.objects
@@ -320,6 +323,7 @@ def top(request,site,page=1,votemonth=0):
                     .values("name")
                     .annotate(yearlikes=Sum("monthlikes"),count=Count("name"))
                     .annotate(score=Round((F("yearlikes") * 100.0 / F("count")) / Value(100.0)))
+                    .filter(count__gte=min_count)
                     .order_by(order)[0+(page-1)*4:4+(page-1)*4]) 
                 for babe in ylist:
                     record=(

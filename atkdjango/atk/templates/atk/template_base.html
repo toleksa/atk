@@ -468,6 +468,7 @@
       <a title="Top 4 pics from every year" href='/atk/yearrank/top/'>year-rank</a>
       <a title="Top 4 girls from every year" href='/atk/yearmodel/top/'>year-model</a>
       <a title="Top 4 scores from every year" href='/atk/yearscore/top/'>year-score</a>
+      <a title="Top 4 scores from every year, minimum 4 entries" href='/atk/yearscore4/top/'>year-score4</a>
     </div>
   </div>
   <div class="dropdown-likes">
@@ -654,7 +655,7 @@
         {% if numResults %}
             (of {{ numResults }})
         {% endif %}
-        {% if site == 'yearmodel/top' or site == 'yearrank/top' or site == 'yearscore/top'%} 
+        {% if site == 'yearmodel/top' or site == 'yearrank/top' or site == 'yearscore/top' or site == 'yearscore4/top' %} 
             places: [{{ detail.places  }}]
         {% endif %}
     {% endblock %}
@@ -771,7 +772,7 @@
                   Total likes: {{ babe.vote }}
                 {% elif site == 'halloffame' %}
                   Count: {{ babe.count }} Total Likes: {{ babe.vote }} ({{ babe.score }})
-                {% elif site == 'yearmodel/top' or site == 'yearscore/top' %}
+                {% elif site == 'yearmodel/top' or site == 'yearscore/top' or site == 'yearscore4/top'%}
                   Year likes: {{ babe.yearlikes }} ({{ babe.score }})
                 {% else %}
                   Likes: {{ babe.likes }} Duel: {{ babe.duellikes }} Month: {{ babe.monthlikes }}
