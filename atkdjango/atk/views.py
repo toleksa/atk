@@ -54,6 +54,11 @@ def stats(request):
     for babe in halloffame:
         response += str(babe['ncount']) + " <a href='/atk/model/" + str(babe['name']) + "'>" + str(babe['name']) + "</a><br>"
 
+    response += "<br><br><a href='/atk/search/tags/toering/'>Toering</a>:<br><br>"
+    toering = AllBabe.objects.values('name').annotate(ncount=Count('name')).filter(tags__icontains='toering').order_by('-ncount')
+    for babe in toering:
+        response += str(babe['ncount']) + " <a href='/atk/model/" + str(babe['name']) + "'>" + str(babe['name']) + "</a><br>"
+
     response += "<br><br><a href='/atk/search/pob/poland/'>Polish</a>:<br><br>"
     polish = AllBabe.objects.values('name').annotate(ncount=Count('name')).filter(pob__icontains='poland').order_by('-ncount')
     for babe in polish:
