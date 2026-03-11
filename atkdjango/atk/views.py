@@ -49,7 +49,7 @@ def stats(request):
     response += "Unlike votes: " + str(unlikevotes) + "<br>"
     response += "Total votes: " + str(duelvotes + monthvotes + likevotes + unlikevotes) + "<br>"
     response+="<br><br>"
-    response += "Hall of Fame:<br><br>"
+    response += "<a href='/atk/halloffame'>Hall of Fame:</a><br><br>"
     halloffame = AllBabe.objects.values('name').annotate(ncount=Count('name')).order_by('-ncount')[0:10]
     for babe in halloffame:
         response += str(babe['ncount']) + " <a href='/atk/model/" + str(babe['name']) + "'>" + str(babe['name']) + "</a><br>"
