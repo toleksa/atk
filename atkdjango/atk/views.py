@@ -641,7 +641,7 @@ def get_modeldetails(model,babes_count=1,details=False,filters=False):
     except:
         result="didn't work, LOL"
     try:
-        modeldetail['topphoto'] = list(AllBabe.objects.filter(name=model).order_by('-likes')[0:1])[0]
+        modeldetail['topphoto'] = list(AllBabe.objects.filter(name=model).order_by('-likes','-monthlikes','-duellikes')[0:1])[0]
         modeldetail['avg_likes'] = round(modeldetail['likes__sum'] / babes_count,2)
         modeldetail['avg_duellikes'] = round(modeldetail['duellikes__sum'] / babes_count,2)
         modeldetail['avg_monthlikes'] = round(modeldetail['monthlikes__sum'] / babes_count,2)
