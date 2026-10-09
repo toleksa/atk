@@ -591,7 +591,7 @@ def model(request,model,filter='none',details=False,sort='none',page=1,per_page=
     try:
         order_by=('-date','site','-id')
         if sort!='none':
-            order_by=('-'+sort,*order_by)
+            order_by=('-'+sort,'-totallikes',*order_by)
 
         filters = {'name': model}
         if filter=='none':
