@@ -112,7 +112,7 @@ def siterandom(request,site='allsites'):
         if maxnum > 0:
             randomnum = random.randrange(maxnum)
             babes = query[randomnum:randomnum+1]
-    site='random'
+    site='random/' + site
     template='atk/random.html'
     response = sitedisplay(request,babes,site,1,template, page_title='Random')
     return HttpResponse(response)
